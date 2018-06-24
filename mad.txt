@@ -33,3 +33,7 @@ git pull origin master
 git push -u origin master
 
 
+
+因为github的默认大小是4m 如果你的文件大于4m，那么你就不能成功，
+git config http.postBuffer 52428800  
+这里可以写的更大些.

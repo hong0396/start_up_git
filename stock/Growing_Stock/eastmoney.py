@@ -105,7 +105,7 @@ for i in code:
 #print(zong)
 # zong=pd.concat(pd_list)
 zong=ab
-zong = zong.loc[:,~zong.columns.duplicated()]
-t=zong.drop(0,axis=0)
+t = zong.loc[:,~zong.columns.duplicated()]
+# t=zong.drop(0,axis=0)
 t.to_csv(date+'year_all_roe.csv', index=False)
 print(t)

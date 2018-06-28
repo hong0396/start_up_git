@@ -5,7 +5,7 @@ import requests
 import csv
 import pandas as pd
 from sqlalchemy import create_engine
-import pymysql
+# import pymysql
 import random
 from  bs4 import BeautifulSoup
 

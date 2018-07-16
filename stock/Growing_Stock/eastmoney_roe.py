@@ -108,5 +108,5 @@ zong=ab
 t = zong.loc[:,~zong.columns.duplicated()]
 # t=zong.drop(0,axis=0)
 date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
-t.to_csv(date+'_year_all_roe.csv')
+t.to_csv(date+'_year_all_roe_eastmoney.csv')
 print(t)

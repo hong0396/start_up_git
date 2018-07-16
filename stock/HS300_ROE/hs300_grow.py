@@ -104,7 +104,7 @@ roe=pd.merge(temp1,temp2,how='outer',on=['code','name'])
 print('ok5')
 re=pd.merge(roe, basic, on='name')
 re=re.drop_duplicates()
-re.to_csv('D:/Git/stock/'+date+'_hs300_grow.csv')
+re.to_csv(date+'_hs300_grow.csv', encoding='gbk')
 
 
 

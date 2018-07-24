@@ -9,7 +9,15 @@ import tushare as ts
 headers={'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
 ti=str(time.time()).replace('.','')[:13]
 print(str(time.time()).replace('.','')[:13])
-headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
+headers={
+'Accept': 'application/json, text/plain, */*',
+'Accept-Encoding': 'gzip, deflate, br',
+'Accept-Language': 'zh-CN,zh;q=0.9',
+'Authorization': 'Bearer fvhP3nTHEmySyPJOjFCIepfmLENgaN',
+'Connection': 'keep-alive',
+'Host': 'hq.itiger.com',
+'Origin': 'https://web.itiger.com',
+'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
 
 # https://hq1.itiger.com/fundamental/usstock/earnings/cash/WFC?type=cash&symbol=WFC&deviceId=1531581656218&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0
 # https://hq1.itiger.com/fundamental/usstock/earnings/balance/WFC?type=balance&symbol=WFC&deviceId=1531581656218&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0
@@ -85,10 +93,32 @@ def get_roe(code):
             if li[i].get('date') == li_s[i].get('date') :   
                 for m in range(len(li_time)):
                     if  li[i].get('date') == li_time[m] :  
-                        if not li[i].get('cell')[num].get('value') is None:                 
-                            u=li[i].get('cell')[num].get('value').replace('亿','').replace('万','').replace('千','').replace(',','')
+                        if not li[i].get('cell')[num].get('value') is None:
+                            u_tmp=li[i].get('cell')[num].get('value')                                            
+                            if '亿' in u_tmp:
+                                u_tmp=u_tmp.replace('亿','').replace(',','')
+                                u=float(u_tmp)*100000000
+                            elif '万' in u_tmp:
+                                u_tmp=u_tmp.replace('万','').replace(',','')
+                                u=float(u_tmp)*10000
+                            elif '千' in u_tmp:
+                                u_tmp=u_tmp.replace('千','').replace(',','')
+                                u=float(u_tmp)*1000
+                            else:
+                                u=u_tmp.replace(',','')
                             if not li_s[i].get('cell')[num_s].get('value') is None:  
-                                d=li_s[i].get('cell')[num_s].get('value').replace('亿','').replace('万','').replace('千','').replace(',','')
+                                d_tmp=li_s[i].get('cell')[num_s].get('value')                                          
+                                if '亿' in d_tmp:
+                                    d_tmp=d_tmp.replace('亿','').replace(',','')
+                                    d=float(d_tmp)*100000000
+                                elif '万' in d_tmp:
+                                    d_tmp=d_tmp.replace('万','').replace(',','')
+                                    d=float(d_tmp)*10000
+                                elif '千' in d_tmp:
+                                    d_tmp=d_tmp.replace('千','').replace(',','')
+                                    d=float(d_tmp)*1000
+                                else:
+                                    d=d_tmp.replace(',','')
                                 if float(d) != 0.0:
                                    
                                     li_sum[m][nu_nu]=round(float(u)/float(d),4)

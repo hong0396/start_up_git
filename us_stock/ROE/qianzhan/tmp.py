@@ -33,7 +33,7 @@ for code_nm in li_code:
             li_tmp.append('0')
         else:    
             a=res.text
-            soup = BeautifulSoup(res.text, 'lxml')
+            soup = BeautifulSoup(res.text, 'lxml')rdf
             strr=soup.get_text()
             li_da=strr.split('\n')
             while '' in li_da:
@@ -52,3 +52,5 @@ pdd=pd.DataFrame(lii,columns=li)
 pdd['code']=li_code
 re=pd.merge(pdd,code,how='outer',on='code')
 re.to_csv(date+"_all_roe_us.csv", encoding='gbk')
+
+

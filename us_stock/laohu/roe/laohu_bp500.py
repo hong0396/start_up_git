@@ -24,7 +24,7 @@ headers={
 
 # https://hq1.itiger.com/fundamental/usstock/earnings/balance/WFC?type=balance&symbol=WFC&deviceId=1531581656218&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0
 
-code=pd.read_csv('D:\\Git\\us_stock\\ROE\\2018-07-15_us_basic.csv',encoding='gbk')                
+code=pd.read_csv('D:\\Git\\us_stock\\laohu\\basic_code\\us_bp500_code.csv',encoding='gbk')                
 li_code=code['code'].tolist()
 # print(li_code)
 
@@ -119,9 +119,8 @@ def get_roe(code):
                                     d=float(d_tmp)*1000
                                 else:
                                     d=d_tmp.replace(',','')
-
+                                
                                 if float(d) != 0.0:
-                                   
                                     li_sum[m][nu_nu]=round(float(u)/float(d),4)
     nu_nu=nu_nu+1
                     # print(result)
@@ -139,7 +138,7 @@ pdd=pd.DataFrame(li_sum,   columns=li_code , index=[ '2014-12-31','2015-12-31','
 pan=pdd.T
 pan['code'] = li_code
 re=pd.merge(code,pan,how='outer',on='code')
-re.to_csv('Laohu_us_roe.csv', encoding = 'gbk',index=False)
+re.to_csv('BP500_laohu_us_roe.csv', encoding = 'gbk',index=False)
 
 
 

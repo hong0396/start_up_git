@@ -22,7 +22,7 @@ for i in range(len(li_code)):
 n=1
 lii=[]
 # li=['2017年年报','2017年三季报','2017年中报','2017年一季报']
-li=['2017年年报','2017年中报','2016年年报','2016年中报']
+li=['2018年一季报','2017年年报','2017年三季报','2017年中报','2017年一季报', '2016年年报','2016年三季报','2016年中报','2015年年报','2015年中报']
 sum=pd.DataFrame()
 for code_nm in li_code:
     print('----------------------------'+str(n)+'------------------------------------------')
@@ -30,7 +30,7 @@ for code_nm in li_code:
     for i in li:
         url_pre='https://stock.qianzhan.com/hk/dubang?code='+code_nm+'.HK&time='+i+'&_='
         url=url_pre+ti
-        time.sleep(0.5)
+        # time.sleep(0.2)
         res=requests.get(url, headers=headers)
         if res.status_code == 404:
             li_tmp.append('0')

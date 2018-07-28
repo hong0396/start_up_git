@@ -37,3 +37,26 @@ git push -u origin master
 因为github的默认大小是4m 如果你的文件大于4m，那么你就不能成功，
 git config http.postBuffer 52428800  
 这里可以写的更大些.
+
+
+---------------------------------------------------------------------------------------------
+git本地push代码报broken pipe
+
+
+1,在git安装目录下，找到/etc/ssh/ssh_config,然后随便用什么编辑器打开，添加
+Host *  
+ServerAliveInterval 120  
+
+
+2,修改post缓存大小
+因为如果缓存不够用，有时候也会发生broken pipe的情况，所以最好的对post的缓存大小作设置 
+这个很简单，直接在git bash 上输入git config http.postBuffer ，value指的就是设置的缓存大小，如下：
+
+git config http.postBuffer 52428800
+
+52428800的单位是字节，git默认的是1MB，我们把它设置成50MB
+-------------------------------------------------------------------------------------------------
+
+
+
+

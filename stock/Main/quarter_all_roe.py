@@ -8,7 +8,7 @@ date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
 
 
 
-
+roe2018_2 = ts.get_profit_data(2018,2)
 roe2018_1 = ts.get_profit_data(2018,1)
 roe2017_4 = ts.get_profit_data(2017,4)
 roe2017_3 = ts.get_profit_data(2017,3)
@@ -20,7 +20,7 @@ roe2016_2 = ts.get_profit_data(2016,2)
 
 
 li=[]
-li=[roe2016_2, roe2016_3, roe2016_4, roe2017_1, roe2017_2, roe2017_3, roe2017_4,  roe2018_1]
+li=[roe2016_2, roe2016_3, roe2016_4, roe2017_1, roe2017_2, roe2017_3, roe2017_4,  roe2018_1, roe2018_2]
 
 for i in range(len(li)):
     li[i]['name']= li[i]['name'].map(str.strip)
@@ -39,7 +39,7 @@ def df_join_nm(pd_li,col,rename):
 
 
 
-rename=['roe2016_2','roe2016_3','roe2016_4','roe2017_1','roe2017_2','roe2017_3','roe2017_4','roe2018_1']
+rename=['roe2016_2','roe2016_3','roe2016_4','roe2017_1','roe2017_2','roe2017_3','roe2017_4','roe2018_1','roe2018_2']
 roe=df_join_nm(li, ['name', 'roe'], rename)
 
 

@@ -8,7 +8,7 @@ import time
 from selenium import webdriver
 
 
-
+date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
 
 def get_cookie():
     url='http://q.10jqka.com.cn/hk/detail/board/all'
@@ -63,7 +63,7 @@ for n in range(1, 40):
 	    
     # print(li_code)
 pd=pd.DataFrame(li_code, columns=['序号','code',	'name','现价','涨跌幅(%)','涨跌','换手(%)','成交量','市盈率','昨收','开盘价','最高价','最低价'])
-pd.to_csv('THS_hk_all_code.csv',encoding = 'gbk', index=False)
+pd.to_csv(date+'THS_hk_all_code.csv',encoding = 'gbk', index=False)
 
 
 

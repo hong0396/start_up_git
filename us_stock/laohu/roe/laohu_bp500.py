@@ -56,7 +56,7 @@ nu_nu=0
 def get_roe(code):
     global nu_nu
     print('--------------------------'+str(nu_nu)+'--------------------------------')
-    url='https://hq1.itiger.com/fundamental/usstock/earnings/income/'+code+'?type=income&symbol=WFC&deviceId'+ti+'&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+    url='https://hq1.itiger.com/fundamental/usstock/earnings/income/'+code+'?type=income&symbol='+code+'&deviceId'+ti+'&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
     res=requests.get(url, headers=headers)
     a=res.json()
     li=a.get('data').get('page')
@@ -68,7 +68,7 @@ def get_roe(code):
             if li_h[h].get('name') ==  "净利润":
                 num=h
     time.sleep(0.5)
-    url='https://hq1.itiger.com/fundamental/usstock/earnings/balance/'+code+'?type=balance&symbol=WFC&deviceId='+ti+'&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+    url='https://hq1.itiger.com/fundamental/usstock/earnings/balance/'+code+'?type=balance&symbol='+code+'&deviceId='+ti+'&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
     res=requests.get(url, headers=headers)
     a=res.json()
     li_s=a.get('data').get('page')

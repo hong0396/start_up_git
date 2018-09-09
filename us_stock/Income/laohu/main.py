@@ -7,17 +7,20 @@ from bs4 import BeautifulSoup
 import time
 import tushare as ts
 
+date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
 ti=str(time.time()).replace('.','')[:13]
 print(str(time.time()).replace('.','')[:13])
-headers={'Accept': 'application/json, text/plain, */*',
+headers={
+'Accept': '*/*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
-'Authorization': 'Bearer AU90wog32yN9kOrXOmXoKlMb35v5sn',
+'Access-Control-Request-Headers': 'authorization',
+'Access-Control-Request-Method': 'GET',
 'Connection': 'keep-alive',
 'Host': 'hq1.itiger.com',
 'Origin': 'https://web.itiger.com',
-'Referer': 'https://web.itiger.com/quote/00439/finance',
 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
+
 
 # code=pd.read_csv('D:\\Git\\us_stock\\profit\\2018-07-15_us_basic.csv',encoding='gbk')                
 # li_code=code['code'].tolist()
@@ -36,7 +39,7 @@ li_sum=[profit2018,profit2017,profit2016,profit2015,profit2014]
 li_time=['2018_profit','2017_profit','2016_profit','2015_profit','2014_profit']
 
 
-code=pd.read_csv('D:\\Git\\us_stock\\ROE\\2018-07-22_all_us_basic.csv',encoding='gbk')
+code=pd.read_csv('D:\\Git\\us_stock\\ROE\\2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
 # print(code)                
 li_code=code['code'].tolist()
@@ -47,15 +50,15 @@ li_code=code['code'].tolist()
 nu_nu=0
 for code_nm in li_code:
     print('------------------------------------------'+str(nu_nu)+'----------------------------------------------')
-    url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId='+str(ti)+'&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+    url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId=web20180819_731032&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
     time.sleep(0.1)
-    res=requests.get(url, headers=headers)
+    res=requests.get(url, headers=headers)bgbgnb
     if res.status_code == 200:
         a=res.json()
         li=a.get('data').get('page')
         li_h=a.get('data').get('header')
         # print(li_h[7])
-        num=31
+        num=2018
 
         for w in range(len(li_time)):
             li_sum[w].append('0')
@@ -65,41 +68,46 @@ for code_nm in li_code:
             for h in range(len(li_h)):
                 if li_h[h].get('name') ==  "净利润":
                     num=h
-        if not li is None:
-            # codd.append(code_nm)
-            for i in range(len(li)):
-                if li[i].get('type') == '年报':
-                    year_date=li[i].get('date')[:4]
-                    # rate=li[i].get('cell')[num].get('yoy') 
-                    tmmp=li[i].get('cell')
-                    if num+1 < len(tmmp):
-                        valu=tmmp[num].get('value')
-                        if not valu is None:
-                            value=valu.replace(',','')
-                            if '千' in value：                                
-                                value=float(value.replace('千',''))*1000
-                            if '万' in value：                                
-                                value=float(value.replace('万',''))*10000
-                            if '亿' in value：                                
-                                value=float(value.replace('亿',''))*100000000
+        
+        if num != 2018: 
+            if not li is None:
+                # codd.append(code_nm)
+                for i in range(len(li)):
+                    if li[i].get('type') == '年报':
+                        year_date=li[i].get('date')[:4]
+                        # rate=li[i].get('cell')[num].get('yoy') 
+                        tmmp=li[i].get('cell')
+                        if num+1 < len(tmmp):
+                            valu=tmmp[num].get('value')
+                            yoy=tmmp[num].get('yoy')
+                            if yoy is None:
+                                yoy='0'
+                            if not valu is None:
+                                value=valu.replace(',','')
+                                if '千' in value:                                
+                                    value=float(value.replace('千',''))*1000
+                                elif '万' in value:                             
+                                    value=float(value.replace('万',''))*10000
+                                elif '亿' in value:                              
+                                    value=float(value.replace('亿',''))*100000000
+                            else:
+                        	    value='0'
                         else:
-                    	    value='0'
-                    else:
-                    	value='0'
-                    for k in range(len(li_time)):
-                        if year_date in li_time[k]:
-                            li_sum[k][nu_nu]=value
-            #                 index_num=li_sum[k].index(value)
-            # for w in range(len(li_time)):
-            #     if  index_num +1 == len(li_sum[w]):
+                        	value='0'
+                        for k in range(len(li_time)):
+                            if year_date in li_time[k]:
+                                li_sum[k][nu_nu]=str(value)+'_'+yoy
+                #                 index_num=li_sum[k].index(value)
+                # for w in range(len(li_time)):
+                #     if  index_num +1 == len(li_sum[w]):
+                #         li_sum[w].append('0')
+            # else:
+            #     for w in range(len(li_time)):
             #         li_sum[w].append('0')
-        # else:
-        #     for w in range(len(li_time)):
-        #         li_sum[w].append('0')
 
 
-        # for w in range(len(li_time)):
-        #     print(li_sum[w])
+            # for w in range(len(li_time)):
+            #     print(li_sum[w])
           
     else:
         print('下载数据错误')
@@ -109,10 +117,16 @@ for code_nm in li_code:
 pdd=pd.DataFrame(li_sum,  index=li_time)
 pan=pdd.T
 print(pan)
+# for i in li_time:
+#     col1='profit'+i
+#     col2='radio'+i
+#     pan[col1] = pan[i].map(lambda x:x.split('_')[0])
+#     pan[col2] = pan[i].map(lambda x:x.split('_')[1])
+
 pan['code'] = li_code
 re=pd.merge(code,pan,how='outer',on='code')
 re=re.drop_duplicates()
-re.to_csv('Laohu_us_profit.csv', encoding = 'gbk',index=False)
+re.to_csv(date+'_Laohu_us_profit.csv', encoding = 'gbk',index=False)
 
 
 

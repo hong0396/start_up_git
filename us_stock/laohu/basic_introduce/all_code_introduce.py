@@ -36,6 +36,8 @@ li_code=code['code'].tolist()
 
 
 
+# url='https://hq1.itiger.com/stock_info/profile/EVRI?deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+
 li=[]
 nu_nu=0
 for code_nm in li_code:

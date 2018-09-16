@@ -38,7 +38,7 @@ profit201709 =[]
 li_sum=[profit201806,profit201803,profit201712,profit201709]
 li_time=['2018-06','2018-03','2017-12','2017-09']
 
-code=pd.read_csv('D:/Git/us_stock/laohu/basic_code/2018-08-25us_all_code.csv',encoding='gbk')
+code=pd.read_csv('D:/Git/us_stock/laohu/basic_code/2018-09-09us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
 # print(code)                
@@ -50,7 +50,7 @@ li_code=code['code'].tolist()
 nu_nuu=0
 for code_nm in li_code:
     print('------------------------------------------'+str(nu_nuu)+'----------------------------------------------')
-    url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId=web20180826_733454&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+    url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
     time.sleep(0.1)
     res=requests.get(url, headers=headers)
     if res.status_code == 200:

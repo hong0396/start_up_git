@@ -30,7 +30,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
 
 
-code=pd.read_csv('D:\\Git\\us_stock\\analysis\\net.csv',encoding='gbk')
+code=pd.read_csv('D:\\Git\\us_stock\\analysis\\pe20_net.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
 # print(code)                
@@ -78,7 +78,7 @@ def get_laohu_analysis(n, url, li_code):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig("fig_"+str(n)+".png")
+    plt.savefig("fig_pe20_"+str(n)+".png")
     # plt.show()
     
             

@@ -23,14 +23,14 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer c6Sw3I4Vu3uNivRgU5tYvBhDyZwOZR',
+'Authorization': 'Bearer gluCWKw06sXGLvRq1hsLaCd9vZRAUJ',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
 
 
-code=pd.read_csv('D:\\Git\\us_stock\\analysis\\net.csv',encoding='gbk')
+code=pd.read_csv('D:\\Git\\us_stock\\technical_analysis\\price\\laohu_price\\picture\\grow3.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
 # print(code)                
@@ -59,7 +59,9 @@ def get_laohu_analysis(n, url, li_code):
             jo=pd.DataFrame(li_data)
             # print(jo)
             ax=axes[nu_nu//10, nu_nu%10]
-            ax.set_title(str(code_nm),fontsize=18,fontweight='bold')    
+            count=jo.shape[0]
+            year=int(count/12)
+            ax.set_title(str(code_nm)+'('+str(year)+')',fontsize=18,fontweight='bold')    
             g=sns.relplot(x= 'time', y='close' , data=jo, s=75,  ax=axes[nu_nu//10, nu_nu%10 ])
             ax.xaxis.set_major_locator(ticker.NullLocator())
             ax.set_ylabel(' ', fontsize=0.01)
@@ -78,7 +80,7 @@ def get_laohu_analysis(n, url, li_code):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig("fig_"+str(n)+".png")
+    plt.savefig("fig_pe10_"+str(n)+".png")
     # plt.show()
     
             

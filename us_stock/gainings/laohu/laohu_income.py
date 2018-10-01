@@ -30,16 +30,16 @@ headers={
 
 dic={}
 codd=[]
-profit201806 =[]
-profit201803 =[]
-profit201712 =[]
-profit201709 =[]
+profit2018 =[]
+profit2017 =[]
+profit2016 =[]
+profit2015 =[]
+profit2014 =[]
+li_sum=[profit2018,profit2017,profit2016,profit2015,profit2014]
+li_time=['2018_profit','2017_profit','2016_profit','2015_profit','2014_profit']
 
-li_sum=[profit201806,profit201803,profit201712,profit201709]
-li_time=['2018-06','2018-03','2017-12','2017-09']
 
-code=pd.read_csv('D:/Git/us_stock/laohu/basic_code/2018-09-21us_all_code.csv',encoding='gbk')
-# code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
+code=pd.read_csv('D:\\Git\\us_stock\\ROE\\2018-07-22_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
 # print(code)                
 li_code=code['code'].tolist()
@@ -47,10 +47,10 @@ li_code=code['code'].tolist()
 #     li_code[i] = str(li_code[i]).replace('hk','')
 # print(li_code)
 
-nu_nuu=0
+nu_nu=0
 for code_nm in li_code:
-    print('------------------------------------------'+str(nu_nuu)+'----------------------------------------------')
-    url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+    print('------------------------------------------'+str(nu_nu)+'----------------------------------------------')
+    url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId=web20180729_724221&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
     time.sleep(0.1)
     res=requests.get(url, headers=headers)
     if res.status_code == 200:
@@ -59,33 +59,26 @@ for code_nm in li_code:
         li_h=a.get('data').get('header')
         # print(li_h[7])
         num=2018
-        num_income=2018
+
         for w in range(len(li_time)):
-            li_sum[w].append('0_0_0_0')
+            li_sum[w].append('0')
 
 
         if not li_h is None:
             for h in range(len(li_h)):
                 if li_h[h].get('name') ==  "净利润":
                     num=h
-                if li_h[h].get('name') ==  "主营业务收入":
-                    num_income=h
-
-
         
-
         if num != 2018: 
             if not li is None:
                 # codd.append(code_nm)
                 for i in range(len(li)):
-                    if li[i].get('type') == '季报':
-                        year_date=li[i].get('date')[:7]
+                    if li[i].get('type') == '年报':
+                        year_date=li[i].get('date')[:4]
+                        # rate=li[i].get('cell')[num].get('yoy') 
                         tmmp=li[i].get('cell')
                         if num+1 < len(tmmp):
                             valu=tmmp[num].get('value')
-                            yoy=tmmp[num].get('yoy')
-                            if yoy is None:
-                                yoy='0'
                             if not valu is None:
                                 value=valu.replace(',','')
                                 if '千' in value:                                
@@ -95,35 +88,12 @@ for code_nm in li_code:
                                 elif '亿' in value:                              
                                     value=float(value.replace('亿',''))*100000000
                             else:
-                                value='0'
+                        	    value='0'
                         else:
-                            value='0'
-                            yoy='0'
-
-
-                        if num_income+1 < len(tmmp):
-                            valu_income=tmmp[num_income].get('value')
-                            yoy_income=tmmp[num_income].get('yoy')
-                            if yoy_income is None:
-                                yoy_income='0'
-                            if not valu_income is None:
-                                value_income=valu_income.replace(',','')
-                                if '千' in value_income:                                
-                                    value_income=float(value_income.replace('千',''))*1000
-                                elif '万' in value_income:                             
-                                    value_income=float(value_income.replace('万',''))*10000
-                                elif '亿' in value_income:                              
-                                    value_income=float(value_income.replace('亿',''))*100000000
-                            else:
-                                value_income='0'
-                        else:
-                            value_income='0'
-                            yoy_income='0'
-
+                        	value='0'
                         for k in range(len(li_time)):
                             if year_date in li_time[k]:
-                                li_sum[k][nu_nuu]=str(value)+'_'+yoy+'_'+str(value_income)+'_'+yoy_income
-
+                                li_sum[k][nu_nu]=value
                 #                 index_num=li_sum[k].index(value)
                 # for w in range(len(li_time)):
                 #     if  index_num +1 == len(li_sum[w]):
@@ -138,43 +108,16 @@ for code_nm in li_code:
           
     else:
         print('下载数据错误')
-    nu_nuu=nu_nuu+1
+    nu_nu=nu_nu+1
 
 
 pdd=pd.DataFrame(li_sum,  index=li_time)
 pan=pdd.T
 print(pan)
-for i in li_time:
-    col1='net'+i
-    col2='net_radio'+i
-    col3='income'+i
-    col4='income_radio'+i
-    pan[col1] = pan[i].map(lambda x:x.split('_')[0])
-    pan[col2] = pan[i].map(lambda x:x.split('_')[1])
-    pan[col3] = pan[i].map(lambda x:x.split('_')[2])
-    pan[col4] = pan[i].map(lambda x:x.split('_')[3])
-
-
-
 pan['code'] = li_code
 re=pd.merge(code,pan,how='outer',on='code')
 re=re.drop_duplicates()
-re.to_csv(date+'_Laohu_us_profit_income_quarter.csv', encoding = 'gbk',index=False)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+re.to_csv(date+'_Laohu_us_profit.csv', encoding = 'gbk',index=False)
 
 
 

@@ -1,0 +1,625 @@
+code,name,pe,pb,eps
+MOC,Command Security Corp,0.0,1.767136,-0.079594
+OGEN,Oragenics Inc.,0.0,-2.416236,-1.518749
+IGC,India Globalization Capital,0.0,7.509669,-0.063766
+PLX,Protalix BioTherapeutics Inc,0.0,-1.838432,-0.320562
+PLG,Platinum Group Metals Ltd,0.0,-5.237935,-1.9949
+XTNT,Xtant Medical Holdings Inc,0.0,5.588737,-25.545244
+LEVB,Level Brands Inc.,390.867579,2.515379,0.01095
+SNMP,Sanchez Production Partners LP,0.0,-2.072262,-2.339196
+AIRI,Air Industries Group,0.0,2.12729,-1.245082
+PFNX,Pfenex,0.0,2.051246,-1.021777
+REED,Reeds Inc,0.0,-30.2649,-1.31087
+LODE,Comstock Mining,0.0,0.909488,-0.201672
+CAW,CCA Industries,0.0,2.404811,-0.35612
+ALO,Timmins Gold Corp,0.523658,0.129373,1.3547
+WRN,Western Copper and Gold Corp,0.0,1.877205,-0.03
+DXR,Daxor Corp,0.0,1.609523,-0.346141
+KGRN,KraneShares MSCI China Environment Index ETF,0.0,0.0,0.0
+WTIU,ProShares Daily 3x Long Crude ETN,0.0,0.0,0.0
+BPMX,BioPharmX Corporation,0.0,9.614402,-0.111191
+TRXC,Transenterix Inc,0.0,8.221647,-0.907503
+SDPI,Superior Drilling Products Inc,83.860982,4.681966,0.035535
+OCX,OncoCyte Corporation,0.0,14.255739,-0.585518
+NEN,New England Realty Associates LP,55.457194,-7.063338,1.203631
+RLGT,Radiant Logistics,33.987893,2.08205,0.165353
+FNGU,Bank Of Montreal,0.0,0.0,0.0
+SHNY,Direxion Shares ETF Trust,0.0,0.0,0.0
+CKX,CKX Lands,16.448429,1.368373,0.645472
+TAT,TransAtlantic Petroleum Ltd,0.0,4.411564,-0.223182
+NBY,NovaBay Pharmaceuticals Inc,0.0,3.220491,-0.331164
+AST,"Asterias Biotherapeutics, Inc.",0.0,2.768351,-0.423747
+IBIO,iBio Inc.,0.0,3.778923,-1.539366
+XXII,22nd Century Group Inc,0.0,4.819972,-0.106281
+PGMB,iPath Series B Bloomberg Platinum Subindex Total Return ETN,0.0,0.0,-0.399
+FRD,Friedman Industries Inc,10.628235,0.884484,0.855269
+ZDGE,"Zedge, Inc. Class B",0.0,2.212068,-0.156563
+GSS,金星资源,0.0,22.645312,-0.13
+AKG,Asanko Gold Inc.,0.0,0.404333,-0.02
+VNRX,VolitionRX Ltd,0.0,7.948097,-0.623732
+INFU,InfuSystems Holdings Inc,0.0,2.192624,-0.810107
+BKTI,"BK Technologies, Inc...",0.0,1.523842,-0.231651
+AXU,Alexco Resource Corp,0.0,1.309894,-0.04
+CVRS,"Corindus Vascular Robotics, Inc.",0.0,103.849623,-0.214391
+GPL,Great Panther Silver Ltd,0.0,1.871621,-0.03
+NGD,New Gold,55.000001,0.271288,0.02
+FLCH,Franklin FTSE China ETF,0.0,0.0,0.0
+ESTE,Earthstone Energy,23.016778,0.903258,0.404922
+URG,Ur-Energy Inc,0.0,3.087096,-0.02
+EYLD,Cambria Emerging Shareholder Yield ETF,0.0,0.0,0.0
+PBEE,PowerShares PureBeta FTSE Emerging Markets Portfolio,0.0,0.0,0.0
+EMDV,ProShares MSCI Emerging Markets Dividend Growers ETF,0.0,0.0,0.0
+PPEM,Portfolio Emerging Markets ETF,0.0,0.0,0.0
+ELMD,Electromed,28.677703,2.448154,0.211314
+KEMQ,KraneShares Emerging Markets Consumer Technology Index ETF,0.0,0.0,0.0
+AEF,"Aberdeen Emerging Markets Equity Income Fund, Inc.",2.393062,4.495101,2.854084
+DNN,Denison Mines Corp,0.0,1.718847,-0.03
+FLBR,Franklin FTSE Brazil ETF,0.0,0.0,0.0
+NTIP,"Network-1 Technologies, Inc.",7.548997,1.046925,0.35104
+PED,Pedevco Corp.,0.568885,1.219676,3.726591
+AGT,iShares MSCI Argentina and Global Exposure ETF,0.0,0.0,0.0
+UUUU,Energy Fuels Inc,0.0,1.838653,-0.5369
+SIF,SIFCO Industries Inc,0.0,0.675152,-1.492643
+KARS,KraneShares Electric Vehicles and Future Mobility Index ETF,0.0,0.0,0.0
+OILK,ProShares K-1 Free Crude Oil Strategy ETF,0.0,0.0,0.0
+EXIV,VelocityShares 1x Daily Inverse VSTOXX Futures ETN,0.0,0.0,0.0
+SOVB,Cambria ETF Trust,0.0,0.0,0.0
+SIM,Grupo Simec S.A. de C.V. ADS,13.97384,0.805228,0.643345
+EGI,Entree Gold,0.0,-2.474156,-0.04
+IAF,Aberdeen Australia Equity Fund I,16.241044,0.978223,0.372513
+AUMN,黄金矿业,0.0,3.430085,-0.051921
+TXMD,TherapeuticsMD Inc.,0.0,18.88272,-0.436613
+GGN,GAMCO Global Gold Natural Resour,12.51977,0.926017,0.376205
+SAND,Sandstorm Gold Ltd,0.0,0.879061,-0.02
+BRN,Barnwell Industries Inc,0.0,0.980862,-0.006647
+SKY,Skyline Corp.,0.0,4.554404,-0.011944
+EMGF,iShares FactorSelect MSCI Emerging ETF,0.0,0.0,0.0
+BATT, Amplify Advanced Battery Metals and Materials ETF,0.0,0.0,0.0
+BGI,Birks Group Inc.,2.041897,0.948425,0.651355
+DGSE,DGSE Cos,9.135284,2.153652,0.073342
+MXC,Mexco Energy Corp,0.0,1.175208,-0.005654
+SEB,Seaboard Corp,30.286958,1.272711,122.164795
+BTG,B2Gold Corp Common shares (Canad,56.000001,1.445374,0.04
+FLCA,Franklin FTSE Canada ETF,0.0,0.0,0.0
+NUEM,NuShares ESG Emerging Markets Equity ETF,0.0,0.0,0.0
+CQH,钱尼尔能源,20.79602,14317.185033,1.542122
+BOON,NYSE Pickens Oil Response ETF,0.0,0.0,0.0
+VMIN,VIX做空-VolMAXX,0.0,0.0,0.0
+EMMF,WisdomTree Emerging Markets Multifactor Fund,0.0,0.0,0.0
+FLKR,Franklin FTSE South Korea ETF,0.0,0.0,0.0
+APHB,AmpliPhi Biosciences Corporation,1.236518,1.737872,0.711676
+REI,Ring Energy Inc.,78.078485,1.545556,0.1478
+FIEE,UBS FI Enhanced Europe 50,0.0,0.0,0.0
+NANR,SPDR Index Shares Funds,0.0,0.0,0.0
+KURE,KraneShares MSCI All China Health Care Index ETF,0.0,0.0,0.0
+CIX,CompX国际,10.9636,1.17712,1.245029
+FLJH,Franklin FTSE Japan Hedged ETF,0.0,0.0,0.0
+JOB,General Employment Enterprises I,0.0,1.297288,-0.264758
+PTN,Palatin Technologies Inc,8.260022,7.71783,0.124697
+NAK,Northern Dynasty Minerals Ltd,0.0,1.253017,-0.12
+DDLS,WisdomTree Dynamic Currency Hedged International SmallCap Equity,0.0,0.0,0.0
+IEC,IEC Electronics,27.240453,3.473439,0.199703
+UBOT,"Direxion Daily Robotics, Artificial Intelligence & Automation",0.0,0.0,0.0
+UEVM,USAA MSCI Emerging Markets Value Momentum Blend Index ETF,0.0,0.0,0.0
+LNG,Cheniere Energy Inc,89.821356,-16.422444,0.749265
+NMZ,Nuveen Municipal High Income Opp,15.591989,0.961767,0.80939
+CVR,Chicago Rivet & Machine Co,12.178741,1.036342,2.604908
+ULBR,Citigroup Global Markets Holdings Inc.,0.0,0.0,0.0
+NOG,Northern Oil And Gas,0.0,-7.674558,-1.093674
+HMG,HMG/Courtland Properties,3.10893,0.66188,4.734748
+NG,NovaGold Resources Inc,0.0,4.005901,-0.11
+RIDV,Oppenheimer International Ultra Dividend Revenue ETF,0.0,0.0,0.0
+FPI,Farmland Partners Inc,0.0,0.720846,-0.053828
+ICOW,Pacer Developed Markets International Cash Cows 100 ETF,0.0,0.0,0.0
+DDEZ,WisdomTree Dynamic Currency Hedged Europe Equity Fund,0.0,0.0,0.0
+TLEH,FlexShares Currency Hedged Morningstar EM Factor Tilt Index Fund,0.0,0.0,0.0
+ATNM,"Actinium Pharmaceuticals, Inc.",0.0,4.656251,-0.248541
+MSN,Emerson Radio Corp,0.0,0.841982,-0.275664
+CLM,Cornerstone Strategic Value Fund,11.381789,1.122594,1.231353
+FIVA,Fidelity ETF,0.0,0.0,0.0
+TRT,Trio-Tech International,18.427498,0.714678,0.244146
+UAVS,"AgEagle Aerial Systems, Inc.",0.0,5.121014,-0.229216
+CIK,Credit Suisse Asset Management I,22.625405,0.913871,0.139666
+UIVM,USAA MSCI International Value Momentum Blend Index ETF,0.0,0.0,0.0
+BLOK,Amplify Transformational Data Sharing ETF,0.0,0.0,0.0
+GTE,Gran Tierra Energy,1262.063834,1.383798,0.002694
+GLU,Gabelli Global Utility & Income,90.814224,0.961066,0.217336
+LBY,Libbey Inc,0.0,2.812577,-3.855037
+LGL,LGL Group Inc,55.309487,1.404922,0.132527
+DLA,Delta Apparel Co,304.633978,0.860248,0.059711
+GARD,Reality Shares DIVCON Dividend Guard ETF,0.0,0.0,0.0
+GSJY,Goldman Sachs ActiveBeta Japan Equity ETF,0.0,0.0,0.0
+PBUS,PowerShares PureBeta MSCI USA Portfolio,0.0,0.0,0.0
+MVF,BlackRock MuniVest Fund,23.437265,0.911495,0.366937
+GLO,Clough Global Opportunities Fund,7.856151,0.939429,1.409087
+BLES,Inspire Global Hope Large Cap ETF,0.0,0.0,0.0
+FEN,FIRST TRUST ENERGY Income AND GR,108.022297,0.978279,0.205976
+FLFR,Franklin FTSE France ETF,0.0,0.0,0.0
+PSMG,PowerShares Growth Multi-Asset Allocation Portfolio,0.0,0.0,0.0
+CQP,Cheniere Energy Partners L.P.,17.878892,26.061272,2.177428
+SVT,Servotronics Inc,10.569993,0.900035,0.978714
+FFHG,Formula Folios Hedged Growth ETF,0.0,0.0,0.0
+CRF,Cornerstone Total Return Fund Inc,11.926889,1.145486,1.16208
+EVV,Eaton Vance Limited Duration Inc,21.228861,0.865041,0.600833
+CEF,Central Fund of Canada Ltd,8.0,0.868955,1.46
+GLDM,SPDR Gold MiniShares Trust,0.0,0.0,0.0
+AAAU,Perth Mint Physical Gold ETF,0.0,0.0,0.0
+FLMX,Franklin FTSE Mexico ETF,0.0,0.0,0.0
+IEIH,iShares Evolved U.S. Innovative Healthcare ETF,0.0,0.0,0.0
+AIIQ,AI Powered International Equity ETF,0.0,0.0,0.0
+IDEV,iShares Core MSCI International Developed Markets ETF,0.0,0.0,0.0
+YUMA,"Yuma Energy, Inc.",0.0,0.204591,-0.948657
+COMB,GraniteShares Bloomberg Commodity Broad Strategy No K-1 ETF,0.0,0.0,0.0
+GORO,Gold Resource,36.394669,2.429985,0.141779
+TLDH,FlexShares Currency Hedged Morningstar DM ex-US Factor Tilt Index Fund,0.0,0.0,0.0
+UUU,Universal Security Instruments I,0.0,0.253093,-0.932807
+DHY,Credit Suisse High Yield Bond Fund,16.175513,0.967172,0.161355
+USAS,Americas Silver Corporation,1.095743,1.007872,2.02
+WFHY,WisdomTree Fundamental U.S. High Yield Corporate Bond Fund,0.0,0.0,0.0
+NYH,Eaton Vance New York Municipal,56.492357,0.840705,0.187636
+GSIE,Goldman Sachs ActiveBeta International Equity ETF,0.0,0.0,0.0
+CET,Central Securities Corp,6.21756,0.881036,4.762318
+ISDR,Issuer Direct Corporation,25.970081,4.171388,0.579513
+DDWM,WisdomTree Dynamic Currency Hedged International Equity Fund,0.0,0.0,0.0
+EVY,Eaton Vance New York Municipal I,197.163681,0.855086,0.060642
+IMH,IMPAC Mortgage Holdings Inc,0.0,0.535537,-6.696858
+CUO,Continental Materials Corp,0.0,0.557489,-1.684073
+OGIG,O'Shares Global Internet Giants ETF,0.0,0.0,0.0
+ONEY,SPDR Russell 1000 Yield Focus ETF,0.0,0.0,0.0
+DPW,Digital Power Corp,0.0,0.97721,-0.858623
+PEXL,Pacer US Export Leaders ETF,0.0,0.0,0.0
+JPEU,J.P. Morgan Exchange-Traded Fund Trust,0.0,0.0,0.0
+XLC,The Communication Services Select Sector SPDR Fund,0.0,0.0,0.0
+FDHY,Fidelity High Yield Factor ETF,0.0,0.0,0.0
+NCB,Nuveen California Municipal Value Fund 2,25.820309,0.949408,0.584811
+IMO,帝国石油,15.685567,1.329567,1.94
+FAX,Aberdeen Asia-Pacific Income Fun,41.064095,0.806317,0.100818
+DJD,Claymore Exchange-Traded Fund Trust,0.0,0.0,0.0
+SBI,Western Asset Intermediate Muni,223.190711,0.852531,0.03786
+NTN,NTN Buzztime Inc,0.0,1.855327,-0.547634
+NML,Neuberger Berman MLP Income Fund,0.0,0.0,-0.2
+SRCI,Synergy Resources Corp,9.430594,1.483056,0.929952
+NBH,Neuberger Berman Intermediate Mu,38.119406,0.905823,0.354675
+DEEF,DBX ETF Trust,0.0,0.0,0.0
+CWS,AdvisorShares Trust Focused Equity ETF,73.042553,0.0,0.47
+BBCA,JPMorgan BetaBuilders Canada ETF,0.0,0.0,0.0
+JUST,Goldman Sachs JUST U.S. Large Cap Equity ETF,0.0,0.0,0.0
+BUY,USCF SummerHaven SHPEI Index Fund,0.0,0.0,0.0
+PUTW,WisdomTree Trust,0.0,0.0,0.0
+ECF,Ellsworth Fund Ltd,11.814742,0.995871,0.869253
+EIM,Eaton Vance Municipal Bond Fun,32.414004,0.875459,0.35787
+GRF,Eagle Capital Growth Fund Inc,14.270578,0.90534,0.561547
+MXDU,Nationwide Maximum Diversification U.S. Core Equity ETF,0.0,0.0,0.0
+AAMC,Altisource Asset Management Corp,0.0,-0.496802,-5.982125
+LVHI,Legg Mason International Low Volatility High Dividend ETF,0.0,0.0,0.0
+UCON,First Trust TCW Unconstrained Plus Bond ETF,0.0,0.0,0.0
+COM,Direxion Auspice Broad Commodity Strategy ETF,0.0,0.0,0.0
+NYV,Nuveen New York Municipal Value,39.658811,0.89579,0.34116
+NUDM,NuShares ESG International Developed Markets Equity ETF,0.0,0.0,0.0
+NZF,Nuveen Dividend Advantage Munici,17.707499,0.933228,0.814909
+USHY, iShares Broad USD High Yield Corporate Bond ETF,0.0,0.0,0.0
+DMF,Dreyfus Municipal Income Inc,32.692976,0.871829,0.241948
+FFTI,Formula Folios Income ETF,0.0,0.0,0.0
+DIVO,Amplify YieldShares CWP Dividend & Option Income ETF,0.0,0.0,0.0
+PAVE,Global X US Infrastructure Development ETF,0.0,0.0,0.0
+FVAL,Fidelity Covington Trust Value Factor ETF,0.0,0.0,0.0
+PRK,Park National Corp,15.720012,2.228267,6.82315
+JHMD,John Hancock Exchange-Traded Fund Trust,0.0,0.0,0.0
+BKC,REX BKCM ETF,0.0,0.0,0.0
+SPYX,SPDR S&P 500 Fossil Fuel Free ETF,0.0,0.0,0.0
+VKI,Invesco Advantage Municipal Income Trust II,23.990806,0.887721,0.436834
+FDRR,Fidelity Covington Trust Dividend ETF for Rising Rates,0.0,0.0,0.0
+COWZ,Pacer US Cash Cows 100 ETF,0.0,0.0,0.0
+BLHY,Virtus ETF Trust II,0.0,0.0,0.0
+VFL,Delaware Investments National Mu,19.317296,0.847468,0.62897
+HYLV,IQ S&P High Yield Low Volatility Bond ETF,0.0,0.0,0.0
+BBEU,JPMorgan BetaBuilders Europe ETF,0.0,0.0,0.0
+BFY,BlackRock New York Municipal Inc,23.079892,0.841117,0.549396
+ONEV,SPDR Russell 1000 Low Volatility Focus ETF,0.0,0.0,0.0
+GAMR,FactorShares Trust PureFunds Video Game Tech ETF ,0.0,0.0,-0.36
+DMRL,DeltaShares S&P 500 Managed Risk ETF,0.0,0.0,0.0
+HNW,Pioneer Diversified High Income,21.784403,0.851003,0.66745
+CLIX,ProShares Long Online/Short Stores ETF,0.0,0.0,0.0
+ESP,Espey Manufacturing & Electronic,23.818431,2.239044,1.317887
+CUMB,Virtus Cumberland Municipal Bond ETF,0.0,0.0,0.0
+GHYB,Goldman Sachs Access High Yield Corporate Bond ETF,0.0,0.0,0.0
+VMM,Delaware Investments Minnesota M,30.778635,0.850298,0.394267
+JPST,JPMorgan Ultra-Short Income ETF,0.0,0.0,0.0
+WBIY,Absolute Shares Trust,0.0,0.0,0.0
+LFEQ,VanEck Vectors NDR CMG Long/Flat Allocation ETF,0.0,0.0,0.0
+GSEU,Goldman Sachs ActiveBeta Europe Equity ETF,0.0,0.0,0.0
+SFHY,WisdomTree Fundamental U.S. Short-Term High Yield Corporate Bond Fund,0.0,0.0,0.0
+CEFS,Exchange Listed Funds Trust ETF,0.0,0.0,0.0
+IEHS,iShares Evolved U.S. Healthcare Staples ETF,0.0,0.0,0.0
+EMTY,ProShares Decline of the Retail Store ETF,0.0,0.0,0.0
+RCG,RENN Global Entrepreneurs Fund,7.791119,1.163776,0.252852
+ZJPN,SPDR MSCI Japan StrategicFactors ETF,0.0,0.0,0.0
+ZGBR,SPDR Solactive United Kingdom ETF,0.0,0.0,0.0
+ZDEU,SPDR Solactive Germany ETF,0.0,0.0,0.0
+ZCAN,SPDR Solactive Canada ETF,0.0,0.0,0.0
+XUSA,QuantX Dynamic Beta US Equity ETF,0.0,0.0,0.0
+XU,Elkhorn S&P MidCap Utilities Portfolio,0.0,0.0,0.0
+XS,Elkhorn S&P MidCap Consumer Staples Portfolio,0.0,0.0,0.0
+XRA,Exeter Resource Corp,0.0,9.97005,-0.06
+XMX,WisdomTree Global ex-Mexico Equity Fund,0.0,0.0,0.0
+XM,Elkhorn S&P MidCap Materials Portfolio,0.0,0.0,0.0
+XF,Elkhorn S&P MidCap Financials Portfolio,0.0,0.0,0.0
+XD,Elkhorn S&P MidCap Consumer Discretionary Portfolio,0.0,0.0,0.0
+WFIG,WisdomTree Fundamental U.S. Corporate Bond Fund,0.0,0.0,0.0
+VSL,Volshares Large Cap ETF,0.0,0.0,0.0
+VGFO,Virtus WMC Global Factor Opportunities ETF,0.0,0.0,0.0
+VCF,Delaware Investments Colorado Mu,22.297545,0.966747,0.645811
+TMQ,Trilogy Metals Inc.,0.0,5.338283,-0.207743
+TFIV,Global X MSCI Colombia ETF,0.0,0.0,0.0
+TBLU,Tortoise Water Fund,0.0,0.0,0.0
+TAXF,American Century Diversified Municipal Bond ETF,0.0,0.0,0.0
+SZNE,Pacer CFRA-Stovall Equal Weight Seasonal Rotation ETF,0.0,0.0,0.0
+STS,Supreme Industries Inc,23.696682,2.989438,0.8862
+SFIG,WisdomTree Fundamental U.S. Short-Term Corporate Bond Fund,0.0,0.0,0.0
+SCHK,Schwab 1000 Index ETF,0.0,0.0,0.0
+RPUT,WisdomTree CBOE Russell 2000 PutWrite Strategy Fund,0.0,0.0,0.0
+RIC,Richmont Mines Inc,46.738071,3.51502,0.2054
+REDV,Oppenheimer Emerging Markets Ultra Dividend Revenue ETF,0.0,0.0,0.0
+RBUS,Nationwide Risk-Based U.S. Equity ETF,0.0,0.0,0.0
+RBIN,Nationwide Risk-Based International Equity ETF,0.0,0.0,0.0
+QXTR,QuantX Risk Managed Multi-Asset Total Return ETF,0.0,0.0,0.0
+QXRR,QuantX Risk Managed Real Return ETF,0.0,0.0,0.0
+QXMI,QuantX Risk Managed Multi-Asset Income ETF,0.0,0.0,0.0
+QINT,American Century Quality Diversified International ETF,0.0,0.0,0.0
+QDIV,Global X S&P 500 Quality Dividend ETF,0.0,0.0,0.0
+PYPE,UBS ETRACS NYSE Pickens Core Midstream Index,0.0,0.0,0.0
+PSMC,PowerShares Conservative Multi-Asset Allocation Portfolio,0.0,0.0,0.0
+PRID,InsightShares LGBT Employment Equality ETF,0.0,0.0,0.0
+PPTB,Portfolio Total Bond Markets ETF,0.0,0.0,0.0
+PPMC,Portfolio S&PA Mid Cap ETF,0.0,0.0,0.0
+PPDM,Portfolio Developed Markets ETF,0.0,0.0,0.0
+PHF,Pacholder High Yield Fund Inc,6.045454,0.0,1.32
+PBTP,PowerShares PureBeta 0-5 Yr US TIPS Portfolio,0.0,0.0,0.0
+PBSM,PowerShares PureBeta MSCI USA Small Cap Portfolio,0.0,0.0,0.0
+PBND,PowerShares PureBeta US Aggregate Bond Portfolio,0.0,0.0,0.0
+PBDM,PowerShares PureBeta FTSE Developed ex-North America Portfolio,0.0,0.0,0.0
+OPER,ClearShares Ultra-Short Maturity ETF,0.0,0.0,0.0
+OILX,UBS ETRACS S&P GSCI Crude Oil Total Return Index,0.0,0.0,0.0
+NSU,Nevsun Resources,111.500002,1.530151,0.04
+NSAT,Norsat International Inc,20.535714,1.692124,0.56
+NOM,Nuveen Missouri Premium Income M,78.781951,0.91352,0.156381
+NBW,Neuberger Berman California Inte,48.294606,0.859705,0.261934
+NBO,Neuberger Berman New York Interm,227.196988,0.856945,0.051013
+MXDE,Nationwide Maximum Diversification Emerging Markets Core Equity ETF,0.0,0.0,0.0
+MMIT,IQ MacKay Shields Municipal Intermediate ETF,0.0,0.0,0.0
+MMIN,IQ MacKay Shields Municipal Insured ETF,0.0,0.0,0.0
+MLQD,iShares 5-10 Year Investment Grade Corporate Bond ETF,0.0,0.0,0.0
+MLPZ,UBS ETRACS 2xMonthly Leveraged S&P MLP Index,0.0,0.0,0.0
+MAB,Eaton Vance Massachusetts Muni,81.741029,0.857913,0.153656
+LVUS,Hartford Multifactor Low Volatility US Equity ETF,0.0,0.0,0.0
+LVIN,Hartford Multifactor Low Volatility International Equity ETF,0.0,0.0,0.0
+LLQD,iShares 10+ Year Investment Grade Corporate Bond ETF,0.0,0.0,0.0
+LAQ,Aberdeen Latin America Equity Fund Inc,3.864731,0.904713,6.82583
+KORP,American Century Diversified Corporate Bond ETF,0.0,0.0,0.0
+KMED,KraneShares Emerging Markets Healthcare Index ETF,0.0,0.0,0.0
+KLDX,Klondex Mines Ltd,21.6,1.366618,0.1
+KCCB,KraneShares CCBS China Corporate High Yield Bond USD Index ETF,0.0,0.0,0.0
+JPMB,JPMorgan USD Emerging Markets Sovereign Bond ETF,0.0,0.0,0.0
+JPED,JPMorgan Event Driven ETF,0.0,0.0,0.0
+ISL,Aberdeen Israel Fund Inc,4.809479,0.860157,3.883997
+IPB,Merrill Lynch Depositor Inc 6.05,0.0,0.000634,0.0
+IMOM,MomentumShares International Qu,0.0,0.0,0.0
+IG,Igi Laboratories Inc,411.000009,0.0,0.06
+IFRA,iShares U.S. Infrastructure ETF,0.0,0.0,0.0
+IF,Aberdeen Indonesia Fund Inc,6.831661,0.861081,1.04367
+IEME,iShares Evolved U.S. Media and Entertainment ETF,0.0,0.0,0.0
+IEFN,iShares Evolved U.S. Financials ETF,0.0,0.0,0.0
+IECS,iShares Evolved U.S. Consumer Staples ETF,0.0,0.0,0.0
+IAUF,iShares Gold Strategy ETF,0.0,0.0,0.0
+HYGV,FlexShares High Yield Value-Scored Bond Index Fund,0.0,0.0,0.0
+HUSA,休斯敦能源,0.0,1.887539,-0.025588
+HTRB,Hartford Total Return Bond ETF,0.0,0.0,0.0
+HTM,U.S. Geothermal Inc,0.0,1.013563,-0.11852
+HTAB,Hartford Schroders Tax-Aware Bond ETF,0.0,0.0,0.0
+HSRT,Hartford Funds Exchange-Traded Trust,0.0,0.0,0.0
+HONR, InsightShares Patriotic Employers ETF,0.0,0.0,0.0
+HGSD,WisdomTree Global Hedged SmallCap Dividend Fund,0.0,0.0,0.0
+GUDB,Sage ESG Intermediate Credit ETF,0.0,0.0,0.0
+GSEW,Goldman Sachs Equal Weight U.S. Large Cap Equity ETF,0.0,0.0,0.0
+GNAF,Bank of Montreal MicroSectors FANG Index Inverse,0.0,0.0,0.0
+GMO,General Moly,0.0,0.459395,-0.07907
+GMFL,Guggenheim Multi-Factor Large Cap ETF,0.0,0.0,0.0
+GIG,"GigCapital, Inc.",0.0,8.130002,-0.145298
+GGO,The Gabelli Go Anywhere Trust,0.0,0.0,0.0
+GDVD,Principal Active Global Dividend Income ETF,0.0,0.0,0.0
+FUT,ProShares Managed Futures Strategy ETF,0.0,0.0,0.0
+FNGZ,Bank of Montreal MicroSectors FANG Index 2X Inverse Leveraged,0.0,0.0,0.0
+FNGO,Bank of Montreal MicroSectors FANG Index 2X Leveraged,0.0,0.0,0.0
+FMDG,Fieldstone Merlin Dynamic Large Cap Growth ETF,0.0,0.0,0.0
+FLTW,Franklin FTSE Taiwan ETF,0.0,0.0,0.0
+FLQS,Franklin LibertyQ U.S. Small Cap Equity ETF,0.0,0.0,0.0
+FLQM,Franklin LibertyQ U.S. Mid Cap Equity ETF,0.0,0.0,0.0
+FLMI,Franklin Liberty Intermediate Municipal Opportunities ETF ,0.0,0.0,0.0
+FLMB,Franklin Liberty Municipal Bond ETF,0.0,0.0,0.0
+FLIY,Franklin FTSE Italy ETF,0.0,0.0,0.0
+FLIO,Franklin Liberty International Opportunities ETF,0.0,0.0,0.0
+FLHY,Franklin Liberty High Yield Corporate ETF ,0.0,0.0,0.0
+FLEH,Franklin FTSE Europe Hedged ETF,0.0,0.0,0.0
+FLBL,Franklin Liberty Senior Loan ETF,0.0,0.0,0.0
+FFIU,Fieldstone UVA Unconstrained Medium-Term Fixed Income ETF,0.0,0.0,0.0
+EVJ,Eaton Vance New Jersey Municipal,66.917706,0.867933,0.173945
+EVIX,VelocityShares 1x Long VSTOXX Futures ETN,0.0,0.0,0.0
+EVBN,埃文斯万通金控,19.071726,1.833744,2.464381
+ERC,Wells Fargo Advantage Multi-Se,14.678926,0.881022,0.837936
+ELLO,Ellomay Capital Ltd,0.0,0.97601,-0.552038
+EKAR,Innovation Shares NextGen Vehicles & Technology ETF,0.0,0.0,0.0
+EIV,Eaton Vance Municipal Bond Fun,50.355397,0.889663,0.230164
+EGAS,Gas Natural,0.0,1.44271,-0.06
+DWMF,WisdomTree International Multifactor Fund,0.0,0.0,0.0
+DMRI,DeltaShares S&P International Managed Risk ETF,0.0,0.0,0.0
+DLBR,Citigroup Global Markets Holdings Inc,0.0,0.0,0.0
+DIT,AMCON Distributing,16.540615,0.858735,5.368603
+DEZU,iShares Adaptive Currency Hedged MSCI Eurozone ETF,0.0,0.0,0.0
+DEWJ,iShares Adaptive Currency Hedged MSCI Japan ETF,0.0,0.0,0.0
+DEFA,iShares Adaptive Currency Hedged MSCI EAFE ETF,0.0,0.0,0.0
+DDJP,WisdomTree Dynamic Currency Hedged Japan Equity Fund,0.0,0.0,0.0
+CWAI,StrongVest ETF,0.0,0.0,0.0
+CVU,CPI Aerostructures,11.965347,0.978102,0.706206
+COMG,GraniteShares S&P GSCI Commodity Broad Strategy No K-1 ETF,0.0,0.0,0.0
+CMDY,iShares Bloomberg Roll Select Commodity Strategy ETF,0.0,0.0,0.0
+CLTL,PowerShares Treasury Collateral Portfolio,0.0,0.0,0.0
+BWL.A,Bowl America Inc,21.645368,3.11033,0.694398
+BUYN,USCF SummerHaven SHPEN Index Fund,0.0,0.0,0.0
+BTN,Ballantyne Strong Inc,0.0,1.717238,-0.876667
+BSJQ,Invesco BulletShares 2026 High Yield Corporate Bond ETF,0.0,0.0,0.0
+BLJ,BlackRock New Jersey Municipal B,15.168226,0.885923,0.897277
+BERN,Bernstein U.S. Research Fund,0.0,0.0,0.0
+BBRE,J.P. Morgan Exchange-Traded Fund Trust,0.0,0.0,0.0
+APT,Alpha Pro Tech Ltd,18.540279,1.569995,0.191475
+AIII,ACRE Realty Investors Inc,0.0,0.86037,-0.13
+ACY,Aerocentury Corp,3.473597,0.476172,4.606177
+ABE,Aberdeen Emerging Markets Smaller Company Opportunities Fund,10.35282,0.95396,1.41942
+EMX,Eurasian Minerals Inc,0.0,2.743754,-0.0194
+TRTY,Cambria Trinity ETF,0.0,0.0,0.0
+CCOR,Cambria Core Equity ETF,0.0,0.0,0.0
+GBIL,Goldman Sachs ETF Trust,0.0,0.0,0.0
+USTB,USAA Core Short-Term Bond ETF,0.0,0.0,0.0
+FIBR,iShares Edge U.S. Fixed Income Balanced Risk ETF,0.0,0.0,0.0
+PJUL,Innovator S&P 500 Power Buffer ETF,0.0,0.0,0.0
+LEAD,Reality Shares DIVCON Leaders Dividend ETF,0.0,0.0,0.0
+PSMB,PowerShares Balanced Multi-Asset Allocation Portfolio,0.0,0.0,0.0
+NUMV,NuShares ESG Mid-Cap Value ETF,0.0,0.0,0.0
+GTO,Claymore Exchange-Traded Fund Trust 2,0.0,0.0,0.0
+BJUL,Innovator S&P 500 Buffer ETF,0.0,0.0,0.0
+UJUL,Innovator S&P 500 Ultra Buffer ETF,0.0,0.0,0.0
+AUGR,Defiance Future Tech ETF,0.0,0.0,0.0
+JPHY,JPMorgan Disciplined High Yield ETF,0.0,0.0,0.0
+EMJ,Eaton Vance New Jersey Municip,32.459352,0.863452,0.369077
+SHE,SPDR SSGA Gender Diversity Index ETF,0.0,0.0,0.0
+ONTL,O'Shares FTSE Russell International Quality Dividend ETF,0.0,0.0,0.0
+NULV,NuShares ESG Large-Cap Value ETF,0.0,0.0,0.0
+DFND,Reality Shares DIVCON Dividend Defender ETF,0.0,0.0,0.0
+ORM,Owens Realty Mortgage Inc.,0.0,0.724829,-0.095172
+ALN,绿润集团,0.0,-9.835501,-1.238298
+HMOP, Hartford Municipal Opportunities ETF,0.0,0.0,0.0
+TTAI,TrimTabs All Cap International Free-Cash-Flow ETF,0.0,0.0,0.0
+IBDR,ISHARES TRUST IBONDS DEC 2026 TERM CORP,0.0,0.0,0.0
+BSCS,Invesco BulletShares 2028 Corporate Bond ETF,0.0,0.0,0.0
+USAI,American Energy Independence ETF,0.0,0.0,0.0
+MMV,Eaton Vance Massachusetts Munici,317.022399,0.859206,0.039871
+IBMM,iShares iBonds Dec 2024 Term Muni Bond ETF,0.0,0.0,0.0
+EVO,Eaton Vance Ohio Municipal Incom,0.0,0.856038,-0.110767
+CTO,Consolidated-Tomoka Land,6.76079,1.653595,9.126153
+EVP,Eaton Vance Pennsylvania Municip,0.0,0.858339,-0.019716
+JMBS,Janus Henderson Mortgage-Backed Securities ETF,0.0,0.0,0.0
+IBML,iShares iBonds Dec 2023 Term Muni Bond ETF,0.0,0.0,0.0
+BCV,Bancroft Fund Ltd,10.158941,0.926099,2.224159
+IAGG,iShares International Aggregate Bond Fund,0.0,0.0,0.0
+IGRO,iShares International Dividend Growth ETF,0.0,0.0,0.0
+UITB,USAA Core Intermediate-Term Bond ETF,0.0,0.0,0.0
+EAD,Wells Fargo Advantage Income,21.919515,0.890686,0.365884
+CRMD,CorMedix Inc,0.0,-7.943892,-0.55284
+PSMM,PowerShares Moderately Conservative Multi-Asset Allocation Portfolio,0.0,0.0,0.0
+GRNB,VanEck Vectors Green Bond ETF,0.0,0.0,-0.68
+MIW,Eaton Vance Michigan Municipal,30.178236,0.856959,0.423484
+JPHF,J.P. Morgan Exchange-Traded Fund Trust Diversified Alternatives,0.0,0.0,0.0
+FDLO,Fidelity Covington Trust Low Volatility Factor ETF,0.0,0.0,0.0
+MCF,Contango Oil & Gas Co,0.0,0.692007,-0.756182
+IEDI,iShares Evolved U.S. Discretionary Spending ETF,0.0,0.0,0.0
+IOR,Income Opportunity Realty Investors,42.641894,0.559191,0.280935
+ACES,ALPS ETF Trust,0.0,0.0,0.0
+HDMV,First Trust Exchange -Traded Fund III,0.0,0.0,0.0
+FIDI,Fidelity International High Dividend ETF,0.0,0.0,0.0
+SPAB,SPDR Barclays Aggregate Bond ETF,0.0,0.0,0.0
+ETHO,Etho Climate Leadership U.S. ETF,0.0,0.0,0.0
+RAAX,VanEck Vectors Real Asset Allocation ETF,0.0,0.0,0.0
+IRBO, iShares Robotics and Artificial Intelligence ETF,0.0,0.0,0.0
+HYLB,DBX ETF Trust,0.0,0.0,0.0
+ULVM,USAA MSCI USA Value Momentum Blend Index ETF,0.0,0.0,0.0
+NUBD,NuShares ESG U.S. Aggregate Bond ETF,0.0,0.0,0.0
+FQAL,Fidelity Covington Trust Quality Factor ETF,0.0,0.0,0.0
+FLQL,Franklin LibertyQ U.S. Equity ETF,0.0,0.0,0.0
+FCO,Aberdeen Global Income Fund Inc,17.846961,0.954416,0.471789
+FIYY,Barclays PLC,0.0,0.0,-0.399
+NULG,NuShares ESG Large-Cap Growth ETF,0.0,0.0,0.0
+IBDS,iShares iBonds Dec 2027 Term Corporate ETF,0.0,0.0,0.0
+BHV,BlackRock Virginia Municipal Bon,48.181444,1.118258,0.351955
+EIO,Eaton Vance Ohio Municipal Bon,66.875386,0.852756,0.171365
+CVM,CEL-SCI Corp,0.0,-83.032842,-1.935726
+CTEK,CynergisTek Inc.,0.0,2.012439,-0.116656
+ONEO,SPDR Russell 1000 Momentum Focus ETF,0.0,0.0,0.0
+GSD,WisdomTree Global SmallCap Dividend Fund,0.0,0.0,0.0
+NHS,纽伯格伯曼高地策略基金,60.758306,0.84996,0.178741
+FIHD,UBS FI Enhanced Global High Yield,0.0,0.0,0.0
+ONLN, ProShares Online Retail ETF,0.0,0.0,0.0
+MJCO,Majesco,0.0,5.548715,-0.063391
+BKJ,Bancorp of New Jersey Inc,31.825005,1.507775,0.531029
+QXGG,QuantX Risk Managed Growth ETF,0.0,0.0,0.0
+NUAG,NuShares ETF Trust Enhanced Yield US Aggregate Bond ETF,0.0,0.0,0.0
+NJV,Nuveen New Jersey Municipal Value Fund,24.381617,0.841328,0.522935
+FDVV,Fidelity Covington Trust Core Dividend ETF,0.0,0.0,0.0
+PFFD,Global X U.S. Preferred ETF,0.0,0.0,0.0
+VALQ,American Century STOXX U.S. Quality Value ETF,0.0,0.0,0.0
+EIP,Eaton Vance Pennsylvania Munic,52.82485,0.859151,0.223003
+NVG,Nuveen Dividend Advantage Muni,15.137985,0.919592,0.966443
+CEV,Eaton Vance California Municipal,0.0,0.824509,-0.033775
+ENX,Eaton Vance New York Municipal B,51.25861,0.842982,0.214403
+DMRM,DeltaShares S&P 400 Managed Risk ETF,0.0,0.0,0.0
+QTUM,Defiance Quantum ETF,0.0,0.0,0.0
+GRC,Gorman-Rupp Company,29.174051,2.873462,1.28059
+CANF,Can-Fite Biopharma Ltd,0.0,2.809299,-0.358464
+BLE,BlackRock Municipal Income Trust,20.821671,0.899313,0.635266
+FPEI,First Trust Institutional Preferred Securities and Income ETF,0.0,0.0,0.0
+BIBL,Inspire 100 ETF,0.0,0.0,0.0
+VMOT,Alpha Architect Value Momentum Trend ETF,0.0,0.0,0.0
+DRSK,Aptus Defined Risk ETF,0.0,0.0,0.0
+ISMD,Inspire Small/Mid Cap Impact ETF,0.0,0.0,0.0
+EWMC,Guggenheim S&P MidCap 400 Equal Weight ETF,0.0,0.0,0.0
+DYB,WisdomTree Dynamic Bearish U.S. Equity Fund,0.0,0.0,0.0
+DYLS,WisdomTree Dynamic Long/Short U.S. Equity Fund,0.0,0.0,0.0
+DEUS,DBX ETF Trust,0.0,0.0,0.0
+HUSV,First Trust Exchange -Traded Fund III,0.0,0.0,0.0
+AUSF,Global X Funds Global X Adaptive U.S. Factor ETF,0.0,0.0,0.0
+CCA,MFS California Municipal Fund,64.370061,0.828829,0.157682
+GSB,GlobalSCAPE Inc,0.0,2.705416,-0.012232
+LTSK,Ladenburg Thalmann Financial Services Inc,0.0,0.0,0.0
+HCHC,"HC2 Holdings, Inc.",292.03981,5.116981,0.0201
+EWSC,Guggenheim S&P SmallCap 600 Equal Weight ETF,134.399128,0.0,0.46
+OUSM,O'Shares FTSE Russell Small Cap Quality Dividend ETF,0.0,0.0,0.0
+PRME,First Trust Exchange-Traded Fund IV,0.0,0.0,0.0
+SRVR,Pacer Benchmark Data & Infrastructure Real Estate SCTR ETF,0.0,0.0,0.0
+PFFA,Virtus InfraCap U.S. Preferred Stock ETF,0.0,0.0,0.0
+EMI,Eaton Vance Michigan Municipal I,319.999998,0.86698,0.039625
+TMP,Tompkins Financial,20.31796,2.152615,4.085548
+DMRS,DeltaShares S&P 600 Managed Risk ETF,0.0,0.0,0.0
+BZM,BlackRock Maryland Municipal Bon,22.097441,0.918975,0.622244
+BOSS,Global X Founder-Run Companies ETF,0.0,6e-05,0.0
+FDMO,Fidelity Covington Trust Momentum Factor ETF,0.0,0.0,0.0
+NRO,Neuberger Berman Real Estate Sec,0.0,1.027458,-0.406845
+IHT,InnSuites Hospitality Trust,0.0,2.070234,-0.959834
+JRS,Nuveen Real Estate Income Fund,20.077364,0.914994,0.495583
+PFFR,ETFIS Series Trust I ETF,0.0,0.0,0.0
+BRG,Bluerock Residential Growth REIT Inc,0.0,1.901459,-3.087756
+FTF,Franklin Templeton Ltd Duration,17.867806,0.973054,0.632982
+IMUC,ImmunoCellular Therapeutics Ltd,0.13534,2.56936,1.551649
+EPRF,Elkhorn S&P High Quality Preferred ETF,0.0,0.0,0.0
+THM,International Tower Hill Mines,0.0,1.272757,-0.0507
+UAMY,United States Antimony Corp,0.0,5.05127,-0.020308
+EVM,Eaton Vance California Municipal,40.053243,0.835233,0.249418
+SENS,"Senseonics Holdings,Inc.",0.0,6.96008,-0.647719
+AE,亚当斯资源与能源公司,34.169391,1.233871,1.284483
+BHB,Bar Harbor Bankshares,14.04005,1.254792,2.051987
+RIF,RMR Real Estate Income Fund,0.0,0.803138,-0.105755
+USVM,USAA MSCI USA Small Cap Value Momentum Blend Index ETF,0.0,0.0,0.0
+IETC,iShares Evolved U.S. Technology ETF,0.0,0.0,0.0
+TTAC,TrimTabs Float Shrink ETF,0.0,0.0,0.0
+INDS,Pacer Benchmark Industrial Real Estate SCTR ETF,0.0,0.0,0.0
+UWN,Nevada Gold & Casinos Ltd,35.439523,1.18299,0.067721
+BTX,BioTime Inc,0.0,2.914958,-1.06541
+GLQ,Clough Global Equity Fund,7.17101,1.033915,2.081994
+NUMG,NuShares ESG Mid-Cap Growth ETF,0.0,0.0,0.0
+OSCV,Opus Small Cap Value Plus ETF,0.0,0.0,0.0
+PLCY,US Tax Reform Fund,0.0,0.0,0.0
+NPN,Nuveen Pennsylvania Municipal Value Fund,32.98496,0.875596,0.3923
+SMMV,iShares Edge MSCI Min Vol USA Small-Cap ETF,0.0,0.0,0.0
+NHC,National Healthcare Corp,21.187226,1.57674,3.45208
+IFLY,FactorShares Trust PureFunds Drone Economy Strategy ETF,0.0,0.0,0.0
+BTI,英美烟草,1.8842,1.034053,24.869968
+NUSC,NuShares ESG Small-Cap ETF,0.0,0.0,0.0
+BOUT, Innovator IBD Breakout Opportunities ETF,0.0,0.0,0.0
+TGB,Taseko Mines,0.0,0.577821,-0.11
+PLM,Polymet Mining,0.0,1.385375,-0.04
+GLV,Clough Global Allocation Fund,22.566535,0.906793,0.545498
+PRNT,The 3D Printing ETF,0.0,0.0,0.0
+UEC,Uranium Energy Corp,0.0,4.357554,-0.123763
+GSV,Gold Standard Ventures Corp,0.0,2.800278,-0.04
+XITK,SPDR FactSet Innovative Technology ETF,0.0,0.0,0.0
+INUV,Inuvo Inc,0.0,1.369644,-0.07377
+NURE,NuShares Short-Term REIT ETF,0.0,0.0,0.0
+MLPQ,UBS ETRACS 2xMonthly Leveraged Alerian MLP Infrastructure Index,0.0,0.0,0.0
+RVP,Retractable Technologies Inc,0.0,0.923292,-0.092475
+BDL,Flanigans Enterprises Inc,14.43507,1.472856,1.898155
+QGRO,American Century STOXX U.S. Quality Growth ETF,0.0,0.0,0.0
+INS,Intelligent Systems Corp,35.899594,4.647561,0.315881
+FSI,Flexible Solutions International,16.473725,0.974596,0.089233
+GVP,GSE Systems,16.543632,2.401933,0.223651
+AWX,Avalon Holdings Corp,43.585081,0.366689,0.084662
+EIA,Eaton Vance California Municip,61.14898,0.826126,0.168114
+EPM,Evolution Petroleum,17.982908,4.530802,0.592229
+MZA,BlackRock MuniYield Arizona Fund,20.701996,0.936491,0.642938
+NNVC,NanoViricides Inc.,0.0,1.456707,-0.149579
+ENSV,Enservco Corp,0.0,4.216248,-0.110078
+VISI,"Volt Information Sciences, Inc.",8.446743,1.333981,0.402522
+PW,Power REIT,23.495328,1.333571,0.257498
+PARR,Par Petroleum Corporation.,13.392033,1.909084,1.496412
+PPTY,PPTY U.S. Diversified Real Estate ETF,0.0,0.0,0.0
+RFL,"Rafael Holdings, Inc.",0.0,1.077509,-0.047519
+IRT,Independence Realty Trust Inc,63.533507,1.439678,0.16086
+SMTS,Sierra Metals Inc.,0.0,0.0,0.0
+BGSF,BG Staffing Inc,23.202448,4.281576,1.099453
+AMS,American Shared Hospital Service,8.029464,0.70715,0.379851
+PLYM,Plymouth Industrial Reit Inc.,0.0,-4.623006,-5.506377
+COHN,Cohen & Company Inc.,0.0,0.275535,-0.389289
+SGA,Saga Communications Inc.,3.918587,1.163071,9.135946
+UTG,Reaves Utility Income Fund,0.0,1.00001,-1.519504
+MHE,Massachusetts Health & Education,28.227635,0.903646,0.430075
+ACU,Acme United Corp,19.701137,1.411673,1.109073
+ERH,Wells Fargo Advantage Utilitie,17.759045,1.000001,0.699925
+TKAT,"Takung Art Co., Ltd.",0.0,0.58808,-0.258099
+INTT,inTest Corporation,46.392948,1.933721,0.176751
+HEB,Hemispherx Biopharma Inc,0.0,1.172859,-0.225237
+BDRY,Breakwave Dry Bulk Shipping ETF,0.0,0.0,0.0
+HLTH,Nobilis Health Corp.,48.422736,0.539034,0.021271
+PZG,Paramount Gold Nevada,0.0,0.523003,-0.281372
+TIK,Tel Instrument Electronics Corp,0.0,-1.554752,-1.51509
+VGZ,Vista Gold Corp,0.0,1.822514,-0.09448
+BEMO,Aptus Behavioral Momentum ETF,0.0,0.0,0.0
+UFAB,"Unique Fabricating, Inc.",12.492334,1.470079,0.617979
+TRX,Tanzanian Royalty Exploration Co,0.0,1.571767,-0.07
+WYY,WidePoint Corp,0.0,1.554992,-0.024245
+AINC,Ashford Inc,0.0,4.50151,-3.003723
+SSY,Sunlink Health Systems Inc,0.0,0.506771,-0.276726
+CMCL,Caledonia Mining Corporation Plc,0.0,1.18886,0.0
+GBR,New Concept Energy Inc,0.0,8.668157,-1.589914
+FSP,Franklin Street Properties,0.0,0.991312,-0.008757
+QMOM,MomentumShares US Quantitative Mom ETF,0.0,0.0,0.0
+DSS,Document Security Systems Inc,8.330248,2.436347,0.129648
+GLOW,Glowpoint,1.431303,0.749057,0.122895
+MICR,Arrhythmia Research Technology,0.0,1.949244,-0.274102
+LEU,Centrus Energy Corp.,0.0,-0.08268,-3.505577
+SYN,Synthetic Biologics Inc,0.0,-1.195318,-5.97338
+SGB,Southwest Georgia Financial Corp,14.181052,1.368988,1.59015
+CCF,Chase Corp,26.236844,4.803702,4.627081
+BVX,Bovie Medical Corp,0.0,11.173521,-0.100829
+LIQT,"LiqTech International, Inc.",0.0,10.421621,-0.093875
+ESNC,EnSync Inc.,13.453004,2.212644,0.020278
+XPL,Solitario Exploration & Royalty,0.0,0.746729,-0.037504
+RNN,Rexahn Pharmaceuticals,0.0,5.086641,-0.240141
+LOV,Spark Networks,2.564511,6.065287,4.515988
+GSAT,全球星,5.564666,1.721084,0.093303
+IDN,Intellicheck Mobilisa Inc,0.0,2.080318,-0.435475
+MHH,Mastech Holdings,21.583071,3.367492,0.448963
+WTT,Wireless Telecom Group Inc,0.0,1.224872,-0.085647
+CPHI,中国医药控股有限公司,0.0,0.228706,-0.397533
+KIQ,Kelso Technologies Inc,0.0,2.47981,-0.0573
+EMAN,eMagin Corp,0.0,3.374235,-0.260789
+CMT,Core Molding Technologies Inc,23.29566,0.597654,0.33268
+BDR,Blonder Tongue Laboratories Inc,0.0,1.480254,-0.032223
+ITP,IT Tech Packaging Inc,0.0,0.100593,-0.188355
+VHC,VirnetX Holding,0.0,69.652311,-0.39511
+MTNB,"Matinas BioPharma Holdings, Inc",0.0,-20955.973603,-0.14861
+UQM,UQM Technologies Inc,0.0,12.19679,-0.115959
+CEI,Camber Energy,0.0,-0.298799,-8.328291
+TIS,Orchids Paper Products Inc,63.845001,0.301452,0.058736
+AMPE,安皮奥制药,0.0,-14.061651,-0.399154
+LTS,Ladenburg Thalmann Financial Ser,0.0,1.230637,-0.045109
+NSPR,InspireMD Inc.,0.0,0.957079,-0.594178
+AAU,Almaden Minerals,0.0,1.125948,-0.03
+ASM,Avino Silver & Gold Mines,28.520001,0.667415,0.03
+MYO,Myomo Inc.,1.400656,2.374212,1.563553
+WTID,ProShares Daily 3x Inverse Crude ETN,0.0,0.0,0.0
+CRHM,CRH Medical Corp,30.769232,4.455648,0.13
+ROX,Castle Brands,0.0,36.347816,-0.003372
+ISR,IsoRay,0.0,5.405014,-0.112762
+MLSS,"Milestone Scientific, Inc.",0.0,5.044509,-0.189131
+TGC,Tengasco Inc,8.157159,1.490129,0.112294
+EVI,EnviroStar Inc,115.162128,7.650082,0.338653
+ZOM,Zomedica Pharmaceuticals Corp.,0.0,0.0,0.0
+GV,Goldfield Corp,14.099365,1.770189,0.301432
+RHE,"Regional Health Properties, Inc.",0.0,-0.070548,-0.677571
+NAVB,Navidea Biopharmaceuticals,0.0,19.747946,-0.094027

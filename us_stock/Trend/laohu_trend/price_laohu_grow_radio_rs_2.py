@@ -27,7 +27,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
 
 
-code=pd.read_csv('D:\\Git\\us_stock\\analysis\\net.csv',encoding='gbk')
+code=pd.read_csv('D:\\Git\\us_stock\\analysis\\net_2.csv',encoding='gbk')
 code_20=pd.read_csv('D:\\Git\\us_stock\\analysis\\pe20_net.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/laohu/basic_code/2018-08-25us_all_code.csv',encoding='gbk')
 li_code=code['code'].tolist()        
@@ -76,25 +76,28 @@ def get_laohu_price(url,li_cod):
         dic_tmp['grow_3']=0
         dic_tmp['grow_radio_6']=0
         dic_tmp['grow_radio_3']=0
-  
-        dic_tmp['month_six_rs']=0
-        dic_tmp['year_rs']=0
+        dic_tmp['month_3_rs']=0
+        dic_tmp['month_6_rs']=0
         dic_tmp['volume_6']=0
         dic_tmp['volume_3']=0
         dic_tmp['vol_radio']=0
         if li_data is not None:
             jo=pd.DataFrame(li_data)
             jo['grow']=jo['close']-jo['open']
-            jo_grow6=jo.sort_values(by="time", ascending=False)[:6]
-            grow_6=jo_grow6['grow'].mean()
-            jo_grow3=jo.sort_values(by="time", ascending=False)[:3]
-            grow_3=jo_grow3['grow'].mean()
+            if len(jo['grow'].tolist())>6:
+                jo_grow6=jo.sort_values(by="time", ascending=False)[3:6] 
+                grow_6=jo_grow6['grow'].mean()
+            if len(jo['grow'].tolist())>3:    
+                jo_grow3=jo.sort_values(by="time", ascending=False)[:3]
+                grow_3=jo_grow3['grow'].mean()
 
             jo['grow_radio']=(jo['close']-jo['open'])/jo['open']
-            jo_radio_grow6=jo.sort_values(by="time", ascending=False)[:6]            
-            grow_radio_6=jo_radio_grow6['grow_radio'].mean()
-            jo_radio_grow3=jo.sort_values(by="time", ascending=False)[:3]
-            grow_radio_3=jo_radio_grow3['grow_radio'].mean()
+            if len(jo['grow_radio'].tolist())>6:
+                jo_radio_grow6=jo.sort_values(by="time", ascending=False)[3:6]            
+                grow_radio_6=jo_radio_grow6['grow_radio'].mean()
+            if len(jo['grow_radio'].tolist())>3:
+                jo_radio_grow3=jo.sort_values(by="time", ascending=False)[:3]
+                grow_radio_3=jo_radio_grow3['grow_radio'].mean()
 
             jo['time']=jo['time'].apply(todate)
             jo['close_pre_tmp'] = jo["close"].shift(1)
@@ -102,10 +105,13 @@ def get_laohu_price(url,li_cod):
             
             su=pd.merge(jo, dji, on='time',how='inner')
             su['month_rs']=su['month_grow_tmp']-su['month_grow']
-            su_sort=su.sort_values(by="month_rs", ascending=False)[:6]   
-            month_six_rs=su_sort['month_rs'].mean()
-            su_sort=su.sort_values(by="month_rs", ascending=False)[:12]
-            year_rs=su_sort['month_rs'].mean()
+            
+            if len(su['month_rs'].tolist())>6:
+                su_6_sort=su.sort_values(by="month_rs", ascending=False)[3:6]   
+                month_6_rs=su_6_sort['month_rs'].mean()
+            if len(su['month_rs'].tolist())>3:
+                su_3_sort=su.sort_values(by="month_rs", ascending=False)[:3]
+                month_3_rs=su_3_sort['month_rs'].mean()
             # print(jo)
             # for i in li_data:
             #     close_tmp=i.get('close')
@@ -117,8 +123,8 @@ def get_laohu_price(url,li_cod):
             year=int(count/12)
             startprice=jo['open'][0]
             endd=jo['close'][count-1]
-            meam_tmp=jo['close'].mean()
-            std_tmp=jo['close'].std()    
+            price_tmp=jo['close'].tolist()[0]
+                
             max=jo['close'].max()
             min=jo['close'].min()
             price_start=jo[:int(count/3)]['close'].mean()
@@ -133,9 +139,9 @@ def get_laohu_price(url,li_cod):
             if vol_6 !=0:    
                 vol_radio=(vol_3-vol_6)/vol_6
             dic_tmp['count']=count
-            dic_tmp['price']=meam_tmp
-            dic_tmp['month_six_rs']=month_six_rs
-            dic_tmp['year_rs']=year_rs
+            dic_tmp['price']=endd
+            dic_tmp['month_6_rs']=month_6_rs
+            dic_tmp['month_3_rs']=month_3_rs
             dic_tmp['year']=year
             dic_tmp['grow_6']=grow_6
             dic_tmp['grow_3']=grow_3
@@ -152,7 +158,7 @@ def get_laohu_price(url,li_cod):
 pan=get_laohu_price(url, li_code)
 re=pd.merge(code, pan, how='outer',on='code')
 re=re.drop_duplicates()
-re.to_csv(date+'_Laohu_us_grow_radio_rs.csv', encoding = 'gbk',index=False)
+re.to_csv(date+'_Laohu_us_grow_radio_rs_2.csv', encoding = 'gbk',index=False)
 
 
 # cn_us=get_laohu_code(url_us, [i for i in range(14)])

@@ -14,7 +14,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer TSPJVspkvvZovEJW1mYMhkc8zlBD90',
+'Authorization': 'Bearer gluCWKw06sXGLvRq1hsLaCd9vZRAUJ',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -40,11 +40,12 @@ def get_laohu_code(url, num=[0]):
             li_tmp=[]
             li_tmp.append(i.get('symbol'))
             li_tmp.append(i.get('nameCN'))
+            li_tmp.append(i.get('open'))
             li_tmp.append(i.get('peRate'))
             li_tmp.append(i.get('pbRate'))
             li_tmp.append(i.get('eps'))
             li.append(li_tmp)
-    pdd=pd.DataFrame(li, columns= ['code','name','pe','pb','eps'])   
+    pdd=pd.DataFrame(li, columns= ['code','name','open','pe','pb','eps'])   
     return pdd
 
 # bp500=get_laohu_code(url_bp500, [0,1,2,3,4,5,6,7,8,9])

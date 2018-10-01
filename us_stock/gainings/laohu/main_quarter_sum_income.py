@@ -38,7 +38,7 @@ profit201709 =[]
 li_sum=[profit201806,profit201803,profit201712,profit201709]
 li_time=['2018-06','2018-03','2017-12','2017-09']
 
-code=pd.read_csv('D:/Git/us_stock/laohu/basic_code/2018-09-21us_all_code.csv',encoding='gbk')
+code=pd.read_csv('D:/Git/us_stock/laohu/basic_code/2018-09-09us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
 # print(code)                
@@ -68,7 +68,7 @@ for code_nm in li_code:
             for h in range(len(li_h)):
                 if li_h[h].get('name') ==  "净利润":
                     num=h
-                if li_h[h].get('name') ==  "主营业务收入":
+                if li_h[h].get('name') ==  "营业总收入":
                     num_income=h
 
 

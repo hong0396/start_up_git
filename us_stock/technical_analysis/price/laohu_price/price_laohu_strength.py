@@ -27,7 +27,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
 
 
-code=pd.read_csv('D:\\Git\\us_stock\\analysis\\net.csv',encoding='gbk')
+code=pd.read_csv('D:\\Git\\us_stock\\analysis\\2018-10-07net.csv',encoding='gbk')
 code_20=pd.read_csv('D:\\Git\\us_stock\\analysis\\pe20_net.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/laohu/basic_code/2018-08-25us_all_code.csv',encoding='gbk')
 li_code=code['code'].tolist()        
@@ -35,7 +35,7 @@ li_code_20=code_20['code'].tolist()
 
 
 
-dji=pd.read_csv('D:\\Git\\us_stock\\technical_analysis\\price\\laohu_price\\2018-09-13_dji_month.csv',encoding='gbk')
+dji=pd.read_csv('D:\\Git\\us_stock\\technical_analysis\\price\\laohu_price\\2018-10-07_dji_month.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
 # print(code)                
@@ -85,9 +85,9 @@ def get_laohu_price(url,li_cod):
             
             su=pd.merge(jo, dji, on='time',how='inner')
             su['month_rs']=su['month_grow_tmp']-su['month_grow']
-            su_sort=su.sort_values(by="month_rs", ascending=False)[:6]   
+            su_sort=su.sort_values(by="time", ascending=False)[:6]   
             month_six_rs=su_sort['month_rs'].mean()
-            su_sort=su.sort_values(by="month_rs", ascending=False)[:12]
+            su_sort=su.sort_values(by="time", ascending=False)[:12]
             year_rs=su_sort['month_rs'].mean()
             # print(jo)
             # for i in li_data:

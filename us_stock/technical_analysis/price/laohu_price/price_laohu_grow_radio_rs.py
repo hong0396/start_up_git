@@ -102,9 +102,9 @@ def get_laohu_price(url,li_cod):
             
             su=pd.merge(jo, dji, on='time',how='inner')
             su['month_rs']=su['month_grow_tmp']-su['month_grow']
-            su_sort=su.sort_values(by="month_rs", ascending=False)[:6]   
+            su_sort=su.sort_values(by="time", ascending=False)[:6]   
             month_six_rs=su_sort['month_rs'].mean()
-            su_sort=su.sort_values(by="month_rs", ascending=False)[:12]
+            su_sort=su.sort_values(by="time", ascending=False)[:12]
             year_rs=su_sort['month_rs'].mean()
             # print(jo)
             # for i in li_data:

@@ -51,7 +51,7 @@ def todate(tim):
 
 
 
-url='https://hq.itiger.com/stock_info/candle_stick/month/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+url='https://hq.itiger.com/stock_info/candle_stick/month/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
 
 # https://hq.itiger.com/stock_info/candle_stick/month/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0
 
@@ -71,6 +71,9 @@ def get_laohu_price(url,li_cod):
         dic_tmp['code']=str(code_nm)
         dic_tmp['count']=0
         dic_tmp['price']=0
+        dic_tmp['max_price']=0
+        dic_tmp['max_price_radio']=0
+        dic_tmp['price_month_3']=0       
         dic_tmp['year']=0
         dic_tmp['grow_6']=0
         dic_tmp['grow_3']=0
@@ -122,11 +125,15 @@ def get_laohu_price(url,li_cod):
             count=jo.shape[0]
             year=int(count/12)
             startprice=jo['open'][0]
-            endd=jo['close'][count-1]
+            price_endd=jo['close'][count-1]
             price_tmp=jo['close'].tolist()[0]
-                
-            max=jo['close'].max()
-            min=jo['close'].min()
+            
+
+            price_month_3=jo['close'][count-3:].mean()    
+            max_price=jo['close'].max()
+            min_price=jo['close'].min()
+
+            max_price_radio=(max_price-price_endd)/max_price
             price_start=jo[:int(count/3)]['close'].mean()
             price_middle=jo[int(count/3):int((count*2)/3)]['close'].mean()
             price_end=jo[int((count*2)/3):]['close'].mean()
@@ -139,7 +146,10 @@ def get_laohu_price(url,li_cod):
             if vol_6 !=0:    
                 vol_radio=(vol_3-vol_6)/vol_6
             dic_tmp['count']=count
-            dic_tmp['price']=endd
+            dic_tmp['price']=price_endd
+            dic_tmp['max_price']=max_price
+            dic_tmp['max_price_radio']=max_price_radio
+            dic_tmp['price_month_3']=price_month_3
             dic_tmp['month_6_rs']=month_6_rs
             dic_tmp['month_3_rs']=month_3_rs
             dic_tmp['year']=year
@@ -158,7 +168,7 @@ def get_laohu_price(url,li_cod):
 pan=get_laohu_price(url, li_code)
 re=pd.merge(code, pan, how='outer',on='code')
 re=re.drop_duplicates()
-re.to_csv(date+'_Laohu_us_grow_radio_rs_2.csv', encoding = 'gbk',index=False)
+re.to_csv(date+'_Laohu_us_month_grow_radio_rs_2.csv', encoding = 'gbk',index=False)
 
 
 # cn_us=get_laohu_code(url_us, [i for i in range(14)])

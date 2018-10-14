@@ -9,6 +9,11 @@ import json
 import random
 import ast
 from functools import reduce
+import globalvar
+
+signnn=globalvar.glo_signnn
+Authorization= globalvar.glo_Authorization
+
 
 def todate(timeStamp):
     timeArray = time.localtime(timeStamp/1000)
@@ -20,7 +25,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer gluCWKw06sXGLvRq1hsLaCd9vZRAUJ',
+'Authorization': Authorization,
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -30,7 +35,7 @@ def todate(tim):
     tim=int(tim)/1000
     return time.strftime('%Y-%m-%d',time.localtime(tim))
 
-url='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+url='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId='+signnn+'&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
 
 con = requests.get(url, headers=header).json()  
 li_data=con.get('items')    

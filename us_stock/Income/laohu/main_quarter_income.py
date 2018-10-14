@@ -11,15 +11,16 @@ date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
 ti=str(time.time()).replace('.','')[:13]
 print(str(time.time()).replace('.','')[:13])
 headers={
-'Accept': '*/*',
+'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
-'Access-Control-Request-Headers': 'authorization',
-'Access-Control-Request-Method': 'GET',
+'Authorization': 'Bearer MJzA2xsEL5wkh0s8DjRd2Cr7WgZXu6gY15soFmLceWW0zw5QmD',
 'Connection': 'keep-alive',
-'Host': 'hq1.itiger.com',
+'Host': 'hq.itiger.com',
 'Origin': 'https://web.itiger.com',
-'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
+'Referer': 'https://web.itiger.com/quote/PDD/finance',
+'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'}
+
 
 
 # code=pd.read_csv('D:\\Git\\us_stock\\profit\\2018-07-15_us_basic.csv',encoding='gbk')                

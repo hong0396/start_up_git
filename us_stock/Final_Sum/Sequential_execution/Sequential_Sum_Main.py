@@ -2,8 +2,7 @@ import os
 import time
 
 start = time.time()
-
-
+print('----------------0---------------')
 os.system("python ./Sequential_all_code.py 1>>./log/log_code.txt")
 print('----------------1---------------')
 time.sleep(0.5)

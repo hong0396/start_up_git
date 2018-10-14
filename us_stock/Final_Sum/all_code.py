@@ -14,7 +14,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer gluCWKw06sXGLvRq1hsLaCd9vZRAUJ',
+'Authorization': 'Bearer Z89Q8bh5q4WSrYeLQhOUF2cyLHv7k3',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -42,14 +42,14 @@ def get_laohu_code(url, num=[0]):
             li_tmp.append(i.get('nameCN'))
             li_tmp.append(i.get('open'))
             li_tmp.append(i.get('latestPrice'))
+            li_tmp.append(i.get('volume'))
+            li_tmp.append(i.get('volumeRatio'))
             li_tmp.append(i.get('peRate'))
             li_tmp.append(i.get('pbRate'))
             li_tmp.append(i.get('eps'))
             li.append(li_tmp)
-    pdd=pd.DataFrame(li, columns= ['code','name','open','latestPrice','pe','pb','eps'])   
+    pdd=pd.DataFrame(li, columns= ['code','name','open','latestPrice','volume','volumeRatio','pe','pb','eps'])   
     return pdd
-
-
 
 cn_nsdq=get_laohu_code(url_nsdq, [i for i in range(65)])
 # cn_nsdq.to_csv(date+'us_nsdq_code.csv', index=False, encoding ='gbk')

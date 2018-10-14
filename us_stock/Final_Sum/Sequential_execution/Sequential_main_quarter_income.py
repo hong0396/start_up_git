@@ -6,21 +6,25 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import tushare as ts
+import globalvar
+
+signnn=globalvar.glo_signnn
+Authorization= globalvar.glo_Authorization
+
 
 date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
 ti=str(time.time()).replace('.','')[:13]
 print(str(time.time()).replace('.','')[:13])
 headers={
-'Accept': '*/*',
-'Accept-Encoding': 'gzip, deflate, br',
+'Accept': 'application/json, text/plain, */*',
+'Accept-Encoding':'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
-'Access-Control-Request-Headers': 'authorization',
-'Access-Control-Request-Method': 'GET',
+'Authorization': Authorization,
 'Connection': 'keep-alive',
-'Host': 'hq1.itiger.com',
+'Host': 'hq.itiger.com',
 'Origin': 'https://web.itiger.com',
-'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
-
+'Referer': 'https://web.itiger.com/quote/PDD/finance',
+'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'}
 
 # code=pd.read_csv('D:\\Git\\us_stock\\profit\\2018-07-15_us_basic.csv',encoding='gbk')                
 # li_code=code['code'].tolist()
@@ -30,13 +34,14 @@ headers={
 
 dic={}
 codd=[]
+profit201809 =[]
 profit201806 =[]
 profit201803 =[]
 profit201712 =[]
-profit201709 =[]
 
-li_sum=[profit201806,profit201803,profit201712,profit201709]
-li_time=['2018-06','2018-03','2017-12','2017-09']
+
+li_sum=[profit201809,profit201806,profit201803,profit201712]
+li_time=['2018-09','2018-06','2018-03','2017-12']
 
 code=pd.read_csv(date+'us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
@@ -50,7 +55,7 @@ li_code=code['code'].tolist()
 nu_nuu=0
 for code_nm in li_code:
     print('------------------------------------------'+str(nu_nuu)+'----------------------------------------------')
-    url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+    url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId='+signnn+'&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     time.sleep(0.15)
     res=requests.get(url, headers=headers)
     if res.status_code == 200:

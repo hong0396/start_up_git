@@ -87,23 +87,24 @@ def get_grow_code(url, li_code):
                     # if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
                     # if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
                     # if round(zong.iloc[i]['close'],2) >= round(zong.iloc[i+2]['close'],2):
-                        if round(zong.iloc[i]['open'],2) <= round(zong.iloc[i+2]['open'],2):
-                            if round(zong.iloc[i+2]['open'],2) <= round(zong.iloc[i+3]['open'],2):
-                                if round(zong.iloc[i+3]['open'],2) <= round(zong.iloc[i+4]['open'],2):
-                                    if round(zong.iloc[i+4]['open'],2) <= round(zong.iloc[i+5]['open'],2):      
-                                        if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] <= 0:
-                                            if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] >= 0:
+                        # if round(zong.iloc[i]['open'],2) <= round(zong.iloc[i+2]['open'],2):
+                            if round(zong.iloc[i+1]['open'],2) <= round(zong.iloc[i+2]['open'],2):
+                                if round(zong.iloc[i+2]['open'],2) <= round(zong.iloc[i+3]['open'],2):
+                                    if round(zong.iloc[i+3]['open'],2) <= round(zong.iloc[i+4]['open'],2):      
+                                        
+                                        if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] >= 0:
+                                            if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
                                                 if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] <= 0:
                                                     if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] <= 0:
                                                         if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] <= 0:
-                                                            if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] <= 0:
+                               
                                                                 
                                                                 li_code_tmp.append(str(code_nm))
-                                                                li_num_tmp.append(zong.iloc[i+5]['time'])
+                                                                li_num_tmp.append(zong.iloc[i+4]['time'])
                                                                 li_0_tmp.append(zong.iloc[i]['close'])
-                                                                if zong.iloc[i-7]['close']:
+                                                                if zong.iloc[i-5]['close']:
                                                                     li_5_tmp.append(zong.iloc[i-5]['close'])
-                                                                    li_567_avg=(zong.iloc[i-5]['close']+zong.iloc[i-6]['close']+zong.iloc[i-7]['close'])/3
+                                                                    li_567_avg=(zong.iloc[i-2]['close']+zong.iloc[i-3]['close']+zong.iloc[i-4]['close'])/3
                                                                     # li_5_radio.append((zong.iloc[i-5]['close']-zong.iloc[i]['close'])/zong.iloc[i]['close'])
                                                                     li_5_radio.append((li_567_avg - zong.iloc[i]['close'])/zong.iloc[i]['close'])
                                                                 else:
@@ -326,11 +327,15 @@ def get_picture(url_day,select_code,name):
 	    get_laohu_analysis(i, url_day, tmp,name)
 
 
+def hist(series):
+    # ax = sns.distplot(series,rug=True, hist=False)
+    ax = sns.distplot(series)
+    plt.show()
 
-code=pd.read_csv('2018-10-13us_all_code.csv',encoding='gbk')              
+code=pd.read_csv('2018-10-13us_all_code_2.csv',encoding='gbk')              
 li_code=code['code'].tolist()
-nq=300
-li_code=li_code[:nq]
+nq=500
+li_code=random.sample(li_code, nq)
        
 select_code=get_grow_code(url_day, li_code)
 # codee=select_code.code.tolist()
@@ -340,6 +345,9 @@ select_code=get_grow_code(url_day, li_code)
 # select_code.to_csv(date+'_up_code_time_radio_test.csv')
 up_5_num=len(select_code[select_code['li_5_radio']>0].li_5_radio.tolist())
 down_5_num=len(select_code[select_code['li_5_radio']<0].li_5_radio.tolist())
+
+
+hist(select_code.li_5_radio)
 
 print('上涨的数目为'+str(up_5_num))
 print('下跌的数目为'+str(down_5_num))

@@ -87,6 +87,8 @@ def get_grow_code(url, li_code):
                     # if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
                     #     if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
                         # if round(zong.iloc[i]['close'],2) >= round(zong.iloc[i+2]['close'],2):
+                        # if round(zong.iloc[i]['close'],2) >= round(zong.iloc[i+1]['open'],2):
+
                             if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2):
                                 if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2):
                                     if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
@@ -327,12 +329,16 @@ def get_picture(url_day,select_code,name):
 	    time.sleep(0.1) 
 	    get_laohu_analysis(i, url_day, tmp,name)
 
+def hist(series):
+    # ax = sns.distplot(series,rug=True, hist=False)
+    ax = sns.distplot(series)
+    plt.show()
 
 
 code=pd.read_csv('2018-10-13us_all_code.csv',encoding='gbk')              
 li_code=code['code'].tolist()
-nq=500
-li_code=li_code[:nq]
+nq=1000
+li_code=random.sample(li_code, nq)
        
 select_code=get_grow_code(url_day, li_code)
 # codee=select_code.code.tolist()
@@ -343,21 +349,26 @@ select_code=get_grow_code(url_day, li_code)
 up_5_num=len(select_code[select_code['li_5_radio']>0].li_5_radio.tolist())
 down_5_num=len(select_code[select_code['li_5_radio']<0].li_5_radio.tolist())
 
+
+hist(select_code[select_code['li_5_radio']>0].li_5_radio)
+hist(select_code[select_code['li_5_radio']>0].li_5_radio)
+
+
 print('上涨的数目为'+str(up_5_num))
 print('下跌的数目为'+str(down_5_num))
 print('上涨比例为'+ '%.6f%%' % (up_5_num/(up_5_num+down_5_num)))
 
 file = r'test_log.txt'
 with open(file, 'a+') as f:
-    f.write('----------------------------------------'+'\n')
-    # f.write('4涨1跌1涨  5涨开盘价递增：'+'\n') 
-    f.write('4涨1跌1涨  5涨开盘价递增  1涨开盘价大于1跌收盘价 1跌开盘价大于4涨的开盘价：'+'\n')
-    
-    f.write('测试样本'+str(nq)+'\n')  
+    f.write('-----------------'+date+'-----------------------'+'\n')
+    f.write('4涨1跌1涨  5涨开盘价递增：'+'\n') 
+    # f.write('4涨1跌1涨  5涨开盘价递增  1涨开盘价大于1跌收盘价 1跌开盘价大于4涨的开盘价：'+'\n')
+    # f.write('4涨1跌1涨  5涨开盘价递增 1涨收盘价大于1跌开盘价'+'\n') 
+    f.write('随机测试样本'+str(nq)+'\n')  
     f.write('上涨的数目为'+str(up_5_num)+'\n') 
     f.write('下跌的数目为'+str(down_5_num)+'\n')
     f.write('上涨比例为'+ '%.6f%%' % (up_5_num/(up_5_num+down_5_num))+'\n')
-    f.write('----------------------------------------'+'\n') 
+    f.write('--------------------------------------------'+'\n') 
 # get_picture(url_day,select_code[select_code['li_5_radio']>0],'fig_5up_radio_test')
 # time.sleep(0.1) 
 # get_picture(url_day,select_code[select_code['li_5_radio']<0],'fig_5down_radio_test')

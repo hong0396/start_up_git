@@ -70,7 +70,7 @@ def get_grow_code(url, li_code):
     nu_n=0 
     for code_nm in li_code:
         print('------------------------从第'+str(nu_nu)+'只股票提取-----------------------------------------')
-        con = requests.get(url.format(str(code_nm)), headers=header).json()
+        con = requests.get(url.format(str(code_nm)), headers=header,verify=False).json()
         time.sleep(0.1) 
         li_data=con.get('items')
         if li_data is not None:
@@ -149,6 +149,9 @@ def get_laohu_analysis(n, url, li_code):
             jo=pd.DataFrame(li_data)
             quotes=jo.copy()
 
+            quotes=quotes.sort_values(by="time", ascending=False)[:15]
+            quotes=quotes.sort_values(by="time", ascending=True)
+
             quotes['time']=quotes['time'].apply(todate)
             quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
 
@@ -182,7 +185,7 @@ def get_laohu_analysis(n, url, li_code):
             candlestick_ohlc(ax, zip(mdates.date2num(quotes['time'].dt.to_pydatetime()),
                          quotes['open'], quotes['high'],
                          quotes['low'], quotes['close']),
-                 width=0.6)
+                 width=0.6,colordown='#53c156', colorup='#ff1717')
             
         
             ax.xaxis.set_major_locator(ticker.NullLocator())

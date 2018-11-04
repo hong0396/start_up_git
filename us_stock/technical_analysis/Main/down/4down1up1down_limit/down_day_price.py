@@ -58,7 +58,7 @@ li_code=code['code'].tolist()
 url_week='https://hq.itiger.com/stock_info/candle_stick/week/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 url_day='https://hq.itiger.com/stock_info/candle_stick/day/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 
-
+requests.packages.urllib3.disable_warnings()
 
 
 def get_grow_code(url, li_code): 
@@ -70,7 +70,7 @@ def get_grow_code(url, li_code):
     nu_n=0 
     for code_nm in li_code:
         print('------------------------从第'+str(nu_nu)+'只股票提取-----------------------------------------')
-        con = requests.get(url.format(str(code_nm)), headers=header).json()
+        con = requests.get(url.format(str(code_nm)), headers=header, verify=False).json()
         time.sleep(0.1) 
         li_data=con.get('items')
         if li_data is not None:
@@ -142,12 +142,16 @@ def get_laohu_analysis(n, url, li_code):
     quotes=pd.DataFrame()   
     for code_nm in li_code:
         print('--------------------------------------'+str(nu_nu+(n*100))+'----------------------------------------------')
-        con = requests.get(url.format(str(code_nm)), headers=header,verify=False).json()
+        con = requests.get(url.format(str(code_nm)), headers=header, verify=False).json()
         time.sleep(0.1) 
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)
             quotes=jo.copy()
+
+
+            quotes=quotes.sort_values(by="time", ascending=False)[:15]
+            quotes=quotes.sort_values(by="time", ascending=True)
 
             quotes['time']=quotes['time'].apply(todate)
             quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
@@ -182,7 +186,7 @@ def get_laohu_analysis(n, url, li_code):
             candlestick_ohlc(ax, zip(mdates.date2num(quotes['time'].dt.to_pydatetime()),
                          quotes['open'], quotes['high'],
                          quotes['low'], quotes['close']),
-                 width=0.6)
+                 width=0.6, colordown='#53c156', colorup='#ff1717')
             
         
             ax.xaxis.set_major_locator(ticker.NullLocator())

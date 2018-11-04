@@ -64,9 +64,9 @@ def nptopd(x, y):
 #     else:
 #         return 0
 
+date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
 
-
-all=pd.read_csv('down_analysis.csv')
+all=pd.read_csv(date+'down_analysis.csv')
 all=all.drop(['code'], axis = 1)
 
 all=all[all!=0]
@@ -77,7 +77,7 @@ all=all.fillna(0)
 
 
 
-all['li_123_tmp']=all['li_123_tmp']*3
+all['li_123_tmp']=all['li_123_tmp']
 
 
 print(abs(all.corr()).sort_values("li_123_tmp",ascending=False)["li_123_tmp"])
@@ -92,7 +92,7 @@ print(abs(all.corr()).sort_values("li_123_tmp",ascending=False)["li_123_tmp"])
 ######################################################################
 
 def get_01(n):
-    if n<-0.01:
+    if n<-0.05:
         return 1
     else:
         return 0
@@ -104,6 +104,7 @@ all['li_123_tmp_fenlei']=all['li_123_tmp'].apply(get_01)
 y=all['li_123_tmp_fenlei'].values
 # y=(all['li_123_tmp'].apply(np.log1p))
 X=all.drop(['li_123_tmp','li_123_tmp_fenlei'], axis = 1)
+print(X.columns.values.tolist())
 X=X.values
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
 
@@ -128,7 +129,7 @@ svm = SVC(**best_parameters) #使用最佳参数，构建新的模型
 svm.fit(X_trainval,y_trainval) #使用训练集和验证集进行训练，more data always results in good performance.
 y_predst=svm.predict(X_test)
 
-joblib.dump(svm, 'down_model.joblib') 
+joblib.dump(svm, date+'_down_model.joblib') 
 
 predd=pd.DataFrame({'y_test':y_test,'y_pred':y_predst})
 predd.to_csv('predd.csv')

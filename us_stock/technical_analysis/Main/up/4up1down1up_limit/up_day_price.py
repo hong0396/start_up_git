@@ -8,6 +8,7 @@ import pandas as pd
 import json
 import random
 import ast
+import os, sys
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
@@ -173,6 +174,9 @@ def get_laohu_analysis(n, url, li_code):
         if li_data is not None:
             jo=pd.DataFrame(li_data)
             quotes=jo.copy()
+            
+            quotes=quotes.sort_values(by="time", ascending=False)[:15]
+            quotes=quotes.sort_values(by="time", ascending=True)
 
             quotes['time']=quotes['time'].apply(todate)
             quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
@@ -221,7 +225,7 @@ def get_laohu_analysis(n, url, li_code):
             candlestick_ohlc(ax, zip(mdates.date2num(quotes['time'].dt.to_pydatetime()),
                          quotes['open'], quotes['high'],
                          quotes['low'], quotes['close']),
-                 width=0.6)
+                 width=0.6,colordown='#53c156', colorup='#ff1717')
             
 
             # if len(quotes["close"].tolist()) >200:
@@ -284,10 +288,22 @@ def write_li(fileName,li):
            fp.write(str(li[i])+'\n')
        fp.close()
        return True
+def write_csv(fileName,li):
+    date=time.strftime('%Y-%m-%d',time.localtime(time.time())) 
+    li.sort()
+    if os.path.exists(fileName):
+        tmp=pd.read_csv(fileName)
+        tmp[date]=li
+        tmp.to_csv(fileName,index=False)
+    else:
+        tmp=pd.Series(li,name=date)
+        tmp.to_csv(fileName)
 
+    return True
         
 codee=get_grow_code(url_day, li_code)
 write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+'_up_code.txt',codee)
+write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/record.csv',codee)
 # codee=li_code[:1000]
 for i in range((len(codee)//100)+1):
     start=i*100 

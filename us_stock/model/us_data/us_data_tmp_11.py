@@ -62,7 +62,7 @@ dic={}
 nu_nu=0
 for code_nm in li_code:
     print('------------------------从第'+str(nu_nu)+'只股票提取------------------------------------')
-    con = requests.get(url_day.format(str(code_nm)), headers=header, ,verify=False ).json()
+    con = requests.get(url_day.format(str(code_nm)), headers=header, verify=False ).json()
     time.sleep(0.1) 
     li_data=con.get('items')
     if li_data is not None:

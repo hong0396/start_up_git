@@ -59,10 +59,10 @@ li_code=code['code'].tolist()
 url_week='https://hq.itiger.com/stock_info/candle_stick/week/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 url_day='https://hq.itiger.com/stock_info/candle_stick/day/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 
-requests.packages.urllib3.disable_warnings()
 
 
-def get_grow_code(url, nm,li_code): 
+
+def get_grow_code(url,days, li_code): 
     # fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
     li=[]
     li_code_tmp=[]
@@ -72,51 +72,88 @@ def get_grow_code(url, nm,li_code):
     nu_n=0 
     for code_nm in li_code:
         print('-----------------------从第'+str(nu_nu)+'只股票提取------------------------------------')
-        con = requests.get(url.format(str(code_nm)), headers=header, verify=False).json()
+        con = requests.get(url.format(str(code_nm)), headers=header,verify=False).json()
         time.sleep(0.1) 
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)
-            # print(jo)
             # jo=jo.sort_values(by="time", ascending=False)
+
             if len(jo.time.tolist()) > 30:
                 zong=jo.sort_values(by="time", ascending=False)[:30]
-                # 0个开盘价(跌)<1个收盘价(涨)
-                # 1个开盘价(涨)<2个开盘价(跌)
-                # 2个开盘价(跌)<3个开盘价(跌)
-                # 3个开盘价(跌)<4个开盘价(跌)
-                # 4个开盘价(跌)<5个开盘价(跌)
-                # 0个开盘价(跌)<2个开盘价(跌)
+                # 0个开盘价(涨)>1个开盘价(涨)
+                # 1个开盘价(涨)>2个开盘价(涨)
+                # 2个开盘价(涨)>3个开盘价(涨)
+                
+                # 0个最低价(涨)>1个最低价(涨)
+                # 1个最低价(涨)>2个最低价(涨)
+                # 2个最低价(涨)>3个最低价(涨)              
 
-                for i in range(nm):
-                    if round(zong.iloc[i]['open'],2) <= round(zong.iloc[i+1]['close'],2): 
-                        if round(zong.iloc[i+1]['open'],2) <= round(zong.iloc[i+2]['open'],2):
-                            if round(zong.iloc[i+2]['open'],2) <= round(zong.iloc[i+3]['open'],2): 
-                                if round(zong.iloc[i+3]['open'],2) <= round(zong.iloc[i+4]['open'],2) :
-                                    if round(zong.iloc[i+4]['open'],2) <= round(zong.iloc[i+5]['open'],2):      
-                                        if round(zong.iloc[i]['open'],2) <= round(zong.iloc[i+2]['open'],2): 
+                for i in range(days):
+                    if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['open'],2): 
+                        if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
+                            if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
+                                
+                                if round(zong.iloc[i]['low'],2) >= round(zong.iloc[i+1]['low'],2):
+                                    if round(zong.iloc[i+1]['low'],2) >= round(zong.iloc[i+2]['low'],2): 
+                                        if round(zong.iloc[i+2]['low'],2) >= round(zong.iloc[i+3]['low'],2): 
 
-                                            if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] <= 0:
-                                                if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] >= 0:
-                                                    if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] <= 0:
-                                                        if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] <= 0:
-                                                            if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] <= 0:
-                                                                if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] <= 0:
+                                            # if round(zong.iloc[i]['high'],2) >= round(zong.iloc[i+1]['high'],2):
+                                            #     if round(zong.iloc[i+1]['high'],2) >= round(zong.iloc[i+2]['high'],2): 
+                                            #         if round(zong.iloc[i+2]['high'],2) >= round(zong.iloc[i+3]['high'],2): 
+
+
+
+
+                                            # if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
+                                            #     if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] > 0:
+                                            #         if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] > 0:
+                                            #             if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] > 0:
+                                                           
+
+
+
+                                                            # if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
+                                                            #     if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
                                                                     if str(code_nm) not in li_code_tmp:
                                                                         li_days_tmp.append(i)
                                                                         li_code_tmp.append(str(code_nm))
                                                                         nu_n=nu_n+1
                 del jo, zong
                 gc.collect()
+                # if zong['open'].is_monotonic_decreasing:
                 
+                # 第0个开盘价(涨)>1个最低价(跌)
+                # 1个开盘价(跌)>2个开盘价(涨)>3个开盘价(涨)>4个开盘价(涨)>5个开盘价(涨)
+
+                # if zong.iloc[0]['open'] > zong.iloc[1]['close'] and zong.iloc[1]['open'] > zong.iloc[2]['open']:
+                # # if zong.iloc[1]['open'] > zong.iloc[2]['open']:
+                #     if zong.iloc[2]['open'] > zong.iloc[3]['open'] and zong.iloc[3]['open'] > zong.iloc[4]['open'] and zong.iloc[4]['open'] > zong.iloc[5]['open']:    
+                #         if (first['close'] - first['open'])/first['open'] >= 0:
+                #             if (second['close'] - second['open'])/second['open'] <= 0:
+                #                 nuuu=0       
+                #                 for row in last.itertuples(): 
+                #                     if (getattr(row,'close') - getattr(row,'open'))/getattr(row,'open') >= 0:
+                #                         nuuu=nuuu+1
+                #                 if nuuu==4:
+                #                     li_code_tmp.append(str(code_nm))
+                #                     nu_n=nu_n+1
         nu_nu=nu_nu+1
-        print('############共提取'+str(nu_n)+'只股票符合条件############')
-    tmp_df=pd.DataFrame({'days':li_days_tmp,'code':li_code_tmp})                 
+        print('***********共提取'+str(nu_n)+'只股票符合条件***********')  
+    tmp_df=pd.DataFrame({'days':li_days_tmp,'code':li_code_tmp})    
     return tmp_df
 
 
             
       
+# def date_to_num(dates):
+#     num_time = []
+#     for date in dates:
+#         date_time = datetime.datetime.strptime(date,'%Y-%m-%d')
+#         num_date = date2num(date_time)
+#         num_time.append(num_date)
+#     return num_time
+
 
 
 def moving_average(x, n, type='simple'):
@@ -259,7 +296,7 @@ def get_laohu_analysis(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/down/4down1up1down_limit/down_data/'+date+"_fig_down_"+str(n)+".png")
+    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up_no_limit/up_data/'+date+"_fig_up_"+str(n)+".png")
     # plt.show()
     
             
@@ -269,7 +306,6 @@ def write_li(fileName,li):
            fp.write(str(li[i])+'\n')
        fp.close()
        return True
-
 def write_csv(fileName,df):
     date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
     df.rename(columns={'days':str(date)+'_days','code':str(date)+'_code'},inplace=True) 
@@ -277,25 +313,24 @@ def write_csv(fileName,df):
         tmp_df=pd.read_csv(fileName)
         if str(date)+'_days' in tmp_df.columns.tolist() :
             tmp_df=tmp_df.drop(columns=[str(date)+'_days',str(date)+'_code'])  
-            tmp_df=tmp_df.join(df, how='outer')
-            tmp_df.to_csv(fileName,index=False)
+            df=tmp_df.join(df, how='outer')
+            df.to_csv(fileName,index=False)
         else:
             tmp_df=tmp_df.join(df, how='outer')
             tmp_df.to_csv(fileName,index=False)    
     else:
         df.to_csv(fileName,index=False)
     return True
-
-
         
-days_df=get_grow_code(url_day,5, li_code)
-days_df=days_df.sort_values(by=['days','code'])
-codee=days_df.code.tolist()
-days=days_df.days.tolist()
-# write_li('D:/Git/us_stock/technical_analysis/Main/down/4down1up1down_limit/down_data/'+date+'_down_code.txt',codee)
-write_csv('D:/Git/us_stock/technical_analysis/Main/down/4down1up1down_limit/down_data/record.csv',days_df)
-
+days_df=get_grow_code(url_day,1, li_code)
+days_sort_df=days_df.sort_values(by=['days','code'])
+codee=days_sort_df.code.tolist()
+days=days_sort_df.days.tolist()
+# write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+'_up_code.txt',codee)
+write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up_no_limit/up_data/record.csv',days_sort_df)
 # codee=li_code[:1000]
+# days_df[(days_df.code==tmp)].index.values
+
 for i in range((len(codee)//100)+1):
     start=i*100 
     end=(i+1)*100
@@ -321,4 +356,79 @@ for i in range((len(codee)//100)+1):
 
 
 
+
+# def get_laohu_price(url,li_code):
+#     li=[]
+#     nu_nu=0
+#     for code_nm in li_code:
+#         print('------------------------------------------'+str(nu_nu)+'----------------------------------------------')
+#         con = requests.get(url.format(str(code_nm)), headers=header).json()
+#         time.sleep(0.1)
+#         # print(con)
+#             # a = str(con.decode())
+#             # print(con.get('items')[0].get('data'))
+#         # if period=="month"    
+#         li_data=con.get('items')
+#         dic_tmp={}
+#         dic_tmp['code']=str(code_nm)
+#         dic_tmp['count']=0
+#         dic_tmp['mean']=0
+#         dic_tmp['std']=0
+#         dic_tmp['max']=0
+#         dic_tmp['min']=0
+#         dic_tmp['start']=0
+#         dic_tmp['end']=0
+#         dic_tmp['year']=0
+#         dic_tmp['price_start']=0
+#         dic_tmp['price_middle']=0
+#         dic_tmp['price_end']=0
+#         dic_tmp['volume_start']=0
+#         dic_tmp['volume_end']=0
+#         if li_data is not None:
+#             jo=pd.DataFrame(li_data)
+#             # print(jo)
+#             # for i in li_data:
+#             #     close_tmp=i.get('close')
+#             #     time_tmp=i.get('time')
+#             #     volume_tmp=i.get('volume')
+#             #     date_tmp=todate(time_tmp)
+#             count=jo.shape[0]
+#             year=int(count/12)
+#             startprice=jo['open'][0]
+#             endd=jo['close'][count-1]
+#             meam_tmp=jo['close'].mean()
+#             std_tmp=jo['close'].std()    
+#             max=jo['close'].max()
+#             min=jo['close'].min()
+#             price_start=jo[:int(count/3)]['close'].mean()
+#             price_middle=jo[int(count/3):int((count*2)/3)]['close'].mean()
+#             price_end=jo[int((count*2)/3):]['close'].mean()
+#             vol_start=jo[:int(count/2)]['volume'].mean()
+#             vol_end=jo[int(count/2):]['volume'].mean()
+#             dic_tmp['count']=count
+#             dic_tmp['mean']=meam_tmp
+#             dic_tmp['std']=std_tmp
+#             dic_tmp['max']=max
+#             dic_tmp['min']=min
+#             dic_tmp['start']=startprice
+#             dic_tmp['end']=endd
+#             dic_tmp['year']=year
+#             dic_tmp['price_start']=price_start
+#             dic_tmp['price_middle']=price_middle
+#             dic_tmp['price_end']=price_end
+#             dic_tmp['volume_start']=vol_start
+#             dic_tmp['volume_end']=vol_end
+#             li.append(dic_tmp)
+#         nu_nu=nu_nu+1
+#     datatable=pd.DataFrame(li)
+#     return datatable
+
+
+
+
+
+
+# re=pd.merge(code,pan,how='outer',on='code')
+# re=re.drop_duplicates()
+# re.to_csv(date+'_Laohu_us_analysis.csv', encoding = 'gbk',index=False)
 

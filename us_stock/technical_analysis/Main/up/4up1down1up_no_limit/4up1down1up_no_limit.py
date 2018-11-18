@@ -94,7 +94,7 @@ def get_grow_code(url, li_code):
                                     if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
                                         if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
 
-                                            if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] >= 0:
+                                            if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
                                                 if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
                                                     if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
                                                         if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
@@ -287,7 +287,21 @@ def write_li(fileName,li):
            fp.write(str(li[i])+'\n')
        fp.close()
        return True
-
+def write_csv(fileName,df):
+    date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
+    df.rename(columns={'days':str(date)+'_days','code':str(date)+'_code'},inplace=True) 
+    if os.path.exists(fileName): 
+        tmp_df=pd.read_csv(fileName)
+        if str(date)+'_days' in tmp_df.columns.tolist() :
+            tmp_df=tmp_df.drop(columns=[str(date)+'_days',str(date)+'_code'])  
+            df=tmp_df.join(df, how='outer')
+            df.to_csv(fileName,index=False)
+        else:
+            tmp_df=tmp_df.join(df, how='outer')
+            tmp_df.to_csv(fileName,index=False)    
+    else:
+        df.to_csv(fileName,index=False)
+    return True
         
 codee=get_grow_code(url_day, li_code)
 write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_no_limit/up_data/'+date+'_up_code.txt',codee)

@@ -1,6 +1,8 @@
 import requests
 import pandas as pd
 import time
+import sys
+
 headers={
 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
 'Accept-Encoding': 'gzip, deflate, br',
@@ -34,10 +36,12 @@ def get_code():
     for i in range(479):
         print('--------------'+str(i)+'-----------------')
         r = requests.get(url.format(str(i)),headers=headers).json()
-        time.sleep(1)
+        time.sleep(0.15)
         df=pd.DataFrame(r.get("data").get("list"))
-        sum_df.append(df)
+        sum_df=sum_df.append(df, ignore_index=True)
     return sum_df
 
 df=get_code()
-df.to_csv('all.csv',index=False, encoding='gbk')
+df.to_csv('all_code.csv',index=False, encoding='GB18030')
+
+

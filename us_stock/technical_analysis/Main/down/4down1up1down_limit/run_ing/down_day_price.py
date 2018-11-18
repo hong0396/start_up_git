@@ -39,7 +39,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer qsdPkVo2hfSRYFpS97x1sbKVmAvZd8',
+'Authorization': 'Bearer Z89Q8bh5q4WSrYeLQhOUF2cyLHv7k3',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -77,7 +77,6 @@ def get_grow_code(url, nm,li_code):
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)
-            # print(jo)
             # jo=jo.sort_values(by="time", ascending=False)
             if len(jo.time.tolist()) > 30:
                 zong=jo.sort_values(by="time", ascending=False)[:30]
@@ -90,22 +89,23 @@ def get_grow_code(url, nm,li_code):
 
                 for i in range(nm):
                     if round(zong.iloc[i]['open'],2) <= round(zong.iloc[i+1]['close'],2): 
-                        if round(zong.iloc[i+1]['open'],2) <= round(zong.iloc[i+2]['open'],2):
-                            if round(zong.iloc[i+2]['open'],2) <= round(zong.iloc[i+3]['open'],2): 
-                                if round(zong.iloc[i+3]['open'],2) <= round(zong.iloc[i+4]['open'],2) :
-                                    if round(zong.iloc[i+4]['open'],2) <= round(zong.iloc[i+5]['open'],2):      
-                                        if round(zong.iloc[i]['open'],2) <= round(zong.iloc[i+2]['open'],2): 
+                        if round(zong.iloc[i+1]['open'],2) <= round(zong.iloc[i+1+1]['close'],2): 
+                            if round(zong.iloc[i+1+1]['open'],2) <= round(zong.iloc[i+1+2]['open'],2):
+                                if round(zong.iloc[i+1+2]['open'],2) <= round(zong.iloc[i+1+3]['open'],2): 
+                                    if round(zong.iloc[i+1+3]['open'],2) <= round(zong.iloc[i+1+4]['open'],2) :
+                                        if round(zong.iloc[i+1+4]['open'],2) <= round(zong.iloc[i+1+5]['open'],2):      
+                                            if round(zong.iloc[i+1]['open'],2) <= round(zong.iloc[i+1+2]['open'],2): 
 
-                                            if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] <= 0:
-                                                if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] >= 0:
-                                                    if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] <= 0:
-                                                        if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] <= 0:
-                                                            if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] <= 0:
-                                                                if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] <= 0:
-                                                                    if str(code_nm) not in li_code_tmp:
-                                                                        li_days_tmp.append(i)
-                                                                        li_code_tmp.append(str(code_nm))
-                                                                        nu_n=nu_n+1
+                                                if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
+                                                    if (zong.iloc[i+1+1]['close'] - zong.iloc[i+1+1]['open'])/zong.iloc[i+1+1]['open'] >= 0:
+                                                        if (zong.iloc[i+1+2]['close'] - zong.iloc[i+1+2]['open'])/zong.iloc[i+1+2]['open'] <= 0:
+                                                            if (zong.iloc[i+1+3]['close'] - zong.iloc[i+1+3]['open'])/zong.iloc[i+1+3]['open'] <= 0:
+                                                                if (zong.iloc[i+1+4]['close'] - zong.iloc[i+1+4]['open'])/zong.iloc[i+1+4]['open'] <= 0:
+                                                                    if (zong.iloc[i+1+5]['close'] - zong.iloc[i+1+5]['open'])/zong.iloc[i+1+5]['open'] <= 0:
+                                                                        if str(code_nm) not in li_code_tmp:
+                                                                            li_days_tmp.append(i)
+                                                                            li_code_tmp.append(str(code_nm))
+                                                                            nu_n=nu_n+1
                 del jo, zong
                 gc.collect()
                 
@@ -259,7 +259,7 @@ def get_laohu_analysis(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/down/4down1up1down_limit/down_data/'+date+"_fig_down_"+str(n)+".png")
+    plt.savefig('D:/Git/us_stock/technical_analysis/Main/down/4down1up1down_limit/run_ing/down_data/'+date+"_fig_down_"+str(n)+".png")
     # plt.show()
     
             
@@ -288,12 +288,12 @@ def write_csv(fileName,df):
 
 
         
-days_df=get_grow_code(url_day,5, li_code)
+days_df=get_grow_code(url_day,1, li_code)
 days_df=days_df.sort_values(by=['days','code'])
 codee=days_df.code.tolist()
 days=days_df.days.tolist()
 # write_li('D:/Git/us_stock/technical_analysis/Main/down/4down1up1down_limit/down_data/'+date+'_down_code.txt',codee)
-write_csv('D:/Git/us_stock/technical_analysis/Main/down/4down1up1down_limit/down_data/record.csv',days_df)
+write_csv('D:/Git/us_stock/technical_analysis/Main/down/4down1up1down_limit/run_ing/down_data/record.csv',days_df)
 
 # codee=li_code[:1000]
 for i in range((len(codee)//100)+1):

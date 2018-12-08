@@ -20,20 +20,8 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import MONDAY, DateFormatter, DayLocator, WeekdayLocator
 from mpl_finance import candlestick_ohlc
 import gc 
-import os
-import urllib3
-import random
-from urllib3.exceptions import NewConnectionError, ConnectTimeoutError, MaxRetryError,HTTPError,RequestError,ReadTimeoutError,ResponseError
-from bs4 import BeautifulSoup
-import requests
 
 requests.packages.urllib3.disable_warnings()
-
-import ip_te
-ip_factory=ip_te.ip_get_test_save(1.5,1)
-
-
-
 
 def getmin(fun,xa,xb):
     res1 = bracket(fun, xa = xa, xb=xb)
@@ -47,18 +35,6 @@ def todate(timeStamp):
     return otherStyleTime
 # print(time.time())
 date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
-my_headers = [
-    'Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30',
-    'Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0',
-    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET4.0E; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)',
-    'Opera/9.80 (Windows NT 5.1; U; zh-cn) Presto/2.9.168 Version/11.50',
-    'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1',
-    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022; .NET4.0E; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)',
-    'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36']
-
-
-
-
 header={'Accept': 'application/json, text/plain, */*', 
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
@@ -67,7 +43,8 @@ header={'Accept': 'application/json, text/plain, */*',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
-"User-Agent":random.choice(my_headers) }
+'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
+
 
 code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
@@ -81,9 +58,8 @@ li_code=code['code'].tolist()
 
 url_week='https://hq.itiger.com/stock_info/candle_stick/week/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 url_day='https://hq.itiger.com/stock_info/candle_stick/day/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
-# url='https://hq.itiger.com/stock_info/candle_stick/day/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20181208_927490&platform=desktop-app&env=TigerTrade&vendor=web&lang=&appVer=4.2.0'
-# f = open("ip_http.txt","r")
-# print(f)
+
+
 
 
 def get_grow_code(url,days, li_code): 
@@ -93,41 +69,11 @@ def get_grow_code(url,days, li_code):
     li_days_tmp=[]
     li_num_tmp=[] 
     nu_nu=0
-    nu_n=0
-
-    useful_proxies = {}
-    max_failure_times = 3
-    try:
-    # 获取代理IP数据
-        for ip in list(ip_factory):
-            useful_proxies[ip] = 0
-        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
-    except OSError:
-        print ("获取代理ip时出错！") 
-
-
-    # proxy={'http': 'http://183.129.207.82:13361'}
-    # pro = ['1.119.129.2:8080', '115.174.66.148', '113.200.214.164'] 
+    nu_n=0 
     for code_nm in li_code:
         print('-----------------------从第'+str(nu_nu)+'只股票提取------------------------------------')
-        proxy = random.choice(list(useful_proxies.keys()))
-        print ("change proxies: " + proxy)
-
-        content = ''
-        try:
-            con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
-            time.sleep(0.1)
-        except OSError:
-            # 超过3次则删除此proxy
-            useful_proxies[proxy] += 1
-            if useful_proxies[proxy] > 3:
-                del useful_proxies[proxy]
-            # 再抓一次
-            proxy = random.choice(list(useful_proxies.keys()))
-            # print('shengxia'+proxy)
-            con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
-
-
+        con = requests.get(url.format(str(code_nm)), headers=header,verify=False).json()
+        time.sleep(0.1) 
         li_data=con.get('items')
         # print(li_data)
         if li_data is not None:
@@ -224,40 +170,11 @@ def get_laohu_analysis(n, url, li_code,days):
     nu_nu=0
     jo=pd.DataFrame()
     quotes=pd.DataFrame()
-    
-    useful_proxies = {}
-    max_failure_times = 3
-    try:
-    # 获取代理IP数据
-        for ip in list(ip_factory):
-            useful_proxies[ip] = 0
-        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
-    except OSError:
-        print ("获取代理ip时出错！") 
 
     for nmm in range(len(li_code)):
         print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
-        proxy = random.choice(list(useful_proxies.keys()))
-        print ("change proxies: " + proxy)
-
-        content = ''
-        try:
-            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
-            time.sleep(0.1)
-        except OSError:
-            # 超过3次则删除此proxy
-            useful_proxies[proxy] += 1
-            if useful_proxies[proxy] > 3:
-                del useful_proxies[proxy]
-            # 再抓一次
-            proxy = random.choice(list(useful_proxies.keys()))
-            # print('shengxia'+proxy)
-            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
-
-
-
-        # con = requests.get(url.format(str(li_code[nmm])), headers=header).json()
-        # time.sleep(0.1) 
+        con = requests.get(url.format(str(li_code[nmm])), headers=header).json()
+        time.sleep(0.1) 
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)
@@ -297,8 +214,8 @@ def get_laohu_analysis(n, url, li_code,days):
             # count=quotes.shape[0]
             # year=int(count/48)
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
-            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
+            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
             # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
             
@@ -369,9 +286,10 @@ def get_laohu_analysis(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+"_fig_up_"+str(n)+".png")
+    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_"+str(n)+".png")
     # plt.show()
     
+
 def get_laohu_analysis_all(n, url, li_code,days): 
     fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
     li=[]
@@ -422,8 +340,8 @@ def get_laohu_analysis_all(n, url, li_code,days):
             # count=quotes.shape[0]
             # year=int(count/48)
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
-            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
+            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
             # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
             
@@ -494,9 +412,11 @@ def get_laohu_analysis_all(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+"_fig_up_all_"+str(n)+".png")
+    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_all_"+str(n)+".png")
     # plt.show()
-             
+    
+
+            
 def write_li(fileName,li):
        fp = open(fileName,'w+')      
        for i in range(len(li)):
@@ -518,27 +438,13 @@ def write_csv(fileName,df):
     else:
         df.to_csv(fileName,index=False)
     return True
-
-
-
-
-
-
-
-
-
-
-
         
-
-
-
-days_df=get_grow_code(url_day,5, li_code)
+days_df=get_grow_code(url_week, 5, li_code)
 days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()
 # write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+'_up_code.txt',codee)
-write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/record.csv',days_sort_df)
+write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/record.csv',days_sort_df)
 # codee=li_code[:1000]
 # days_df[(days_df.code==tmp)].index.values
 
@@ -549,9 +455,9 @@ for i in range((len(codee)//100)+1):
         end = len(codee)  
     code_tmp=codee[start:end]
     days_tmp=days[start:end]
-    get_laohu_analysis(i, url_day, code_tmp, days_tmp)
+    get_laohu_analysis(i, url_week, code_tmp, days_tmp)
     time.sleep(1)
-    get_laohu_analysis_all(i, url_day, code_tmp, days_tmp)
+    get_laohu_analysis_all(i, url_week, code_tmp, days_tmp)
 
 
 

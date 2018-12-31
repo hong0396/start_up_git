@@ -151,16 +151,20 @@ def get_grow_code(url,days, li_code):
                                     if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
                                         if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
 
+
                                             if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
                                                 if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
                                                     if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
                                                         if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
                                                             if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
                                                                 if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
-                                                                    if str(code_nm) not in li_code_tmp:
-                                                                        li_days_tmp.append(i)
-                                                                        li_code_tmp.append(str(code_nm))
-                                                                        nu_n=nu_n+1
+                                                                    
+                                                                    if not ((((zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open']) < ((zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'])) and (((zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open']) <  ((zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open']))):                   
+
+                                                                        if str(code_nm) not in li_code_tmp:
+                                                                            li_days_tmp.append(i)
+                                                                            li_code_tmp.append(str(code_nm))
+                                                                            nu_n=nu_n+1
                 del jo, zong
                 gc.collect()
                 # if zong['open'].is_monotonic_decreasing:
@@ -378,11 +382,36 @@ def get_laohu_analysis_all(n, url, li_code,days):
     nu_nu=0
     jo=pd.DataFrame()
     quotes=pd.DataFrame()
+    
+    useful_proxies = {}
+    max_failure_times = 3
+    try:
+    # 获取代理IP数据
+        for ip in list(ip_factory):
+            useful_proxies[ip] = 0
+        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
+    except OSError:
+        print ("获取代理ip时出错！") 
 
     for nmm in range(len(li_code)):
         print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
-        con = requests.get(url.format(str(li_code[nmm])), headers=header).json()
-        time.sleep(0.1) 
+        proxy = random.choice(list(useful_proxies.keys()))
+        print ("change proxies: " + proxy)
+
+        content = ''
+        try:
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
+            time.sleep(0.1)
+        except OSError:
+            # 超过3次则删除此proxy
+            useful_proxies[proxy] += 1
+            if useful_proxies[proxy] > 3:
+                del useful_proxies[proxy]
+            # 再抓一次
+            proxy = random.choice(list(useful_proxies.keys()))
+            # print('shengxia'+proxy)
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
+
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)

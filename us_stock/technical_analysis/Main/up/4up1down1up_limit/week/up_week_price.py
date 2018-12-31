@@ -21,6 +21,9 @@ from matplotlib.dates import MONDAY, DateFormatter, DayLocator, WeekdayLocator
 from mpl_finance import candlestick_ohlc
 import gc 
 
+import ip_te
+ip_factory=ip_te.ip_get_test_save(1.5,1)
+
 requests.packages.urllib3.disable_warnings()
 
 def getmin(fun,xa,xb):
@@ -35,15 +38,23 @@ def todate(timeStamp):
     return otherStyleTime
 # print(time.time())
 date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
+my_headers = [
+    'Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30',
+    'Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0',
+    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET4.0E; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)',
+    'Opera/9.80 (Windows NT 5.1; U; zh-cn) Presto/2.9.168 Version/11.50',
+    'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1',
+    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022; .NET4.0E; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)',
+    'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36']
 header={'Accept': 'application/json, text/plain, */*', 
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer aAmt1vk9CI5QYnVMzRwXpfuvZmXmvo',
+'Authorization': 'Bearer 54z9fub2f1BTB1XsauydAdOdOuJCh4',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
-'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
+"User-Agent":random.choice(my_headers) }
 
 
 code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
@@ -70,10 +81,38 @@ def get_grow_code(url,days, li_code):
     li_num_tmp=[] 
     nu_nu=0
     nu_n=0 
+
+    useful_proxies = {}
+    max_failure_times = 3
+    try:
+    # 获取代理IP数据
+        for ip in list(ip_factory):
+            useful_proxies[ip] = 0
+        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
+    except OSError:
+        print ("获取代理ip时出错！") 
+
+
+
     for code_nm in li_code:
         print('-----------------------从第'+str(nu_nu)+'只股票提取------------------------------------')
-        con = requests.get(url.format(str(code_nm)), headers=header,verify=False).json()
-        time.sleep(0.1) 
+        proxy = random.choice(list(useful_proxies.keys()))
+        print ("change proxies: " + proxy)
+
+        content = ''
+        try:
+            con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
+            time.sleep(0.1)
+        except OSError:
+            # 超过3次则删除此proxy
+            useful_proxies[proxy] += 1
+            if useful_proxies[proxy] > 3:
+                del useful_proxies[proxy]
+            # 再抓一次
+            proxy = random.choice(list(useful_proxies.keys()))
+            # print('shengxia'+proxy)
+            con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
+
         li_data=con.get('items')
         # print(li_data)
         if li_data is not None:
@@ -171,10 +210,35 @@ def get_laohu_analysis(n, url, li_code,days):
     jo=pd.DataFrame()
     quotes=pd.DataFrame()
 
+    useful_proxies = {}
+    max_failure_times = 3
+    try:
+    # 获取代理IP数据
+        for ip in list(ip_factory):
+            useful_proxies[ip] = 0
+        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
+    except OSError:
+        print ("获取代理ip时出错！") 
+
     for nmm in range(len(li_code)):
         print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
-        con = requests.get(url.format(str(li_code[nmm])), headers=header).json()
-        time.sleep(0.1) 
+        proxy = random.choice(list(useful_proxies.keys()))
+        print ("change proxies: " + proxy)
+
+        content = ''
+        try:
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
+            time.sleep(0.1)
+        except OSError:
+            # 超过3次则删除此proxy
+            useful_proxies[proxy] += 1
+            if useful_proxies[proxy] > 3:
+                del useful_proxies[proxy]
+            # 再抓一次
+            proxy = random.choice(list(useful_proxies.keys()))
+            # print('shengxia'+proxy)
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
+
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)
@@ -297,10 +361,35 @@ def get_laohu_analysis_all(n, url, li_code,days):
     jo=pd.DataFrame()
     quotes=pd.DataFrame()
 
+    useful_proxies = {}
+    max_failure_times = 3
+    try:
+    # 获取代理IP数据
+        for ip in list(ip_factory):
+            useful_proxies[ip] = 0
+        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
+    except OSError:
+        print ("获取代理ip时出错！") 
+
     for nmm in range(len(li_code)):
         print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
-        con = requests.get(url.format(str(li_code[nmm])), headers=header).json()
-        time.sleep(0.1) 
+        proxy = random.choice(list(useful_proxies.keys()))
+        print ("change proxies: " + proxy)
+
+        content = ''
+        try:
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
+            time.sleep(0.1)
+        except OSError:
+            # 超过3次则删除此proxy
+            useful_proxies[proxy] += 1
+            if useful_proxies[proxy] > 3:
+                del useful_proxies[proxy]
+            # 再抓一次
+            proxy = random.choice(list(useful_proxies.keys()))
+            # print('shengxia'+proxy)
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
+
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)

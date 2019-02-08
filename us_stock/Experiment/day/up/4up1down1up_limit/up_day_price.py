@@ -20,10 +20,20 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import MONDAY, DateFormatter, DayLocator, WeekdayLocator
 from mpl_finance import candlestick_ohlc
 import gc 
+import os
+import urllib3
+import random
+from urllib3.exceptions import NewConnectionError, ConnectTimeoutError, MaxRetryError,HTTPError,RequestError,ReadTimeoutError,ResponseError
+from bs4 import BeautifulSoup
+import requests
+
+requests.packages.urllib3.disable_warnings()
+
 import ip_te
 ip_factory=ip_te.ip_get_test_save(1.5,1)
 
-requests.packages.urllib3.disable_warnings()
+
+path=os.getcwd()
 
 def getmin(fun,xa,xb):
     res1 = bracket(fun, xa = xa, xb=xb)
@@ -45,16 +55,19 @@ my_headers = [
     'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1',
     'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022; .NET4.0E; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)',
     'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36']
+
+
+
+
 header={'Accept': 'application/json, text/plain, */*', 
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer 54z9fub2f1BTB1XsauydAdOdOuJCh4',
+'Authorization': 'Bearer Vxe2C7g0gtyh2bLvjVTdkqIyuqhtLG',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
 "User-Agent":random.choice(my_headers) }
-
 
 code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
@@ -68,8 +81,9 @@ li_code=code['code'].tolist()
 
 url_week='https://hq.itiger.com/stock_info/candle_stick/week/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 url_day='https://hq.itiger.com/stock_info/candle_stick/day/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
-
-
+# url='https://hq.itiger.com/stock_info/candle_stick/day/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20181208_927490&platform=desktop-app&env=TigerTrade&vendor=web&lang=&appVer=4.2.0'
+# f = open("ip_http.txt","r")
+# print(f)
 
 
 def get_grow_code(url,days, li_code): 
@@ -79,7 +93,7 @@ def get_grow_code(url,days, li_code):
     li_days_tmp=[]
     li_num_tmp=[] 
     nu_nu=0
-    nu_n=0 
+    nu_n=0
 
     useful_proxies = {}
     max_failure_times = 3
@@ -92,7 +106,8 @@ def get_grow_code(url,days, li_code):
         print ("获取代理ip时出错！") 
 
 
-
+    # proxy={'http': 'http://183.129.207.82:13361'}
+    # pro = ['1.119.129.2:8080', '115.174.66.148', '113.200.214.164'] 
     for code_nm in li_code:
         print('-----------------------从第'+str(nu_nu)+'只股票提取------------------------------------')
         proxy = random.choice(list(useful_proxies.keys()))
@@ -112,60 +127,69 @@ def get_grow_code(url,days, li_code):
             # print('shengxia'+proxy)
             con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
 
-        li_data=con.get('items')
-        # print(li_data)
-        if li_data is not None:
-            jo=pd.DataFrame(li_data)
-            # jo=jo.sort_values(by="time", ascending=False)
+        if con.get('error') is None:   
+            li_data=con.get('items')
+            # print(li_data)
+            if li_data is not None:
+                jo=pd.DataFrame(li_data)
+                # jo=jo.sort_values(by="time", ascending=False)
 
-            if len(jo.time.tolist()) > 30:
-                zong=jo.sort_values(by="time", ascending=False)[:30]
-                # 0个开盘价(涨)>1个收盘价(跌)
-                # 1个开盘价(跌)>2个开盘价(涨)
-                # 2个开盘价(涨)>3个开盘价(涨)
-                # 3个开盘价(涨)>4个开盘价(涨)
-                # 4个开盘价(涨)>5个开盘价(涨)
-                # 0个开盘价(涨)>2个开盘价(涨)
+                if len(jo.time.tolist()) > 30:
+                    zong=jo.sort_values(by="time", ascending=False)[:30]
+                    # 0个开盘价(涨)>1个收盘价(跌)
+                    # 1个开盘价(跌)>2个开盘价(涨)
+                    # 2个开盘价(涨)>3个开盘价(涨)
+                    # 3个开盘价(涨)>4个开盘价(涨)
+                    # 4个开盘价(涨)>5个开盘价(涨)
+                    # 0个开盘价(涨)>2个开盘价(涨)
 
-                for i in range(days):
-                    if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
-                        if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
-                            if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
-                                if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
-                                    if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
-                                        if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
+                    for i in range(days):
+                        if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
+                            if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
+                                if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
+                                    if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
+                                        if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
+                                            if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
 
-                                            if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
-                                                if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
-                                                    if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
-                                                        if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
-                                                            if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
-                                                                if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
-                                                                    if str(code_nm) not in li_code_tmp:
-                                                                        li_days_tmp.append(i)
-                                                                        li_code_tmp.append(str(code_nm))
-                                                                        nu_n=nu_n+1
-                del jo, zong
-                gc.collect()
-                # if zong['open'].is_monotonic_decreasing:
-                
-                # 第0个开盘价(涨)>1个收盘价(跌)
-                # 1个开盘价(跌)>2个开盘价(涨)>3个开盘价(涨)>4个开盘价(涨)>5个开盘价(涨)
 
-                # if zong.iloc[0]['open'] > zong.iloc[1]['close'] and zong.iloc[1]['open'] > zong.iloc[2]['open']:
-                # # if zong.iloc[1]['open'] > zong.iloc[2]['open']:
-                #     if zong.iloc[2]['open'] > zong.iloc[3]['open'] and zong.iloc[3]['open'] > zong.iloc[4]['open'] and zong.iloc[4]['open'] > zong.iloc[5]['open']:    
-                #         if (first['close'] - first['open'])/first['open'] >= 0:
-                #             if (second['close'] - second['open'])/second['open'] <= 0:
-                #                 nuuu=0       
-                #                 for row in last.itertuples(): 
-                #                     if (getattr(row,'close') - getattr(row,'open'))/getattr(row,'open') >= 0:
-                #                         nuuu=nuuu+1
-                #                 if nuuu==4:
-                #                     li_code_tmp.append(str(code_nm))
-                #                     nu_n=nu_n+1
-        nu_nu=nu_nu+1
-        print('***********共提取'+str(nu_n)+'只股票符合条件***********')  
+                                                if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
+                                                    if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
+                                                        if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
+                                                            if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
+                                                                if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
+                                                                    if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
+                                                                        
+                                                                        if not ((((zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open']) < ((zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'])) and (((zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open']) <  ((zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open']))):                   
+
+                                                                            if str(code_nm) not in li_code_tmp:
+                                                                                li_days_tmp.append(i)
+                                                                                li_code_tmp.append(str(code_nm))
+                                                                                nu_n=nu_n+1
+                    del jo, zong
+                    gc.collect()
+                    # if zong['open'].is_monotonic_decreasing:
+                    
+                    # 第0个开盘价(涨)>1个收盘价(跌)
+                    # 1个开盘价(跌)>2个开盘价(涨)>3个开盘价(涨)>4个开盘价(涨)>5个开盘价(涨)
+
+                    # if zong.iloc[0]['open'] > zong.iloc[1]['close'] and zong.iloc[1]['open'] > zong.iloc[2]['open']:
+                    # # if zong.iloc[1]['open'] > zong.iloc[2]['open']:
+                    #     if zong.iloc[2]['open'] > zong.iloc[3]['open'] and zong.iloc[3]['open'] > zong.iloc[4]['open'] and zong.iloc[4]['open'] > zong.iloc[5]['open']:    
+                    #         if (first['close'] - first['open'])/first['open'] >= 0:
+                    #             if (second['close'] - second['open'])/second['open'] <= 0:
+                    #                 nuuu=0       
+                    #                 for row in last.itertuples(): 
+                    #                     if (getattr(row,'close') - getattr(row,'open'))/getattr(row,'open') >= 0:
+                    #                         nuuu=nuuu+1
+                    #                 if nuuu==4:
+                    #                     li_code_tmp.append(str(code_nm))
+                    #                     nu_n=nu_n+1
+            nu_nu=nu_nu+1
+            print('***********共提取'+str(nu_n)+'只股票符合条件***********')
+        else:
+            print(con.get('error'))
+            print('下载数据错误')      
+              
     tmp_df=pd.DataFrame({'days':li_days_tmp,'code':li_code_tmp})    
     return tmp_df
 
@@ -208,7 +232,7 @@ def get_laohu_analysis(n, url, li_code,days):
     nu_nu=0
     jo=pd.DataFrame()
     quotes=pd.DataFrame()
-
+    
     useful_proxies = {}
     max_failure_times = 3
     try:
@@ -238,6 +262,10 @@ def get_laohu_analysis(n, url, li_code,days):
             # print('shengxia'+proxy)
             con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
 
+
+
+        # con = requests.get(url.format(str(li_code[nmm])), headers=header).json()
+        # time.sleep(0.1) 
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)
@@ -277,8 +305,8 @@ def get_laohu_analysis(n, url, li_code,days):
             # count=quotes.shape[0]
             # year=int(count/48)
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
-            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
+            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
             # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
             
@@ -349,17 +377,16 @@ def get_laohu_analysis(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_fig_up_"+str(n)+".png")
     # plt.show()
     
-
 def get_laohu_analysis_all(n, url, li_code,days): 
     fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
     li=[]
     nu_nu=0
     jo=pd.DataFrame()
     quotes=pd.DataFrame()
-
+    
     useful_proxies = {}
     max_failure_times = 3
     try:
@@ -428,8 +455,8 @@ def get_laohu_analysis_all(n, url, li_code,days):
             # count=quotes.shape[0]
             # year=int(count/48)
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
-            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
+            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
             # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
             
@@ -500,11 +527,9 @@ def get_laohu_analysis_all(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_all_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_fig_up_all_"+str(n)+".png")
     # plt.show()
-    
-
-            
+             
 def write_li(fileName,li):
        fp = open(fileName,'w+')      
        for i in range(len(li)):
@@ -526,13 +551,27 @@ def write_csv(fileName,df):
     else:
         df.to_csv(fileName,index=False)
     return True
+
+
+
+
+
+
+
+
+
+
+
         
-days_df=get_grow_code(url_week, 5, li_code)
+
+
+
+days_df=get_grow_code(url_day,5, li_code)
 days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()
 # write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+'_up_code.txt',codee)
-write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/record.csv',days_sort_df)
+write_csv(path+'/up_data/record.csv',days_sort_df)
 # codee=li_code[:1000]
 # days_df[(days_df.code==tmp)].index.values
 
@@ -543,9 +582,9 @@ for i in range((len(codee)//100)+1):
         end = len(codee)  
     code_tmp=codee[start:end]
     days_tmp=days[start:end]
-    get_laohu_analysis(i, url_week, code_tmp, days_tmp)
+    get_laohu_analysis(i, url_day, code_tmp, days_tmp)
     time.sleep(1)
-    get_laohu_analysis_all(i, url_week, code_tmp, days_tmp)
+    get_laohu_analysis_all(i, url_day, code_tmp, days_tmp)
 
 
 

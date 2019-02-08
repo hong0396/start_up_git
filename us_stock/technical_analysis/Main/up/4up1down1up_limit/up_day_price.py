@@ -63,7 +63,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer 54z9fub2f1BTB1XsauydAdOdOuJCh4',
+'Authorization': 'Bearer Vxe2C7g0gtyh2bLvjVTdkqIyuqhtLG',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -127,65 +127,69 @@ def get_grow_code(url,days, li_code):
             # print('shengxia'+proxy)
             con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
 
+        if con.get('error') is None:   
+            li_data=con.get('items')
+            # print(li_data)
+            if li_data is not None:
+                jo=pd.DataFrame(li_data)
+                # jo=jo.sort_values(by="time", ascending=False)
 
-        li_data=con.get('items')
-        # print(li_data)
-        if li_data is not None:
-            jo=pd.DataFrame(li_data)
-            # jo=jo.sort_values(by="time", ascending=False)
+                if len(jo.time.tolist()) > 30:
+                    zong=jo.sort_values(by="time", ascending=False)[:30]
+                    # 0个开盘价(涨)>1个收盘价(跌)
+                    # 1个开盘价(跌)>2个开盘价(涨)
+                    # 2个开盘价(涨)>3个开盘价(涨)
+                    # 3个开盘价(涨)>4个开盘价(涨)
+                    # 4个开盘价(涨)>5个开盘价(涨)
+                    # 0个开盘价(涨)>2个开盘价(涨)
 
-            if len(jo.time.tolist()) > 30:
-                zong=jo.sort_values(by="time", ascending=False)[:30]
-                # 0个开盘价(涨)>1个收盘价(跌)
-                # 1个开盘价(跌)>2个开盘价(涨)
-                # 2个开盘价(涨)>3个开盘价(涨)
-                # 3个开盘价(涨)>4个开盘价(涨)
-                # 4个开盘价(涨)>5个开盘价(涨)
-                # 0个开盘价(涨)>2个开盘价(涨)
-
-                for i in range(days):
-                    if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
-                        if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
-                            if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
-                                if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
-                                    if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
-                                        if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
+                    for i in range(days):
+                        if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
+                            if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
+                                if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
+                                    if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
+                                        if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
+                                            if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
 
 
-                                            if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
-                                                if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
-                                                    if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
-                                                        if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
-                                                            if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
-                                                                if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
-                                                                    
-                                                                    if not ((((zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open']) < ((zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'])) and (((zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open']) <  ((zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open']))):                   
+                                                if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
+                                                    if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
+                                                        if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
+                                                            if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
+                                                                if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
+                                                                    if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
+                                                                        
+                                                                        if not ((((zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open']) < ((zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'])) and (((zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open']) <  ((zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open']))):                   
 
-                                                                        if str(code_nm) not in li_code_tmp:
-                                                                            li_days_tmp.append(i)
-                                                                            li_code_tmp.append(str(code_nm))
-                                                                            nu_n=nu_n+1
-                del jo, zong
-                gc.collect()
-                # if zong['open'].is_monotonic_decreasing:
-                
-                # 第0个开盘价(涨)>1个收盘价(跌)
-                # 1个开盘价(跌)>2个开盘价(涨)>3个开盘价(涨)>4个开盘价(涨)>5个开盘价(涨)
+                                                                            if str(code_nm) not in li_code_tmp:
+                                                                                li_days_tmp.append(i)
+                                                                                li_code_tmp.append(str(code_nm))
+                                                                                nu_n=nu_n+1
+                    del jo, zong
+                    gc.collect()
+                    # if zong['open'].is_monotonic_decreasing:
+                    
+                    # 第0个开盘价(涨)>1个收盘价(跌)
+                    # 1个开盘价(跌)>2个开盘价(涨)>3个开盘价(涨)>4个开盘价(涨)>5个开盘价(涨)
 
-                # if zong.iloc[0]['open'] > zong.iloc[1]['close'] and zong.iloc[1]['open'] > zong.iloc[2]['open']:
-                # # if zong.iloc[1]['open'] > zong.iloc[2]['open']:
-                #     if zong.iloc[2]['open'] > zong.iloc[3]['open'] and zong.iloc[3]['open'] > zong.iloc[4]['open'] and zong.iloc[4]['open'] > zong.iloc[5]['open']:    
-                #         if (first['close'] - first['open'])/first['open'] >= 0:
-                #             if (second['close'] - second['open'])/second['open'] <= 0:
-                #                 nuuu=0       
-                #                 for row in last.itertuples(): 
-                #                     if (getattr(row,'close') - getattr(row,'open'))/getattr(row,'open') >= 0:
-                #                         nuuu=nuuu+1
-                #                 if nuuu==4:
-                #                     li_code_tmp.append(str(code_nm))
-                #                     nu_n=nu_n+1
-        nu_nu=nu_nu+1
-        print('***********共提取'+str(nu_n)+'只股票符合条件***********')  
+                    # if zong.iloc[0]['open'] > zong.iloc[1]['close'] and zong.iloc[1]['open'] > zong.iloc[2]['open']:
+                    # # if zong.iloc[1]['open'] > zong.iloc[2]['open']:
+                    #     if zong.iloc[2]['open'] > zong.iloc[3]['open'] and zong.iloc[3]['open'] > zong.iloc[4]['open'] and zong.iloc[4]['open'] > zong.iloc[5]['open']:    
+                    #         if (first['close'] - first['open'])/first['open'] >= 0:
+                    #             if (second['close'] - second['open'])/second['open'] <= 0:
+                    #                 nuuu=0       
+                    #                 for row in last.itertuples(): 
+                    #                     if (getattr(row,'close') - getattr(row,'open'))/getattr(row,'open') >= 0:
+                    #                         nuuu=nuuu+1
+                    #                 if nuuu==4:
+                    #                     li_code_tmp.append(str(code_nm))
+                    #                     nu_n=nu_n+1
+            nu_nu=nu_nu+1
+            print('***********共提取'+str(nu_n)+'只股票符合条件***********')
+        else:
+            print(con.get('error'))
+            print('下载数据错误')      
+              
     tmp_df=pd.DataFrame({'days':li_days_tmp,'code':li_code_tmp})    
     return tmp_df
 

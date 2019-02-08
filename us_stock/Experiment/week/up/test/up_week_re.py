@@ -20,11 +20,12 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import MONDAY, DateFormatter, DayLocator, WeekdayLocator
 from mpl_finance import candlestick_ohlc
 import gc 
+
 import ip_te
 ip_factory=ip_te.ip_get_test_save(1.5,1)
 
 requests.packages.urllib3.disable_warnings()
-
+path=os.getcwd()
 def getmin(fun,xa,xb):
     res1 = bracket(fun, xa = xa, xb=xb)
     res = minimize_scalar(fun,  bounds=(res1[2],res1[1]),  method='bounded')
@@ -49,7 +50,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer 54z9fub2f1BTB1XsauydAdOdOuJCh4',
+'Authorization': 'Bearer Vxe2C7g0gtyh2bLvjVTdkqIyuqhtLG',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -112,65 +113,184 @@ def get_grow_code(url,days, li_code):
             # print('shengxia'+proxy)
             con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
 
-        li_data=con.get('items')
-        # print(li_data)
-        if li_data is not None:
-            jo=pd.DataFrame(li_data)
-            # jo=jo.sort_values(by="time", ascending=False)
+      
+        if con.get('error') is None:               
+            li_data=con.get('items')
+            # print(li_data)
+            if li_data is not None:
+                jo=pd.DataFrame(li_data)
+                # jo=jo.sort_values(by="time", ascending=False)
 
-            if len(jo.time.tolist()) > 30:
-                zong=jo.sort_values(by="time", ascending=False)[:30]
-                # 0个开盘价(涨)>1个收盘价(跌)
-                # 1个开盘价(跌)>2个开盘价(涨)
-                # 2个开盘价(涨)>3个开盘价(涨)
-                # 3个开盘价(涨)>4个开盘价(涨)
-                # 4个开盘价(涨)>5个开盘价(涨)
-                # 0个开盘价(涨)>2个开盘价(涨)
+                if len(jo.time.tolist()) > 30:
+                    zong=jo.sort_values(by="time", ascending=False)[:30]
+                    # 0个开盘价(涨)>1个收盘价(跌)
+                    # 1个开盘价(跌)>2个开盘价(涨)
+                    # 2个开盘价(涨)>3个开盘价(涨)
+                    # 3个开盘价(涨)>4个开盘价(涨)
+                    # 4个开盘价(涨)>5个开盘价(涨)
+                    # 0个开盘价(涨)>2个开盘价(涨)
 
-                for i in range(days):
-                    if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
-                        if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
-                            if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
-                                if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
-                                    if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
-                                        if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
+                    for i in range(days):
+                        if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
+                            if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
+                                if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
+                                    if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
+                                        if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
+                                            if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
 
-                                            if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
-                                                if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
-                                                    if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
-                                                        if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
-                                                            if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
-                                                                if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
-                                                                    if str(code_nm) not in li_code_tmp:
-                                                                        li_days_tmp.append(i)
-                                                                        li_code_tmp.append(str(code_nm))
-                                                                        nu_n=nu_n+1
-                del jo, zong
-                gc.collect()
-                # if zong['open'].is_monotonic_decreasing:
-                
-                # 第0个开盘价(涨)>1个收盘价(跌)
-                # 1个开盘价(跌)>2个开盘价(涨)>3个开盘价(涨)>4个开盘价(涨)>5个开盘价(涨)
+                                                if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
+                                                    if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
+                                                        if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
+                                                            if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
+                                                                if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
+                                                                    if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
+                                                                        if str(code_nm) not in li_code_tmp:
+                                                                            li_days_tmp.append(i)
+                                                                            li_code_tmp.append(str(code_nm))
+                                                                            nu_n=nu_n+1
+                    del jo, zong
+                    gc.collect()
+                    # if zong['open'].is_monotonic_decreasing:
+                    
+                    # 第0个开盘价(涨)>1个收盘价(跌)
+                    # 1个开盘价(跌)>2个开盘价(涨)>3个开盘价(涨)>4个开盘价(涨)>5个开盘价(涨)
 
-                # if zong.iloc[0]['open'] > zong.iloc[1]['close'] and zong.iloc[1]['open'] > zong.iloc[2]['open']:
-                # # if zong.iloc[1]['open'] > zong.iloc[2]['open']:
-                #     if zong.iloc[2]['open'] > zong.iloc[3]['open'] and zong.iloc[3]['open'] > zong.iloc[4]['open'] and zong.iloc[4]['open'] > zong.iloc[5]['open']:    
-                #         if (first['close'] - first['open'])/first['open'] >= 0:
-                #             if (second['close'] - second['open'])/second['open'] <= 0:
-                #                 nuuu=0       
-                #                 for row in last.itertuples(): 
-                #                     if (getattr(row,'close') - getattr(row,'open'))/getattr(row,'open') >= 0:
-                #                         nuuu=nuuu+1
-                #                 if nuuu==4:
-                #                     li_code_tmp.append(str(code_nm))
-                #                     nu_n=nu_n+1
-        nu_nu=nu_nu+1
-        print('***********共提取'+str(nu_n)+'只股票符合条件***********')  
+                    # if zong.iloc[0]['open'] > zong.iloc[1]['close'] and zong.iloc[1]['open'] > zong.iloc[2]['open']:
+                    # # if zong.iloc[1]['open'] > zong.iloc[2]['open']:
+                    #     if zong.iloc[2]['open'] > zong.iloc[3]['open'] and zong.iloc[3]['open'] > zong.iloc[4]['open'] and zong.iloc[4]['open'] > zong.iloc[5]['open']:    
+                    #         if (first['close'] - first['open'])/first['open'] >= 0:
+                    #             if (second['close'] - second['open'])/second['open'] <= 0:
+                    #                 nuuu=0       
+                    #                 for row in last.itertuples(): 
+                    #                     if (getattr(row,'close') - getattr(row,'open'))/getattr(row,'open') >= 0:
+                    #                         nuuu=nuuu+1
+                    #                 if nuuu==4:
+                    #                     li_code_tmp.append(str(code_nm))
+                    #                     nu_n=nu_n+1
+            nu_nu=nu_nu+1
+            print('***********共提取'+str(nu_n)+'只股票符合条件***********')
+        else:
+            print(con.get('error'))
+            print('下载数据错误')
+
+                  
     tmp_df=pd.DataFrame({'days':li_days_tmp,'code':li_code_tmp})    
     return tmp_df
 
 
+def get_earn(li_code):
+
+    nu_nuu=0
+    liil=[]
+
+    useful_proxies = {}
+    max_failure_times = 3
+    try:
+    # 获取代理IP数据
+        for ip in list(ip_factory):
+            useful_proxies[ip] = 0
+        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
+    except OSError:
+        print ("获取代理ip时出错！")
+
+
+    for code_nm in li_code:
+        print('-------------------------------'+str(nu_nuu)+'----------------------------------------')
+        # print('-------------------------------'+str(code_nm)+'-------------------------------------')
+        url='https://hq.itiger.com/fundamental/usstock/earnings/income/'+code_nm+'?type=income&symbol='+code_nm+'&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+        # time.sleep(0.1)
+        proxy = random.choice(list(useful_proxies.keys()))
+        print ("change proxies: " + proxy)
+
+        content = ''
+        try:
+            res=requests.get(url, proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5)
+            time.sleep(0.1)
+        except OSError:
+            # 超过3次则删除此proxy
+            useful_proxies[proxy] += 1
+            if useful_proxies[proxy] > 3:
+                del useful_proxies[proxy]
+            # 再抓一次
+            proxy = random.choice(list(useful_proxies.keys()))
+            # print('shengxia'+proxy)
+            res=requests.get(url, proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5)
             
+
+        if res.status_code == 200:
+            a=res.json()
+            li=a.get('data').get('page')
+            li_h=a.get('data').get('header')
+            # print(li)
+
+            num=2018
+            num_income=2018
+            value='0'
+            yoy='0'
+            value_income='0'
+            yoy_income='0'
+
+
+
+            if not li_h is None:
+                for h in range(len(li_h)):
+                    if li_h[h].get('name') ==  "净利润":
+                        num=h
+                    if li_h[h].get('name') ==  "主营业务收入":
+                        num_income=h
+
+            if num != 2018: 
+                if not li is None:
+                        li=li[0]
+                        if li.get('type') == '季报':
+                            year_date=li.get('date')[:7]
+                            tmmp=li.get('cell')
+                            if num+1 < len(tmmp):
+                                valu=tmmp[num].get('value')
+                                yoy=tmmp[num].get('yoy')
+                                if yoy is None:
+                                    yoy='0'
+                                if not valu is None:
+                                    value=valu.replace(',','')
+                                    if '千' in value:                                
+                                        value=float(value.replace('千',''))*1000
+                                    elif '万' in value:                             
+                                        value=float(value.replace('万',''))*10000
+                                    elif '亿' in value:                              
+                                        value=float(value.replace('亿',''))*100000000
+                                else:
+                                    value='0'
+                            else:
+                                value='0'
+                                yoy='0'
+
+
+                            if num_income+1 < len(tmmp):
+                                valu_income=tmmp[num_income].get('value')
+                                yoy_income=tmmp[num_income].get('yoy')
+                                if yoy_income is None:
+                                    yoy_income='0'
+                                if not valu_income is None:
+                                    value_income=valu_income.replace(',','')
+                                    if '千' in value_income:                                
+                                        value_income=float(value_income.replace('千',''))*1000
+                                    elif '万' in value_income:                             
+                                        value_income=float(value_income.replace('万',''))*10000
+                                    elif '亿' in value_income:                              
+                                        value_income=float(value_income.replace('亿',''))*100000000
+                                else:
+                                    value_income='0'
+                            else:
+                                value_income='0'
+                                yoy_income='0'
+         
+                            
+            liil.append(str(value)+'_'+yoy+'_'+str(value_income)+'_'+yoy_income)              
+        else:
+            print('下载数据错误')
+        nu_nuu=nu_nuu+1
+    tmp_df=pd.DataFrame({'earn':liil,'code':li_code})    
+    return tmp_df    
       
 # def date_to_num(dates):
 #     num_time = []
@@ -349,11 +469,11 @@ def get_laohu_analysis(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_fig_up_"+str(n)+".png")
     # plt.show()
     
 
-def get_laohu_analysis_all(n, url, li_code,days): 
+def get_laohu_analysis_all(n, url, li_code,days,earn): 
     fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
     li=[]
     nu_nu=0
@@ -428,7 +548,7 @@ def get_laohu_analysis_all(n, url, li_code,days):
             # count=quotes.shape[0]
             # year=int(count/48)
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
-            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
+            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(round(bio*100,0))+str(earn[nmm]).split('_')[1],fontsize=18,fontweight='bold')    
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
             # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
@@ -500,7 +620,7 @@ def get_laohu_analysis_all(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_all_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_fig_up_all_"+str(n)+".png")
     # plt.show()
     
 
@@ -532,9 +652,12 @@ days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()
 # write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+'_up_code.txt',codee)
-write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/record.csv',days_sort_df)
+write_csv(path+'/up_data/record.csv',days_sort_df)
 # codee=li_code[:1000]
 # days_df[(days_df.code==tmp)].index.values
+earn_df=get_earn(codee)
+earn=earn_df.earn.tolist()
+
 
 for i in range((len(codee)//100)+1):
     start=i*100 
@@ -543,9 +666,10 @@ for i in range((len(codee)//100)+1):
         end = len(codee)  
     code_tmp=codee[start:end]
     days_tmp=days[start:end]
-    get_laohu_analysis(i, url_week, code_tmp, days_tmp)
+    earn_tmp=earn[start:end]
+    # get_laohu_analysis(i, url_week, code_tmp, days_tmp)
     time.sleep(1)
-    get_laohu_analysis_all(i, url_week, code_tmp, days_tmp)
+    get_laohu_analysis_all(i, url_week, code_tmp, days_tmp,earn_tmp)
 
 
 

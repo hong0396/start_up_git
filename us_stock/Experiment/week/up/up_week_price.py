@@ -20,11 +20,12 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import MONDAY, DateFormatter, DayLocator, WeekdayLocator
 from mpl_finance import candlestick_ohlc
 import gc 
+
 import ip_te
 ip_factory=ip_te.ip_get_test_save(1.5,1)
 
 requests.packages.urllib3.disable_warnings()
-
+path=os.getcwd()
 def getmin(fun,xa,xb):
     res1 = bracket(fun, xa = xa, xb=xb)
     res = minimize_scalar(fun,  bounds=(res1[2],res1[1]),  method='bounded')
@@ -49,7 +50,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer 54z9fub2f1BTB1XsauydAdOdOuJCh4',
+'Authorization': 'Bearer Vxe2C7g0gtyh2bLvjVTdkqIyuqhtLG',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -349,7 +350,7 @@ def get_laohu_analysis(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_fig_up_"+str(n)+".png")
     # plt.show()
     
 
@@ -500,7 +501,7 @@ def get_laohu_analysis_all(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_all_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_fig_up_all_"+str(n)+".png")
     # plt.show()
     
 
@@ -532,7 +533,7 @@ days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()
 # write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+'_up_code.txt',codee)
-write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/record.csv',days_sort_df)
+write_csv(path+'/up_data/record.csv',days_sort_df)
 # codee=li_code[:1000]
 # days_df[(days_df.code==tmp)].index.values
 

@@ -20,8 +20,6 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import MONDAY, DateFormatter, DayLocator, WeekdayLocator
 from mpl_finance import candlestick_ohlc
 import gc 
-import ip_te
-ip_factory=ip_te.ip_get_test_save(1.5,1)
 
 requests.packages.urllib3.disable_warnings()
 
@@ -37,26 +35,18 @@ def todate(timeStamp):
     return otherStyleTime
 # print(time.time())
 date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
-my_headers = [
-    'Mozilla/5.0 (Windows NT 5.2) AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.122 Safari/534.30',
-    'Mozilla/5.0 (Windows NT 5.1; rv:5.0) Gecko/20100101 Firefox/5.0',
-    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.2; Trident/4.0; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET4.0E; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)',
-    'Opera/9.80 (Windows NT 5.1; U; zh-cn) Presto/2.9.168 Version/11.50',
-    'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1',
-    'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022; .NET4.0E; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)',
-    'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36']
 header={'Accept': 'application/json, text/plain, */*', 
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer 54z9fub2f1BTB1XsauydAdOdOuJCh4',
+'Authorization': 'Bearer aAmt1vk9CI5QYnVMzRwXpfuvZmXmvo',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
-"User-Agent":random.choice(my_headers) }
+'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
 
 
-code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
+code=pd.read_csv('2018-10-13us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
 # print(code)                
@@ -80,46 +70,20 @@ def get_grow_code(url,days, li_code):
     li_num_tmp=[] 
     nu_nu=0
     nu_n=0 
-
-    useful_proxies = {}
-    max_failure_times = 3
-    try:
-    # 获取代理IP数据
-        for ip in list(ip_factory):
-            useful_proxies[ip] = 0
-        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
-    except OSError:
-        print ("获取代理ip时出错！") 
-
-
-
     for code_nm in li_code:
         print('-----------------------从第'+str(nu_nu)+'只股票提取------------------------------------')
-        proxy = random.choice(list(useful_proxies.keys()))
-        print ("change proxies: " + proxy)
-
-        content = ''
-        try:
-            con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
-            time.sleep(0.1)
-        except OSError:
-            # 超过3次则删除此proxy
-            useful_proxies[proxy] += 1
-            if useful_proxies[proxy] > 3:
-                del useful_proxies[proxy]
-            # 再抓一次
-            proxy = random.choice(list(useful_proxies.keys()))
-            # print('shengxia'+proxy)
-            con = requests.get(url.format(str(code_nm)), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
-
+        con = requests.get(url.format(str(code_nm)), headers=header,verify=False).json()
+        time.sleep(0.1)
+        # print(con) 
         li_data=con.get('items')
-        # print(li_data)
         if li_data is not None:
             jo=pd.DataFrame(li_data)
             # jo=jo.sort_values(by="time", ascending=False)
 
             if len(jo.time.tolist()) > 30:
                 zong=jo.sort_values(by="time", ascending=False)[:30]
+                
+
                 # 0个开盘价(涨)>1个收盘价(跌)
                 # 1个开盘价(跌)>2个开盘价(涨)
                 # 2个开盘价(涨)>3个开盘价(涨)
@@ -129,22 +93,23 @@ def get_grow_code(url,days, li_code):
 
                 for i in range(days):
                     if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
-                        if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
-                            if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
-                                if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
-                                    if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
-                                        if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
+	                    if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+1+1]['close'],2): 
+	                        if round(zong.iloc[i+1+1]['open'],2) >= round(zong.iloc[i+1+2]['open'],2):
+	                            if round(zong.iloc[i+1+2]['open'],2) >= round(zong.iloc[i+1+3]['open'],2): 
+	                                if round(zong.iloc[i+1+3]['open'],2) >= round(zong.iloc[i+1+4]['open'],2):
+	                                    if round(zong.iloc[i+1+4]['open'],2) >= round(zong.iloc[i+1+5]['open'],2): 
+	                                        if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+1+2]['open'],2): 
 
-                                            if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
-                                                if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
-                                                    if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
-                                                        if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
-                                                            if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
-                                                                if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
-                                                                    if str(code_nm) not in li_code_tmp:
-                                                                        li_days_tmp.append(i)
-                                                                        li_code_tmp.append(str(code_nm))
-                                                                        nu_n=nu_n+1
+	                                            if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] >= 0:
+	                                                if (zong.iloc[i+1+1]['close'] - zong.iloc[i+1+1]['open'])/zong.iloc[i+1+1]['open'] <= 0:
+	                                                    if (zong.iloc[i+1+2]['close'] - zong.iloc[i+1+2]['open'])/zong.iloc[i+1+2]['open'] >= 0:
+	                                                        if (zong.iloc[i+1+3]['close'] - zong.iloc[i+1+3]['open'])/zong.iloc[i+1+3]['open'] >= 0:
+	                                                            if (zong.iloc[i+1+4]['close'] - zong.iloc[i+1+4]['open'])/zong.iloc[i+1+4]['open'] >= 0:
+	                                                                if (zong.iloc[i+1+5]['close'] - zong.iloc[i+1+5]['open'])/zong.iloc[i+1+5]['open'] >= 0:
+	                                                                    if str(code_nm) not in li_code_tmp:
+	                                                                        li_days_tmp.append(i)
+	                                                                        li_code_tmp.append(str(code_nm))
+	                                                                        nu_n=nu_n+1
                 del jo, zong
                 gc.collect()
                 # if zong['open'].is_monotonic_decreasing:
@@ -209,42 +174,16 @@ def get_laohu_analysis(n, url, li_code,days):
     jo=pd.DataFrame()
     quotes=pd.DataFrame()
 
-    useful_proxies = {}
-    max_failure_times = 3
-    try:
-    # 获取代理IP数据
-        for ip in list(ip_factory):
-            useful_proxies[ip] = 0
-        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
-    except OSError:
-        print ("获取代理ip时出错！") 
-
     for nmm in range(len(li_code)):
         print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
-        proxy = random.choice(list(useful_proxies.keys()))
-        print ("change proxies: " + proxy)
-
-        content = ''
-        try:
-            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
-            time.sleep(0.1)
-        except OSError:
-            # 超过3次则删除此proxy
-            useful_proxies[proxy] += 1
-            if useful_proxies[proxy] > 3:
-                del useful_proxies[proxy]
-            # 再抓一次
-            proxy = random.choice(list(useful_proxies.keys()))
-            # print('shengxia'+proxy)
-            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
-
+        con = requests.get(url.format(str(li_code[nmm])), headers=header).json()
+        time.sleep(0.1) 
         li_data=con.get('items')
         if li_data is not None:
             jo=pd.DataFrame(li_data)
             quotes=jo.copy()
             
             quotes=quotes.sort_values(by="time", ascending=False)[:15]
-            bio=round(((quotes.iloc[days[nmm]]['close'] - quotes.iloc[days[nmm]+5]['open'])/quotes.iloc[5]['open'])/5,2)
             quotes=quotes.sort_values(by="time", ascending=True)
 
             quotes['time']=quotes['time'].apply(todate)
@@ -277,8 +216,7 @@ def get_laohu_analysis(n, url, li_code,days):
             # count=quotes.shape[0]
             # year=int(count/48)
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
-            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
-            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
+            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
             # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
             
@@ -349,161 +287,9 @@ def get_laohu_analysis(n, url, li_code,days):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_"+str(n)+".png")
+    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/run_ing/up_data/'+date+"_fig_up_"+str(n)+".png")
     # plt.show()
     
-
-def get_laohu_analysis_all(n, url, li_code,days): 
-    fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
-    li=[]
-    nu_nu=0
-    jo=pd.DataFrame()
-    quotes=pd.DataFrame()
-
-    useful_proxies = {}
-    max_failure_times = 3
-    try:
-    # 获取代理IP数据
-        for ip in list(ip_factory):
-            useful_proxies[ip] = 0
-        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
-    except OSError:
-        print ("获取代理ip时出错！") 
-
-    for nmm in range(len(li_code)):
-        print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
-        proxy = random.choice(list(useful_proxies.keys()))
-        print ("change proxies: " + proxy)
-
-        content = ''
-        try:
-            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
-            time.sleep(0.1)
-        except OSError:
-            # 超过3次则删除此proxy
-            useful_proxies[proxy] += 1
-            if useful_proxies[proxy] > 3:
-                del useful_proxies[proxy]
-            # 再抓一次
-            proxy = random.choice(list(useful_proxies.keys()))
-            # print('shengxia'+proxy)
-            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
-
-        li_data=con.get('items')
-        if li_data is not None:
-            jo=pd.DataFrame(li_data)
-            quotes=jo.copy()
-            
-            quotes_part=quotes.sort_values(by="time", ascending=False)[:15]
-            bio=round(((quotes_part.iloc[days[nmm]]['close'] - quotes_part.iloc[days[nmm]+5]['open'])/quotes_part.iloc[5]['open'])/5,2)
-            # quotes=quotes.sort_values(by="time", ascending=True)
-
-            quotes['time']=quotes['time'].apply(todate)
-            quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
-
-            x = jo['time'].values
-            y = jo['close'].values
-            vol = jo['volume'].values
-            vol_li = jo['volume'].tolist()
-            vol_min=min(vol_li)
-            vol_max=max(vol_li)
-            vol_up=(vol_max-vol_min)*0.3+vol_max
-            z1 = np.polyfit(x, y, 4)#用3次多项式拟合
-            p1 = np.poly1d(z1)
-            # print(p1) #在屏幕上打印拟合多项式
-            yvals=p1(x)#也可以使用yvals=np.polyval(z1,x)
-            der=p1.deriv(m=2)
-            dder=der(x)
-            dder_list = dder.tolist()
-            maxindex=dder_list.index(max(dder_list))
-            # print(maxindex)
-            time_max=jo['time'][maxindex]
-            close_max=jo['close'][maxindex]
-            p1_max=p1(time_max)
-
-
-
-            # print(jo)
-            ax=axes[nu_nu//10, nu_nu%10]
-            # count=quotes.shape[0]
-            # year=int(count/48)
-            # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
-            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
-            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
-            # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
-            # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
-            
-            # data_list=[]
-            # for row in quotes.itertuples():
-            #     date_time = datetime.datetime.strptime(getattr(row,'time'),'%Y-%m-%d')
-            #     t = date2num(date_time)
-            #     open_tmp = getattr(row,'open')
-            #     high_tmp = getattr(row,'high')
-            #     low_tmp  = getattr(row,'low')
-            #     close_tmp = getattr(row,'close')
-            #     datas = (t,open_tmp,high_tmp,low_tmp,close_tmp)
-            #     data_list.append(datas)
-            
-            candlestick_ohlc(ax, zip(mdates.date2num(quotes['time'].dt.to_pydatetime()),
-                         quotes['open'], quotes['high'],
-                         quotes['low'], quotes['close']),
-                 width=0.6,colordown='#53c156', colorup='#ff1717')
-            
-
-            # if len(quotes["close"].tolist()) >200:
-            #     ma150 = moving_average(quotes["close"], 150, type='simple')
-            #     ma200 = moving_average(quotes["close"], 200, type='simple')
-
-            #     linema150, = ax.plot(quotes['time'], ma150, color='blue', lw=2, label='MA (150)')
-            #     linema200, = ax.plot(quotes['time'], ma200, color='red', lw=2, label='MA (200)')
-
-
-            # mpf.candlestick_ohlc(ax,data_list,width=1.5,colorup='r',colordown='green')
-        
-            ax.xaxis.set_major_locator(ticker.NullLocator())
-            ax.set_ylabel(' ', fontsize=0.01)
-            ax.set_xlabel(' ', fontsize=0.01)
-            ax.spines['top'].set_linewidth(2)
-            ax.spines['bottom'].set_linewidth(2)
-            ax.spines['left'].set_linewidth(2)
-            ax.spines['right'].set_linewidth(2)
-            for label in ax.get_xticklabels() + ax.get_yticklabels():
-                label.set_fontsize(14)
-            
- 
-            ax2t = ax.twinx()
-            volume = (quotes.close * quotes.volume) / 1e6  # dollar volume in millions
-            vmax = volume.max()
-            fillcolor = 'darkgoldenrod'
-            poly = ax2t.fill_between(quotes.time.values, volume, 0, label='Volume',
-                         facecolor=fillcolor, edgecolor=fillcolor)
-            
-            ax2t.set_ylim(0, 20 * vmax)
-            ax2t.set_yticks([])
-            ax2t.set_xticks([])
-
-            del jo, quotes
-            gc.collect()
-
-            # mondays = WeekdayLocator(MONDAY)
-            # ax.xaxis.set_major_locator(mondays)
-            # daysFmt = DateFormatter("%m%d")
-            # ax.xaxis.set_major_formatter(daysFmt)
-
-            # ax2t.autoscale_view()
-            # ax2 = ax.twinx()
-            # plot3=ax2.plot(x, vol, zorder=0, c="g",linewidth=2,alpha=0.7)
-            # ax2.set_zorder(0)
-            # # ax2.set_ylabel('volume')
-            # ax2.set_ylim(vol_min,vol_up) 
-            # ax2.yaxis.set_major_locator(plt.NullLocator()) 
-        nu_nu=nu_nu+1    
-    fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
-    fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/'+date+"_fig_up_all_"+str(n)+".png")
-    # plt.show()
-    
-
             
 def write_li(fileName,li):
        fp = open(fileName,'w+')      
@@ -527,12 +313,12 @@ def write_csv(fileName,df):
         df.to_csv(fileName,index=False)
     return True
         
-days_df=get_grow_code(url_week, 5, li_code)
+days_df=get_grow_code(url_day, 1, li_code)
 days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()
 # write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+'_up_code.txt',codee)
-write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/week/up_data/record.csv',days_sort_df)
+write_csv('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/run_ing/up_data/record.csv',days_sort_df)
 # codee=li_code[:1000]
 # days_df[(days_df.code==tmp)].index.values
 
@@ -543,9 +329,9 @@ for i in range((len(codee)//100)+1):
         end = len(codee)  
     code_tmp=codee[start:end]
     days_tmp=days[start:end]
-    get_laohu_analysis(i, url_week, code_tmp, days_tmp)
-    time.sleep(1)
-    get_laohu_analysis_all(i, url_week, code_tmp, days_tmp)
+    get_laohu_analysis(i, url_day, code_tmp, days_tmp)
+
+
 
 
 

@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import MONDAY, DateFormatter, DayLocator, WeekdayLocator
 from mpl_finance import candlestick_ohlc
 import gc 
-
+from mpl_toolkits.axisartist.parasite_axes import HostAxes, ParasiteAxes
 import ip_te
 ip_factory=ip_te.ip_get_test_save(1.5,1)
 
@@ -121,7 +121,7 @@ def get_grow_code(url,days, li_code):
                 jo=pd.DataFrame(li_data)
                 # jo=jo.sort_values(by="time", ascending=False)
 
-                if len(jo.time.tolist()) > 30:
+                if len(jo.time.tolist()) > 60:
                     zong=jo.sort_values(by="time", ascending=False)[:30]
                     # 0个开盘价(涨)>1个收盘价(跌)
                     # 1个开盘价(跌)>2个开盘价(涨)
@@ -320,11 +320,28 @@ def moving_average(x, n, type='simple'):
     a[:n] = a[n]
     return a
 
-
+def pixo(useful_proxies,url):
+    proxy = random.choice(list(useful_proxies.keys()))
+    print ("change proxies: " + proxy)
+    content = ''
+    try:
+        con = requests.get(url, proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
+        time.sleep(0.1)
+    except OSError:
+        # 超过3次则删除此proxy
+        useful_proxies[proxy] += 1
+        if useful_proxies[proxy] > 3:
+            del useful_proxies[proxy]
+        # 再抓一次
+        proxy = random.choice(list(useful_proxies.keys()))
+        # print('shengxia'+proxy)
+        con = requests.get(url, proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
+    return con
 
 
 def get_laohu_analysis(n, url, li_code,days,earn): 
     fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
+
     li=[]
     nu_nu=0
     jo=pd.DataFrame()
@@ -339,6 +356,22 @@ def get_laohu_analysis(n, url, li_code,days,earn):
         print ("总共：" + str(len(useful_proxies)) + 'IP可用')
     except OSError:
         print ("获取代理ip时出错！") 
+
+
+    
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    con =pixo(useful_proxies,url_dji)
+ 
+    li_data=con.get('items')    
+    if li_data is not None:
+        dji_pd=pd.DataFrame(li_data)
+        dji_pd['time']=dji_pd['time'].apply(todate)
+        dji_pd['close_pre'] = dji_pd["close"].shift(1)
+        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd=dji_pd[['time','week_grow']]
+        
+
+
 
     for nmm in range(len(li_code)):
         print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
@@ -364,11 +397,230 @@ def get_laohu_analysis(n, url, li_code,days,earn):
             jo=pd.DataFrame(li_data)
             quotes=jo.copy()
             
-            quotes=quotes.sort_values(by="time", ascending=False)[:15]
-            bio=round(((quotes.iloc[days[nmm]]['close'] - quotes.iloc[days[nmm]+5]['open'])/quotes.iloc[5]['open'])/5,2)
-            quotes=quotes.sort_values(by="time", ascending=True)
+            quotes['close_pre_tmp'] = quotes["close"].shift(1)
+            quotes['week_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
+            
+            quotes_part=quotes.sort_values(by="time", ascending=False)[:15]
+            bio=round(((quotes_part.iloc[days[nmm]]['close'] - quotes_part.iloc[days[nmm]+5]['open'])/quotes_part.iloc[5]['open'])/5,2)
+            # quotes=quotes.sort_values(by="time", ascending=True)
 
+            # quotes['time']=quotes['time'].apply(todate)
+            quotes=quotes.sort_values(by="time", ascending=False)[:15]
             quotes['time']=quotes['time'].apply(todate)
+            
+          
+            su=pd.merge(quotes, dji_pd, on='time',how='inner')
+            su['week_rs']=su['week_grow_tmp']-su['week_grow']
+           
+            quotes=su.copy()
+            quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
+
+            x = jo['time'].values
+            y = jo['close'].values
+            vol = jo['volume'].values
+            vol_li = jo['volume'].tolist()
+            vol_min=min(vol_li)
+            vol_max=max(vol_li)
+            vol_up=(vol_max-vol_min)*0.3+vol_max
+            z1 = np.polyfit(x, y, 4)#用3次多项式拟合
+            p1 = np.poly1d(z1)
+            # print(p1) #在屏幕上打印拟合多项式
+            yvals=p1(x)#也可以使用yvals=np.polyval(z1,x)
+            der=p1.deriv(m=2)
+            dder=der(x)
+            dder_list = dder.tolist()
+            maxindex=dder_list.index(max(dder_list))
+            # print(maxindex)
+            time_max=jo['time'][maxindex]
+            close_max=jo['close'][maxindex]
+            p1_max=p1(time_max)
+
+
+
+            # print(jo)
+            # ax =fig.add_axes(axes[nu_nu//10, nu_nu%10])
+            ax=axes[nu_nu//10, nu_nu%10]
+            # count=quotes.shape[0]
+            # year=int(count/48)
+            # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
+            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
+            if not '-' in str(earn[nmm]).split('_')[0]:
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'u',fontsize=18,fontweight='bold')        
+            else:
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'d',fontsize=18,fontweight='bold',color="darkgreen")    
+
+            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
+            # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
+            # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
+            
+            # data_list=[]
+            # for row in quotes.itertuples():
+            #     date_time = datetime.datetime.strptime(getattr(row,'time'),'%Y-%m-%d')
+            #     t = date2num(date_time)
+            #     open_tmp = getattr(row,'open')
+            #     high_tmp = getattr(row,'high')
+            #     low_tmp  = getattr(row,'low')
+            #     close_tmp = getattr(row,'close')
+            #     datas = (t,open_tmp,high_tmp,low_tmp,close_tmp)
+            #     data_list.append(datas)
+            
+            
+            candlestick_ohlc(ax, zip(mdates.date2num(quotes['time'].dt.to_pydatetime()),
+                         quotes['open'], quotes['high'],
+                         quotes['low'], quotes['close']),
+                 width=2,colordown='#53c156', colorup='#ff1717')
+            
+
+            # if len(quotes["close"].tolist()) >200:
+            #     ma150 = moving_average(quotes["close"], 150, type='simple')
+            #     ma200 = moving_average(quotes["close"], 200, type='simple')
+
+            #     linema150, = ax.plot(quotes['time'], ma150, color='blue', lw=2, label='MA (150)')
+            #     linema200, = ax.plot(quotes['time'], ma200, color='red', lw=2, label='MA (200)')
+
+
+            # mpf.candlestick_ohlc(ax,data_list,width=1.5,colorup='r',colordown='green')
+        
+            ax.xaxis.set_major_locator(ticker.NullLocator())
+            ax.set_ylabel(' ', fontsize=0.01)
+            ax.set_xlabel(' ', fontsize=0.01)
+            ax.spines['top'].set_linewidth(2)
+            ax.spines['bottom'].set_linewidth(2)
+            ax.spines['left'].set_linewidth(2)
+            ax.spines['right'].set_linewidth(2)
+            for label in ax.get_xticklabels() + ax.get_yticklabels():
+                label.set_fontsize(14)
+            
+ 
+            ax2t = ax.twinx()
+            volume = (quotes.close * quotes.volume) / 1e6  # dollar volume in millions
+            vmax = volume.max()
+            fillcolor = 'darkgoldenrod'
+            poly = ax2t.fill_between(quotes.time.values, volume, 0, label='Volume',
+                         facecolor=fillcolor, edgecolor=fillcolor)
+            
+            ax2t.set_ylim(0, 20 * vmax)
+            ax2t.set_yticks([])
+            ax2t.set_xticks([])
+
+            # ax3 =fig.add_axes(axes[nu_nu//10, nu_nu%10])
+            ax3 = ax.twinx()
+            ax3.plot(quotes.time.values,   quotes.week_rs.values, linewidth=1, marker='o')
+            ax3.set_ylim(-0.2, 0.8)
+            ax3.set_yticks([])
+            ax3.set_xticks([])
+            time_max=max(quotes.time.tolist())
+            time_min=min(quotes.time.tolist())
+            ax3.annotate(' ', xy=(time_min, 0), xytext=(time_max, 0),fontsize= 10,arrowprops=dict(arrowstyle='-'),)
+
+            ax.xaxis.set_major_locator(ticker.NullLocator())
+            ax.set_ylabel(' ', fontsize=0.01)
+            ax.set_xlabel(' ', fontsize=0.01)
+            ax.spines['top'].set_linewidth(2)
+            ax.spines['bottom'].set_linewidth(2)
+            ax.spines['left'].set_linewidth(2)
+            ax.spines['right'].set_linewidth(2)
+            for label in ax.get_xticklabels() + ax.get_yticklabels():
+                label.set_fontsize(14)
+            
+
+
+            del jo, quotes
+            gc.collect()
+
+            # mondays = WeekdayLocator(MONDAY)
+            # ax.xaxis.set_major_locator(mondays)
+            # daysFmt = DateFormatter("%m%d")
+            # ax.xaxis.set_major_formatter(daysFmt)
+
+            # ax2t.autoscale_view()
+            # ax2 = ax.twinx()
+            # plot3=ax2.plot(x, vol, zorder=0, c="g",linewidth=2,alpha=0.7)
+            # ax2.set_zorder(0)
+            # # ax2.set_ylabel('volume')
+            # ax2.set_ylim(vol_min,vol_up) 
+            # ax2.yaxis.set_major_locator(plt.NullLocator()) 
+        nu_nu=nu_nu+1    
+    fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
+    fig.subplots_adjust(wspace =0.2, hspace =0.2)
+    plt.savefig(path+'/up_data/'+date+"_week_up_"+str(n)+".png")
+    # plt.show()
+    
+
+
+
+
+
+def get_laohu_analysis_rs(n, url, li_code,days,earn): 
+    fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
+    li=[]
+    nu_nu=0
+    jo=pd.DataFrame()
+    quotes=pd.DataFrame()
+
+    useful_proxies = {}
+    max_failure_times = 3
+    try:
+    # 获取代理IP数据
+        for ip in list(ip_factory):
+            useful_proxies[ip] = 0
+        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
+    except OSError:
+        print ("获取代理ip时出错！") 
+
+
+
+
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    con =pixo(useful_proxies,url_dji)
+ 
+    li_data=con.get('items')    
+    if li_data is not None:
+        dji_pd=pd.DataFrame(li_data)
+        dji_pd['time']=dji_pd['time'].apply(todate)
+        dji_pd['close_pre'] = dji_pd["close"].shift(1)
+        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd=dji_pd[['time','week_grow']]
+        
+    for nmm in range(len(li_code)):
+        print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
+        proxy = random.choice(list(useful_proxies.keys()))
+        print ("change proxies: " + proxy)
+
+        content = ''
+        try:
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
+            time.sleep(0.1)
+        except OSError:
+            # 超过3次则删除此proxy
+            useful_proxies[proxy] += 1
+            if useful_proxies[proxy] > 3:
+                del useful_proxies[proxy]
+            # 再抓一次
+            proxy = random.choice(list(useful_proxies.keys()))
+            # print('shengxia'+proxy)
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
+
+        li_data=con.get('items')
+        if li_data is not None:
+            jo=pd.DataFrame(li_data)
+            quotes=jo.copy()
+            quotes['close_pre_tmp'] = quotes["close"].shift(1)
+            quotes['week_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
+            
+            quotes_part=quotes.sort_values(by="time", ascending=False)[:15]
+            bio=round(((quotes_part.iloc[days[nmm]]['close'] - quotes_part.iloc[days[nmm]+5]['open'])/quotes_part.iloc[5]['open'])/5,2)
+            # quotes=quotes.sort_values(by="time", ascending=True)
+
+            # quotes['time']=quotes['time'].apply(todate)
+            quotes=quotes.sort_values(by="time", ascending=False)[:15]
+            quotes['time']=quotes['time'].apply(todate)
+            
+          
+            su=pd.merge(quotes, dji_pd, on='time',how='inner')
+            su['week_rs']=su['week_grow_tmp']-su['week_grow']
+           
+            quotes=su.copy()
             quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
 
             x = jo['time'].values
@@ -447,17 +699,20 @@ def get_laohu_analysis(n, url, li_code,days,earn):
             
  
             ax2t = ax.twinx()
-            volume = (quotes.close * quotes.volume) / 1e6  # dollar volume in millions
-            vmax = volume.max()
-            fillcolor = 'darkgoldenrod'
-            poly = ax2t.fill_between(quotes.time.values, volume, 0, label='Volume',
-                         facecolor=fillcolor, edgecolor=fillcolor)
+            # volume = (quotes.close * quotes.volume) / 1e6  # dollar volume in millions
+            # vmax = volume.max()
+            # fillcolor = 'darkgoldenrod'
+            # poly = ax2t.fill_between(quotes.time.values, volume, 0, label='Volume',
+                         # facecolor=fillcolor, edgecolor=fillcolor)
             
-            ax2t.set_ylim(0, 20 * vmax)
+            ax2t.plot(quotes.time.values,   quotes.week_rs.values, linewidth=1, marker='o')
+            ax2t.set_ylim(-0.2, 0.8)
             ax2t.set_yticks([])
             ax2t.set_xticks([])
-
-            del jo, quotes
+            time_max=max(quotes.time.tolist())
+            time_min=min(quotes.time.tolist())
+            ax2t.annotate(' ', xy=(time_min, 0), xytext=(time_max, 0),fontsize= 10,arrowprops=dict(arrowstyle='-'),)
+            del jo, quotes,su,quotes_part
             gc.collect()
 
             # mondays = WeekdayLocator(MONDAY)
@@ -475,9 +730,190 @@ def get_laohu_analysis(n, url, li_code,days,earn):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_week_up_rs_"+str(n)+".png")
     # plt.show()
-    
+
+
+def get_laohu_analysis_all_rs(n, url, li_code,days,earn): 
+    fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
+    li=[]
+    nu_nu=0
+    jo=pd.DataFrame()
+    quotes=pd.DataFrame()
+
+    useful_proxies = {}
+    max_failure_times = 3
+    try:
+    # 获取代理IP数据
+        for ip in list(ip_factory):
+            useful_proxies[ip] = 0
+        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
+    except OSError:
+        print ("获取代理ip时出错！") 
+
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    con =pixo(useful_proxies,url_dji)
+ 
+    li_data=con.get('items')    
+    if li_data is not None:
+        dji_pd=pd.DataFrame(li_data)
+        dji_pd['time']=dji_pd['time'].apply(todate)
+        dji_pd['close_pre'] = dji_pd["close"].shift(1)
+        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd=dji_pd[['time','week_grow']]
+
+
+    for nmm in range(len(li_code)):
+        print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
+        proxy = random.choice(list(useful_proxies.keys()))
+        print ("change proxies: " + proxy)
+
+        content = ''
+        try:
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header, verify=False,timeout=5).json()
+            time.sleep(0.1)
+        except OSError:
+            # 超过3次则删除此proxy
+            useful_proxies[proxy] += 1
+            if useful_proxies[proxy] > 3:
+                del useful_proxies[proxy]
+            # 再抓一次
+            proxy = random.choice(list(useful_proxies.keys()))
+            # print('shengxia'+proxy)
+            con = requests.get(url.format(str(li_code[nmm])), proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
+
+        li_data=con.get('items')
+        if li_data is not None:
+            jo=pd.DataFrame(li_data)
+            quotes=jo.copy()
+
+            quotes_part=quotes.sort_values(by="time", ascending=False)[:15]
+            bio=round(((quotes_part.iloc[days[nmm]]['close'] - quotes_part.iloc[days[nmm]+5]['open'])/quotes_part.iloc[5]['open'])/5,2)
+            # quotes=quotes.sort_values(by="time", ascending=True)
+
+            # quotes['time']=quotes['time'].apply(todate)
+
+            quotes['time']=quotes['time'].apply(todate)
+            quotes['close_pre_tmp'] = quotes["close"].shift(1)
+            quotes['week_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
+            
+            su=pd.merge(quotes, dji_pd, on='time',how='inner')
+            su['week_rs']=su['week_grow_tmp']-su['week_grow']
+
+            quotes=su.copy()
+            quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
+
+            x = jo['time'].values
+            y = jo['close'].values
+            vol = jo['volume'].values
+            vol_li = jo['volume'].tolist()
+            vol_min=min(vol_li)
+            vol_max=max(vol_li)
+            vol_up=(vol_max-vol_min)*0.3+vol_max
+            z1 = np.polyfit(x, y, 4)#用3次多项式拟合
+            p1 = np.poly1d(z1)
+            # print(p1) #在屏幕上打印拟合多项式
+            yvals=p1(x)#也可以使用yvals=np.polyval(z1,x)
+            der=p1.deriv(m=2)
+            dder=der(x)
+            dder_list = dder.tolist()
+            maxindex=dder_list.index(max(dder_list))
+            # print(maxindex)
+            time_max=jo['time'][maxindex]
+            close_max=jo['close'][maxindex]
+            p1_max=p1(time_max)
+
+
+
+            # print(jo)
+            ax=axes[nu_nu//10, nu_nu%10]
+            # count=quotes.shape[0]
+            # year=int(count/48)
+            # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
+            
+            if not '-' in str(earn[nmm]).split('_')[0]:
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'u',fontsize=18,fontweight='bold')        
+            else:
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'d',fontsize=18,fontweight='bold',color="darkgreen")    
+            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%',fontsize=18,fontweight='bold')    
+            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
+            # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
+            # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
+            
+            # data_list=[]
+            # for row in quotes.itertuples():
+            #     date_time = datetime.datetime.strptime(getattr(row,'time'),'%Y-%m-%d')
+            #     t = date2num(date_time)
+            #     open_tmp = getattr(row,'open')
+            #     high_tmp = getattr(row,'high')
+            #     low_tmp  = getattr(row,'low')
+            #     close_tmp = getattr(row,'close')
+            #     datas = (t,open_tmp,high_tmp,low_tmp,close_tmp)
+            #     data_list.append(datas)
+            
+            candlestick_ohlc(ax, zip(mdates.date2num(quotes['time'].dt.to_pydatetime()),
+                         quotes['open'], quotes['high'],
+                         quotes['low'], quotes['close']),
+                 width=0.6,colordown='#53c156', colorup='#ff1717')
+            
+
+            # if len(quotes["close"].tolist()) >200:
+            #     ma150 = moving_average(quotes["close"], 150, type='simple')
+            #     ma200 = moving_average(quotes["close"], 200, type='simple')
+
+            #     linema150, = ax.plot(quotes['time'], ma150, color='blue', lw=2, label='MA (150)')
+            #     linema200, = ax.plot(quotes['time'], ma200, color='red', lw=2, label='MA (200)')
+
+
+            # mpf.candlestick_ohlc(ax,data_list,width=1.5,colorup='r',colordown='green')
+        
+            ax.xaxis.set_major_locator(ticker.NullLocator())
+            ax.set_ylabel(' ', fontsize=0.01)
+            ax.set_xlabel(' ', fontsize=0.01)
+            ax.spines['top'].set_linewidth(2)
+            ax.spines['bottom'].set_linewidth(2)
+            ax.spines['left'].set_linewidth(2)
+            ax.spines['right'].set_linewidth(2)
+            for label in ax.get_xticklabels() + ax.get_yticklabels():
+                label.set_fontsize(14)
+            
+ 
+            ax2t = ax.twinx()
+            # volume = (quotes.close * quotes.volume) / 1e6  # dollar volume in millions
+            # vmax = volume.max()
+            # fillcolor = 'darkgoldenrod'
+            # poly = ax2t.fill_between(quotes.time.values, volume, 0, label='Volume',
+                         # facecolor=fillcolor, edgecolor=fillcolor)
+            
+            ax2t.plot(quotes.time.values,   quotes.week_rs.values, linewidth=1, marker='o')
+            ax2t.set_ylim(-0.2, 0.8)
+            ax2t.set_yticks([])
+            ax2t.set_xticks([])
+            time_max=max(quotes.time.tolist())
+            time_min=min(quotes.time.tolist())
+            ax2t.annotate(' ', xy=(time_min, 0), xytext=(time_max, 0),fontsize= 10,arrowprops=dict(arrowstyle='-'),)
+            del jo, quotes,su,quotes_part
+            gc.collect()
+
+            # mondays = WeekdayLocator(MONDAY)
+            # ax.xaxis.set_major_locator(mondays)
+            # daysFmt = DateFormatter("%m%d")
+            # ax.xaxis.set_major_formatter(daysFmt)
+
+            # ax2t.autoscale_view()
+            # ax2 = ax.twinx()
+            # plot3=ax2.plot(x, vol, zorder=0, c="g",linewidth=2,alpha=0.7)
+            # ax2.set_zorder(0)
+            # # ax2.set_ylabel('volume')
+            # ax2.set_ylim(vol_min,vol_up) 
+            # ax2.yaxis.set_major_locator(plt.NullLocator()) 
+        nu_nu=nu_nu+1    
+    fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
+    fig.subplots_adjust(wspace =0.2, hspace =0.2)
+    plt.savefig(path+'/up_data/'+date+"_week_up_all_rs_"+str(n)+".png")
+    # plt.show()
+ 
+
 
 def get_laohu_analysis_all(n, url, li_code,days,earn): 
     fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
@@ -658,7 +1094,7 @@ def write_csv(fileName,df):
         df.to_csv(fileName,index=False)
     return True
         
-days_df=get_grow_code(url_week, 5, li_code)
+days_df=get_grow_code(url_week, 10, li_code)
 days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()
@@ -679,8 +1115,9 @@ for i in range((len(codee)//100)+1):
     days_tmp=days[start:end]
     earn_tmp=earn[start:end]
     get_laohu_analysis(i, url_week, code_tmp, days_tmp,earn_tmp)
+    # get_laohu_analysis_all_rs(i, url_week, code_tmp, days_tmp,earn_tmp)
     time.sleep(1)
-    get_laohu_analysis_all(i, url_week, code_tmp, days_tmp,earn_tmp)
+    # get_laohu_analysis_all(i, url_week, code_tmp, days_tmp,earn_tmp)
 
 
 

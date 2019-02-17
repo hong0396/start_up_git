@@ -131,7 +131,6 @@ def get_grow_code(url,days, li_code):
                     # 0个开盘价(涨)>2个开盘价(涨)
 
                     for i in range(days):
-
                         if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
                             if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
                                 if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
@@ -323,7 +322,7 @@ def moving_average(x, n, type='simple'):
 
 
 
-def get_laohu_analysis(n, url, li_code,days,earn): 
+def get_laohu_analysis(n, url, li_code,days): 
     fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
     li=[]
     nu_nu=0
@@ -399,12 +398,7 @@ def get_laohu_analysis(n, url, li_code,days,earn):
             # year=int(count/48)
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
-            if not '-' in str(earn[nmm]).split('_')[0]:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'u',fontsize=18,fontweight='bold')        
-            else:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'d',fontsize=18,fontweight='bold',color="darkgreen")    
-
-            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
+            ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
             # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
             
@@ -475,11 +469,11 @@ def get_laohu_analysis(n, url, li_code,days,earn):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_fig_up_"+str(n)+".png")
     # plt.show()
     
 
-def get_laohu_analysis_all(n, url, li_code,days,earn): 
+def get_laohu_analysis_all(url, li_code): 
     fig, axes = plt.subplots(nrows=10, ncols=10, figsize=(30,30))
     li=[]
     nu_nu=0
@@ -497,7 +491,7 @@ def get_laohu_analysis_all(n, url, li_code,days,earn):
         print ("获取代理ip时出错！") 
 
     for nmm in range(len(li_code)):
-        print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
+        print('------------------------------------'+str(nu_nu)+'------------------------------------------')
         proxy = random.choice(list(useful_proxies.keys()))
         print ("change proxies: " + proxy)
 
@@ -521,7 +515,7 @@ def get_laohu_analysis_all(n, url, li_code,days,earn):
             quotes=jo.copy()
             
             quotes_part=quotes.sort_values(by="time", ascending=False)[:15]
-            bio=round(((quotes_part.iloc[days[nmm]]['close'] - quotes_part.iloc[days[nmm]+5]['open'])/quotes_part.iloc[5]['open'])/5,2)
+            # bio=round(((quotes_part.iloc[days[nmm]]['close'] - quotes_part.iloc[days[nmm]+5]['open'])/quotes_part.iloc[5]['open'])/5,2)
             # quotes=quotes.sort_values(by="time", ascending=True)
 
             quotes['time']=quotes['time'].apply(todate)
@@ -554,12 +548,7 @@ def get_laohu_analysis_all(n, url, li_code,days,earn):
             # count=quotes.shape[0]
             # year=int(count/48)
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
-            
-            if not '-' in str(earn[nmm]).split('_')[0]:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'u',fontsize=18,fontweight='bold')        
-            else:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'d',fontsize=18,fontweight='bold',color="darkgreen")    
-            # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%',fontsize=18,fontweight='bold')    
+            ax.set_title(str(li_code[nmm]+'\n'+'rehgthtrjryjry'),fontsize=18,fontweight='bold')    
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
             # plot1=ax.plot(x, y, 'o', color='goldenrod',markersize=10,label='original values')   
@@ -628,10 +617,11 @@ def get_laohu_analysis_all(n, url, li_code,days,earn):
             # # ax2.set_ylabel('volume')
             # ax2.set_ylim(vol_min,vol_up) 
             # ax2.yaxis.set_major_locator(plt.NullLocator()) 
-        nu_nu=nu_nu+1    
+        nu_nu=nu_nu+1
+    # fig.tight_layout()        
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
-    fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_all_"+str(n)+".png")
+    fig.subplots_adjust(wspace =0.2, hspace =0.28)
+    plt.savefig(path+'/up_data/'+date+"_fig_up_al.png")
     # plt.show()
     
 
@@ -658,29 +648,8 @@ def write_csv(fileName,df):
         df.to_csv(fileName,index=False)
     return True
         
-days_df=get_grow_code(url_week, 5, li_code)
-days_sort_df=days_df.sort_values(by=['days','code'])
-codee=days_sort_df.code.tolist()
-days=days_sort_df.days.tolist()
-# write_li('D:/Git/us_stock/technical_analysis/Main/up/4up1down1up_limit/up_data/'+date+'_up_code.txt',codee)
-write_csv(path+'/up_data/record.csv',days_sort_df)
-# codee=li_code[:1000]
-# days_df[(days_df.code==tmp)].index.values
-earn_df=get_earn(codee)
-earn=earn_df.earn.tolist()
 
-
-for i in range((len(codee)//100)+1):
-    start=i*100 
-    end=(i+1)*100
-    if end >= len(codee):
-        end = len(codee)  
-    code_tmp=codee[start:end]
-    days_tmp=days[start:end]
-    earn_tmp=earn[start:end]
-    get_laohu_analysis(i, url_week, code_tmp, days_tmp,earn_tmp)
-    time.sleep(1)
-    get_laohu_analysis_all(i, url_week, code_tmp, days_tmp,earn_tmp)
+get_laohu_analysis_all( url_week, ['AAN','ACBI','CIVI','VHI','TELL','KL','SLM','JKS','IAT','TA','ATU'])
 
 
 

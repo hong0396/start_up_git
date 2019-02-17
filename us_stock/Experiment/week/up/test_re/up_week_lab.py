@@ -121,7 +121,7 @@ def get_grow_code(url,days, li_code):
                 jo=pd.DataFrame(li_data)
                 # jo=jo.sort_values(by="time", ascending=False)
 
-                if len(jo.time.tolist()) > 30:
+                if len(jo.time.tolist()) > 60:
                     zong=jo.sort_values(by="time", ascending=False)[:30]
                     # 0个开盘价(涨)>1个收盘价(跌)
                     # 1个开盘价(跌)>2个开盘价(涨)
@@ -658,7 +658,7 @@ def write_csv(fileName,df):
         df.to_csv(fileName,index=False)
     return True
         
-days_df=get_grow_code(url_week, 5, li_code)
+days_df=get_grow_code(url_week, 10, li_code)
 days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()

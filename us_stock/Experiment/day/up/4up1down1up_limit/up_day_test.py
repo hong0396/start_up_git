@@ -108,7 +108,7 @@ def get_grow_code(url,days, li_code,pe):
         print ("总共：" + str(len(useful_proxies)) + 'IP可用')
     except OSError:
         print ("获取代理ip时出错！") 
-    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/day/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     con =pixo(useful_proxies,url_dji)
  
     li_data=con.get('items')    
@@ -162,21 +162,21 @@ def get_grow_code(url,days, li_code,pe):
                     
 
                     zong=su.sort_values(by="time", ascending=False)
-                    for i in range(days):
-                        if zong.iloc[i]['week_rs'] >= 0:
-                            if zong.iloc[i+1]['week_rs'] >= 0:
-                                if zong.iloc[i+2]['week_rs'] >= 0:
-                                    if zong.iloc[i+3]['week_rs'] >= 0:
-                                        if zong.iloc[i+4]['week_rs'] >= 0:
-                                            if zong.iloc[i+5]['week_rs'] >= 0:
-                                                if zong.iloc[i+6]['week_rs'] >= 0:
-                                                    if zong.iloc[i+7]['week_rs'] >= 0:
-                                                        if zong.iloc[i+8]['week_rs'] >= 0:
-                                                            if str(code_nm) not in li_code_tmp:
-                                                                li_days_tmp.append(i)
-                                                                li_code_tmp.append(str(code_nm))
-                                                                li_pe_tmp.append(pe[ii])
-                                                                nu_n=nu_n+1
+                    # for i in range(days):
+                    #     if zong.iloc[i]['week_rs'] >= 0:
+                    #         if zong.iloc[i+1]['week_rs'] >= 0:
+                    #             if zong.iloc[i+2]['week_rs'] >= 0:
+                    #                 if zong.iloc[i+3]['week_rs'] >= 0:
+                    #                     if zong.iloc[i+4]['week_rs'] >= 0:
+                    #                         if zong.iloc[i+5]['week_rs'] >= 0:
+                    #                             if zong.iloc[i+6]['week_rs'] >= 0:
+                    #                                 if zong.iloc[i+7]['week_rs'] >= 0:
+                    #                                     if zong.iloc[i+8]['week_rs'] >= 0:
+                    #                                         if str(code_nm) not in li_code_tmp:
+                    #                                             li_days_tmp.append(i)
+                    #                                             li_code_tmp.append(str(code_nm))
+                    #                                             li_pe_tmp.append(pe[ii])
+                    #                                             nu_n=nu_n+1
 
 
 
@@ -193,25 +193,26 @@ def get_grow_code(url,days, li_code,pe):
                     # # 4个开盘价(涨)>5个开盘价(涨)
                     # # 0个开盘价(涨)>2个开盘价(涨)
 
-                    # for i in range(days):
+                    for i in range(days):
 
-                    #     if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
-                    #         if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
-                    #             if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
-                    #                 if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
-                    #                     if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
-                    #                         if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
+                        if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+1]['close'],2): 
+                            if round(zong.iloc[i+1]['open'],2) >= round(zong.iloc[i+2]['open'],2):
+                                if round(zong.iloc[i+2]['open'],2) >= round(zong.iloc[i+3]['open'],2): 
+                                    if round(zong.iloc[i+3]['open'],2) >= round(zong.iloc[i+4]['open'],2):
+                                        if round(zong.iloc[i+4]['open'],2) >= round(zong.iloc[i+5]['open'],2): 
+                                            if round(zong.iloc[i]['open'],2) >= round(zong.iloc[i+2]['open'],2): 
 
-                    #                             if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
-                    #                                 if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
-                    #                                     if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
-                    #                                         if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
-                    #                                             if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
-                    #                                                 if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
-                    #                                                     if str(code_nm) not in li_code_tmp:
-                    #                                                         li_days_tmp.append(i)
-                    #                                                         li_code_tmp.append(str(code_nm))
-                    #                                                         nu_n=nu_n+1
+                                                if (zong.iloc[i]['close'] - zong.iloc[i]['open'])/zong.iloc[i]['open'] > 0:
+                                                    if (zong.iloc[i+1]['close'] - zong.iloc[i+1]['open'])/zong.iloc[i+1]['open'] <= 0:
+                                                        if (zong.iloc[i+2]['close'] - zong.iloc[i+2]['open'])/zong.iloc[i+2]['open'] >= 0:
+                                                            if (zong.iloc[i+3]['close'] - zong.iloc[i+3]['open'])/zong.iloc[i+3]['open'] >= 0:
+                                                                if (zong.iloc[i+4]['close'] - zong.iloc[i+4]['open'])/zong.iloc[i+4]['open'] >= 0:
+                                                                    if (zong.iloc[i+5]['close'] - zong.iloc[i+5]['open'])/zong.iloc[i+5]['open'] >= 0:
+                                                                        if str(code_nm) not in li_code_tmp:
+                                                                            li_days_tmp.append(i)
+                                                                            li_code_tmp.append(str(code_nm))
+                                                                            li_pe_tmp.append(pe[ii])
+                                                                            nu_n=nu_n+1
                     del jo, zong, su
                     gc.collect()
                     # if zong['open'].is_monotonic_decreasing:
@@ -406,7 +407,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
 
 
     
-    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/day/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     con =pixo(useful_proxies,url_dji)
  
     li_data=con.get('items')    
@@ -520,7 +521,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
             candlestick_ohlc(ax, zip(mdates.date2num(quotes['time'].dt.to_pydatetime()),
                          quotes['open'], quotes['high'],
                          quotes['low'], quotes['close']),
-                 width=2,colordown='#53c156', colorup='#ff1717')
+                 width=0.6,colordown='#53c156', colorup='#ff1717')
             
 
             # if len(quotes["close"].tolist()) >200:
@@ -606,7 +607,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_day_up_"+str(n)+".png")
     # plt.show()
     
 
@@ -634,7 +635,7 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
 
 
 
-    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/day/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     con =pixo(useful_proxies,url_dji)
  
     li_data=con.get('items')    
@@ -715,9 +716,9 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             if not '-' in str(earn[nmm]).split('_')[0]:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'u',fontsize=18,fontweight='bold')        
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%',fontsize=18,fontweight='bold')        
             else:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'d',fontsize=18,fontweight='bold',color="darkgreen")    
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%',fontsize=18,fontweight='bold',color="darkgreen")    
 
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')
@@ -793,7 +794,7 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_rs_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_day_up_rs_"+str(n)+".png")
     # plt.show()
 
 
@@ -814,7 +815,7 @@ def get_laohu_analysis_all_rs(n, url, li_code,days,earn):
     except OSError:
         print ("获取代理ip时出错！") 
 
-    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/day/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     con =pixo(useful_proxies,url_dji)
  
     li_data=con.get('items')    
@@ -973,7 +974,7 @@ def get_laohu_analysis_all_rs(n, url, li_code,days,earn):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_all_rs_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_day_up_all_rs_"+str(n)+".png")
     # plt.show()
  
 
@@ -1130,7 +1131,7 @@ def get_laohu_analysis_all(n, url, li_code,days,earn):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_all_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_day_up_all_"+str(n)+".png")
     # plt.show()
     
 
@@ -1157,7 +1158,7 @@ def write_csv(fileName,df):
         df.to_csv(fileName,index=False)
     return True
         
-days_df=get_grow_code(url_week, 5, li_code, pe)
+days_df=get_grow_code(url_day, 5, li_code, pe)
 days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()
@@ -1179,10 +1180,10 @@ for i in range((len(codee)//100)+1):
     days_tmp=days[start:end]
     earn_tmp=earn[start:end]
     pe_tmp=pes[start:end]
-    get_laohu_analysis(i, url_week, code_tmp, days_tmp,earn_tmp,pe_tmp)
-    # get_laohu_analysis_all_rs(i, url_week, code_tmp, days_tmp,earn_tmp)
+    get_laohu_analysis(i, url_day, code_tmp, days_tmp,earn_tmp,pe_tmp)
+    # get_laohu_analysis_all_rs(i, url_day, code_tmp, days_tmp,earn_tmp)
     time.sleep(1)
-    # get_laohu_analysis_all(i, url_week, code_tmp, days_tmp,earn_tmp)
+    # get_laohu_analysis_all(i, url_day, code_tmp, days_tmp,earn_tmp)
 
 
 

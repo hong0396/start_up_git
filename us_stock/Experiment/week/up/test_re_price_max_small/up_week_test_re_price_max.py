@@ -76,13 +76,14 @@ header={'Accept': 'application/json, text/plain, */*',
 code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
-# print(code)                
+# code=code[:50]           
 li_code=code['code'].tolist()
 pe=code['pe'].tolist()
 # li_code=li_code[:10]
 # code=code[:10]
 
 
+url_month='https://hq.itiger.com/stock_info/candle_stick/month/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 url_week='https://hq.itiger.com/stock_info/candle_stick/week/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 url_day='https://hq.itiger.com/stock_info/candle_stick/day/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 
@@ -160,23 +161,21 @@ def get_grow_code(url,days, li_code,pe):
                     su=pd.merge(jo, dji_pd, on='time',how='inner')
                     su['week_rs']=su['week_grow_tmp']-su['week_grow']
                     
-
                     zong=su.sort_values(by="time", ascending=False)
+
                     for i in range(days):
-                        if zong.iloc[i]['week_rs'] >= 0:
-                            if zong.iloc[i+1]['week_rs'] >= 0:
-                                if zong.iloc[i+2]['week_rs'] >= 0:
-                                    if zong.iloc[i+3]['week_rs'] >= 0:
-                                        if zong.iloc[i+4]['week_rs'] >= 0:
-                                            if zong.iloc[i+5]['week_rs'] >= 0:
-                                                if zong.iloc[i+6]['week_rs'] >= 0:
-                                                    if zong.iloc[i+7]['week_rs'] >= 0:
-                                                        if zong.iloc[i+8]['week_rs'] >= 0:
-                                                            if str(code_nm) not in li_code_tmp:
-                                                                li_days_tmp.append(i)
-                                                                li_code_tmp.append(str(code_nm))
-                                                                li_pe_tmp.append(pe[ii])
-                                                                nu_n=nu_n+1
+                        if zong.iloc[i]['week_rs'] >= 0  and zong.iloc[i]["close"] >= max(zong.close.tolist())*0.9:
+                            if zong.iloc[i+1]['week_rs'] >= 0 :# and zong.iloc[i+1]['week_grow_tmp']  >= 0:
+                                if zong.iloc[i+2]['week_rs'] >= 0: # and zong.iloc[i+2]['week_grow_tmp']  >= 0:
+                                    if zong.iloc[i+3]['week_rs'] >= 0 :# and zong.iloc[i+3]['week_grow_tmp']  >= 0:
+                                        if zong.iloc[i+4]['week_rs'] >= 0 :# and zong.iloc[i+4]['week_grow_tmp']  >= 0:
+                                            if zong.iloc[i+5]['week_rs'] >= 0 :# and zong.iloc[i+5]['week_grow_tmp'] >= 0:
+                                                        if str(code_nm) not in li_code_tmp:
+                                                            # zong.to_csv(str(code_nm)+str(zong.iloc[i]["close"].max())+'.csv')
+                                                            li_days_tmp.append(i)
+                                                            li_code_tmp.append(str(code_nm))
+                                                            li_pe_tmp.append(pe[ii])
+                                                            nu_n=nu_n+1
 
 
 
@@ -452,12 +451,12 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
             quotes['vol_grow_tmp']=(quotes["volume"]-quotes['volume_pre_tmp'])/quotes['volume_pre_tmp']
             
 
-            quotes_part=quotes.sort_values(by="time", ascending=False)[:15]
+            quotes_part=quotes.sort_values(by="time", ascending=False)#[:15]
             bio=round(((quotes_part.iloc[days[nmm]]['close'] - quotes_part.iloc[days[nmm]+5]['open'])/quotes_part.iloc[5]['open'])/5,2)
             # quotes=quotes.sort_values(by="time", ascending=True)
 
             # quotes['time']=quotes['time'].apply(todate)
-            quotes=quotes.sort_values(by="time", ascending=False)[:15]
+            quotes=quotes.sort_values(by="time", ascending=False)#[:15]
             quotes['time']=quotes['time'].apply(todate)
             
           
@@ -465,6 +464,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
             su['week_rs']=su['week_grow_tmp']-su['week_grow']
             su['vol_rs']=su['vol_grow_tmp']-su['vol_grow']
             quotes=su.copy()
+            quotes=quotes.sort_values(by="time")#[:15]
             quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
 
             x = jo['time'].values
@@ -523,7 +523,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
                  width=2,colordown='#53c156', colorup='#ff1717')
             
 
-            # if len(quotes["close"].tolist()) >200:
+            # if len(quotes["close"].tolist()) >30:
             #     ma150 = moving_average(quotes["close"], 150, type='simple')
             #     ma200 = moving_average(quotes["close"], 200, type='simple')
 
@@ -551,29 +551,41 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
             poly = ax2t.fill_between(quotes.time.values, volume, 0, label='Volume',
                          facecolor=fillcolor, edgecolor=fillcolor)
             
-            ax2t.set_ylim(0, 20 * vmax)
+            ax2t.set_ylim(0, 15 * vmax)
             ax2t.set_yticks([])
             ax2t.set_xticks([])
 
-            # ax3 =fig.add_axes(axes[nu_nu//10, nu_nu%10])
-            ax3 = ax.twinx()
-            ax3.plot(quotes.time.values,   quotes.week_rs.values, linewidth=1, marker='o')
-            ax3.set_ylim(-0.1, 0.5)
-            ax3.set_yticks([])
-            ax3.set_xticks([])
-            time_max=max(quotes.time.tolist())
-            time_min=min(quotes.time.tolist())
-            ax3.annotate(' ', xy=(time_min, 0), xytext=(time_max, 0),fontsize= 10,arrowprops=dict(arrowstyle='-'),)
+         
+            # ax3 = ax.twinx()
+            # ax3.plot(quotes.time.values,   quotes.week_rs.values, linewidth=1, marker='o')
+            # ax3.set_ylim(-0.1, 0.5)
+            # ax3.set_yticks([])
+            # ax3.set_xticks([])
+            # time_max=max(quotes.time.tolist())
+            # time_min=min(quotes.time.tolist())
+            # ax3.annotate(' ', xy=(time_min, 0), xytext=(time_max, 0),fontsize= 10,arrowprops=dict(arrowstyle='-'),)
 
 
-            ax5 = ax.twinx()
-            ax5.plot(quotes.time.values,   quotes.week_rs.values, color='goldenrod',linewidth=1, marker='o')
-            ax5.set_ylim(-0.3, 0.8)
-            ax5.set_yticks([])
-            ax5.set_xticks([])
-            time_max=max(quotes.time.tolist())
-            time_min=min(quotes.time.tolist())
-            ax5.annotate(' ', xy=(time_min, 0), xytext=(time_max, 0),fontsize= 10,arrowprops=dict(arrowstyle='-'),)
+            # ax5 = ax.twinx()
+            # ax5.plot(quotes.time.values,   quotes.week_rs.values, color='goldenrod',linewidth=1, marker='o')
+            # ax5.set_ylim(-0.3, 0.8)
+            # ax5.set_yticks([])
+            # ax5.set_xticks([])
+            # time_max=max(quotes.time.tolist())
+            # time_min=min(quotes.time.tolist())
+            # ax5.annotate(' ', xy=(time_min, 0), xytext=(time_max, 0),fontsize= 10,arrowprops=dict(arrowstyle='-'),)
+
+            # ax6 = ax.twinx()
+            # if len(quotes["close"].tolist()) >30:
+            #     ma30 = moving_average(quotes["close"], 30, type='simple')
+            #     # ma200 = moving_average(quotes["close"], 200, type='simple')
+
+            #     linema30, = ax6.plot(quotes['time'], ma30, color='blue', lw=2, label='MA (30)')
+            #     # linema200, = ax6.plot(quotes['time'], ma200, color='red', lw=2, label='MA (200)')
+
+            #     ax6.set_yticks([])
+            #     ax6.set_xticks([])
+
 
 
             ax.xaxis.set_major_locator(ticker.NullLocator())
@@ -1181,10 +1193,7 @@ for i in range((len(codee)//100)+1):
     pe_tmp=pes[start:end]
     get_laohu_analysis(i, url_week, code_tmp, days_tmp,earn_tmp,pe_tmp)
     # get_laohu_analysis_all_rs(i, url_week, code_tmp, days_tmp,earn_tmp)
-    time.sleep(1)
-    # get_laohu_analysis_all(i, url_week, code_tmp, days_tmp,earn_tmp)
-
-
+  
 
 
 

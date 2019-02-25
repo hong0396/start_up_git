@@ -115,8 +115,8 @@ def get_grow_code(url,days, li_code,pe):
     if li_data is not None:
         dji_pd=pd.DataFrame(li_data)
         dji_pd['time']=dji_pd['time'].apply(todate)
-        dji_pd['close_pre'] = dji_pd["close"].shift(1)
-        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd['volume_pre'] = dji_pd["volume"].shift(1)
+        dji_pd['week_grow']=(dji_pd["volume"]-dji_pd['volume_pre'])/dji_pd['volume_pre']
         dji_pd=dji_pd[['time','week_grow']]
         
 
@@ -150,8 +150,8 @@ def get_grow_code(url,days, li_code,pe):
                 
            
                 if len(jo.time.tolist()) > 60:
-                    jo['close_pre_tmp'] = jo["close"].shift(1)
-                    jo['week_grow_tmp']=(jo["close"]-jo['close_pre_tmp'])/jo['close_pre_tmp']
+                    jo['volume_pre_tmp'] = jo["volume"].shift(1)
+                    jo['week_grow_tmp']=(jo["volume"]-jo['volume_pre_tmp'])/jo['volume_pre_tmp']
                  
                     # jo=jo.sort_values(by="time", ascending=False)[:15]
                     jo['time']=jo['time'].apply(todate)
@@ -497,9 +497,9 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             if not '-' in str(earn[nmm]).split('_')[0]:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str(pee[nmm]).split('.')[0]+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%',fontsize=18,fontweight='bold')        
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str(pee[nmm]).split('.')[0]+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'u',fontsize=18,fontweight='bold')        
             else:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str(pee[nmm]).split('.')[0]+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%',fontsize=18,fontweight='bold',color="darkgreen")    
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str(pee[nmm]).split('.')[0]+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'d',fontsize=18,fontweight='bold',color="darkgreen")    
 
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')

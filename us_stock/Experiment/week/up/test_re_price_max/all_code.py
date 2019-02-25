@@ -8,18 +8,13 @@ import json
 import random
 import ast
 from functools import reduce
-import gc 
-import ip_te
-
-ip_factory=ip_te.ip_get_test_save(1.5,1)
-requests.packages.urllib3.disable_warnings()
 
 date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
 header={'Accept': 'application/json, text/plain, */*', 
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer Vxe2C7g0gtyh2bLvjVTdkqIyuqhtLG',
+'Authorization': 'Bearer aAmt1vk9CI5QYnVMzRwXpfuvZmXmvo',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -39,36 +34,9 @@ url_all='https://hq2.itiger.com/market/quote/ALL?page={}&compare=changeRate&minM
 
 def get_laohu_code(url, num=[0]):
     li=[]
-    useful_proxies = {}
-    max_failure_times = 3
-    try:
-    # 获取代理IP数据
-        for ip in list(ip_factory):
-            useful_proxies[ip] = 0
-        print ("总共：" + str(len(useful_proxies)) + 'IP可用')
-    except OSError:
-        print ("获取代理ip时出错！") 
-
     for i in num:
         print('--------------'+str(i)+'-----------------')
-        proxy = random.choice(list(useful_proxies.keys()))
-        print ("change proxies: " + proxy)
-        content = ''
-        
-        try:
-            con = requests.get(url.format(i),proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
-            time.sleep(0.1)
-        except OSError:
-            # 超过3次则删除此proxy
-            useful_proxies[proxy] += 1
-            if useful_proxies[proxy] > 3:
-                del useful_proxies[proxy]
-            # 再抓一次
-            proxy = random.choice(list(useful_proxies.keys()))
-            # print('shengxia'+proxy)
-
-
-            con = requests.get(url.format(i),proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
+        con = requests.get(url.format(i), headers=header,verify=False).json()
         # print(con)
     # a = str(con.decode())
     # print(con.get('items')[0].get('data'))
@@ -95,23 +63,7 @@ def get_laohu_code(url, num=[0]):
 # sum=pd.concat(frames,ignore_index=True)
 # sum.to_csv(date+'us_all_code.csv', index=False, encoding ='gbk')
 
-# https://www.nasdaq.com/screening/company-list.aspx
-def get_nasdaq_code():
-    nasdaq=pd.read_csv("https://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=nasdaq&render=download")
-    time.sleep(0.5)
-    nyse=pd.read_csv("https://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=nyse&render=download")
-    time.sleep(0.5)
-    amex=pd.read_csv("https://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=amex&render=download")
-    code=nasdaq.append(nyse,ignore_index =True).append(amex,ignore_index =True)
-    code.rename(columns={"Symbol":"code", "IPOyear":"year"}, inplace =True)
-    return code
 
-cn_us=get_laohu_code(url_all, [i for i in range(300)])
-na_us=get_nasdaq_code()
-us=pd.merge(cn_us, na_us, on='code',how='outer')
+cn_us=get_laohu_code(url_all, [i for i in range(167)])
 cn_us.to_csv(date+'us_all_code.csv', index=False, encoding ='gbk')
-us.to_csv(date+'us_compare_code.csv', index=False, encoding ='gbk')
-
-
-
 

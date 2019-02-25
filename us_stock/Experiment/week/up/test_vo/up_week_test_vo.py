@@ -76,7 +76,8 @@ header={'Accept': 'application/json, text/plain, */*',
 code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
-# print(code)                
+# print(code)
+code=code[:5]                
 li_code=code['code'].tolist()
 pe=code['pe'].tolist()
 # li_code=li_code[:10]
@@ -115,8 +116,8 @@ def get_grow_code(url,days, li_code,pe):
     if li_data is not None:
         dji_pd=pd.DataFrame(li_data)
         dji_pd['time']=dji_pd['time'].apply(todate)
-        dji_pd['close_pre'] = dji_pd["close"].shift(1)
-        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd['volume_pre'] = dji_pd["volume"].shift(1)
+        dji_pd['week_grow']=(dji_pd["volume"]-dji_pd['volume_pre'])/dji_pd['volume_pre']
         dji_pd=dji_pd[['time','week_grow']]
         
 
@@ -150,8 +151,8 @@ def get_grow_code(url,days, li_code,pe):
                 
            
                 if len(jo.time.tolist()) > 60:
-                    jo['close_pre_tmp'] = jo["close"].shift(1)
-                    jo['week_grow_tmp']=(jo["close"]-jo['close_pre_tmp'])/jo['close_pre_tmp']
+                    jo['volume_pre_tmp'] = jo["volume"].shift(1)
+                    jo['week_grow_tmp']=(jo["volume"]-jo['volume_pre_tmp'])/jo['volume_pre_tmp']
                  
                     # jo=jo.sort_values(by="time", ascending=False)[:15]
                     jo['time']=jo['time'].apply(todate)

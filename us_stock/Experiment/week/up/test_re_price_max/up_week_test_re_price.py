@@ -76,7 +76,7 @@ header={'Accept': 'application/json, text/plain, */*',
 code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
-# print(code)                
+code=code           
 li_code=code['code'].tolist()
 pe=code['pe'].tolist()
 # li_code=li_code[:10]
@@ -160,19 +160,18 @@ def get_grow_code(url,days, li_code,pe):
                     su=pd.merge(jo, dji_pd, on='time',how='inner')
                     su['week_rs']=su['week_grow_tmp']-su['week_grow']
                     
-
+                    
                     zong=su.sort_values(by="time", ascending=False)
+
                     for i in range(days):
-                        if zong.iloc[i]['week_rs'] >= 0:
-                            if zong.iloc[i+1]['week_rs'] >= 0:
-                                if zong.iloc[i+2]['week_rs'] >= 0:
-                                    if zong.iloc[i+3]['week_rs'] >= 0:
-                                        if zong.iloc[i+4]['week_rs'] >= 0:
-                                            if zong.iloc[i+5]['week_rs'] >= 0:
-                                                if zong.iloc[i+6]['week_rs'] >= 0:
-                                                    if zong.iloc[i+7]['week_rs'] >= 0:
-                                                        if zong.iloc[i+8]['week_rs'] >= 0:
+                        if zong.iloc[i]['week_rs'] >= 0  and zong.iloc[i]['week_grow_tmp']>= 0 :
+                            if zong.iloc[i+1]['week_rs'] >= 0 and zong.iloc[i+1]['week_grow_tmp']  >= 0:
+                                if zong.iloc[i+2]['week_rs'] >= 0 and zong.iloc[i+2]['week_grow_tmp']  >= 0:
+                                    if zong.iloc[i+3]['week_rs'] >= 0 and zong.iloc[i+3]['week_grow_tmp']  >= 0:
+                                        if zong.iloc[i+4]['week_rs'] >= 0 and zong.iloc[i+4]['week_grow_tmp']  >= 0:
+                                            if zong.iloc[i+5]['week_rs'] >= 0 and zong.iloc[i+5]['week_grow_tmp'] >= 0:
                                                             if str(code_nm) not in li_code_tmp:
+                                                                zong.to_csv(str(code_nm)+'.csv')
                                                                 li_days_tmp.append(i)
                                                                 li_code_tmp.append(str(code_nm))
                                                                 li_pe_tmp.append(pe[ii])

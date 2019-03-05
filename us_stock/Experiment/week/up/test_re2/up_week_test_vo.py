@@ -76,7 +76,7 @@ header={'Accept': 'application/json, text/plain, */*',
 code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
-code=code[:50]            
+# print(code)                
 li_code=code['code'].tolist()
 pe=code['pe'].tolist()
 # li_code=li_code[:10]
@@ -115,8 +115,8 @@ def get_grow_code(url,days, li_code,pe):
     if li_data is not None:
         dji_pd=pd.DataFrame(li_data)
         dji_pd['time']=dji_pd['time'].apply(todate)
-        dji_pd['close_pre'] = dji_pd["close"].shift(1)
-        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd['volume_pre'] = dji_pd["volume"].shift(1)
+        dji_pd['week_grow']=(dji_pd["volume"]-dji_pd['volume_pre'])/dji_pd['volume_pre']
         dji_pd=dji_pd[['time','week_grow']]
         
 
@@ -149,9 +149,9 @@ def get_grow_code(url,days, li_code,pe):
                 # jo=jo.sort_values(by="time", ascending=False)
                 
            
-                if len(jo.time.tolist()) > 6:
-                    jo['close_pre_tmp'] = jo["close"].shift(1)
-                    jo['week_grow_tmp']=(jo["close"]-jo['close_pre_tmp'])/jo['close_pre_tmp']
+                if len(jo.time.tolist()) > 60:
+                    jo['volume_pre_tmp'] = jo["volume"].shift(1)
+                    jo['week_grow_tmp']=(jo["volume"]-jo['volume_pre_tmp'])/jo['volume_pre_tmp']
                  
                     # jo=jo.sort_values(by="time", ascending=False)[:15]
                     jo['time']=jo['time'].apply(todate)
@@ -160,18 +160,19 @@ def get_grow_code(url,days, li_code,pe):
                     su=pd.merge(jo, dji_pd, on='time',how='inner')
                     su['week_rs']=su['week_grow_tmp']-su['week_grow']
                     
-                    
-                    zong=su.sort_values(by="time", ascending=False)
 
+                    zong=su.sort_values(by="time", ascending=False)
                     for i in range(days):
-                        if zong.iloc[i]['week_rs'] >= 0 and zong.iloc[i]['week_grow_tmp'] >= 0:
-                            if zong.iloc[i+1]['week_rs'] >= 0 and zong.iloc[i+1]['week_grow_tmp']  >= 0:
-                                if zong.iloc[i+2]['week_rs'] >= 0 and zong.iloc[i+2]['week_grow_tmp']  >= 0:
-                                    if zong.iloc[i+3]['week_rs'] >= 0 and zong.iloc[i+3]['week_grow_tmp']  >= 0:
-                                        if zong.iloc[i+4]['week_rs'] >= 0 and zong.iloc[i+4]['week_grow_tmp']  >= 0:
-                                            if zong.iloc[i+5]['week_rs'] >= 0 and zong.iloc[i+5]['week_grow_tmp'] >= 0:
+                        if zong.iloc[i]['week_rs'] >= 0:
+                            if zong.iloc[i+1]['week_rs'] >= 0:
+                                if zong.iloc[i+2]['week_rs'] >= 0:
+                                    if zong.iloc[i+3]['week_rs'] >= 0:
+                                        if zong.iloc[i+4]['week_rs'] >= 0:
+                                            if zong.iloc[i+5]['week_rs'] >= 0:
+                                                if zong.iloc[i+6]['week_rs'] >= 0:
+                                                    if zong.iloc[i+7]['week_rs'] >= 0:
+                                                        if zong.iloc[i+8]['week_rs'] >= 0:
                                                             if str(code_nm) not in li_code_tmp:
-                                                           
                                                                 li_days_tmp.append(i)
                                                                 li_code_tmp.append(str(code_nm))
                                                                 li_pe_tmp.append(pe[ii])
@@ -496,9 +497,9 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
             # ax.set_title(str(li_code[nmm])+'('+str(year)+')',fontsize=18,fontweight='bold')    
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)',fontsize=18,fontweight='bold')    
             if not '-' in str(earn[nmm]).split('_')[0]:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str(pee[nmm]).split('.')[0]+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%',fontsize=18,fontweight='bold')        
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str(pee[nmm]).split('.')[0]+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'u',fontsize=18,fontweight='bold')        
             else:
-                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str(pee[nmm]).split('.')[0]+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%',fontsize=18,fontweight='bold',color="darkgreen")    
+                ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+')_'+str(int(bio*100))+'_'+str(pee[nmm]).split('.')[0]+'_'+str((str(earn[nmm]).split('_')[1].strip('%')).split('.')[0].replace(',', ''))+'%'+'d',fontsize=18,fontweight='bold',color="darkgreen")    
 
             # ax.set_title(str(li_code[nmm])+'('+str(days[nmm])+'days)_'+str(round(bio*100,0)),fontsize=18,fontweight='bold')    
             # plot1=ax.plot(x, y, marker=r'$\clubsuit$', color='goldenrod',markersize=15,label='original values')

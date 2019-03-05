@@ -76,14 +76,14 @@ header={'Accept': 'application/json, text/plain, */*',
 code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
 # code['code']= code['code'].str.replace('HK','0')
-code=code[:50]            
+# code=code[:50]            
 li_code=code['code'].tolist()
 pe=code['pe'].tolist()
 # li_code=li_code[:10]
 # code=code[:10]
 
 
-url_week='https://hq.itiger.com/stock_info/candle_stick/week/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
+url_month='https://hq.itiger.com/stock_info/candle_stick/month/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 url_day='https://hq.itiger.com/stock_info/candle_stick/day/{}?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.1.0'
 
 
@@ -108,7 +108,7 @@ def get_grow_code(url,days, li_code,pe):
         print ("总共：" + str(len(useful_proxies)) + 'IP可用')
     except OSError:
         print ("获取代理ip时出错！") 
-    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/month/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     con =pixo(useful_proxies,url_dji)
  
     li_data=con.get('items')    
@@ -116,8 +116,8 @@ def get_grow_code(url,days, li_code,pe):
         dji_pd=pd.DataFrame(li_data)
         dji_pd['time']=dji_pd['time'].apply(todate)
         dji_pd['close_pre'] = dji_pd["close"].shift(1)
-        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
-        dji_pd=dji_pd[['time','week_grow']]
+        dji_pd['month_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd=dji_pd[['time','month_grow']]
         
 
 
@@ -151,27 +151,27 @@ def get_grow_code(url,days, li_code,pe):
            
                 if len(jo.time.tolist()) > 6:
                     jo['close_pre_tmp'] = jo["close"].shift(1)
-                    jo['week_grow_tmp']=(jo["close"]-jo['close_pre_tmp'])/jo['close_pre_tmp']
+                    jo['month_grow_tmp']=(jo["close"]-jo['close_pre_tmp'])/jo['close_pre_tmp']
                  
                     # jo=jo.sort_values(by="time", ascending=False)[:15]
                     jo['time']=jo['time'].apply(todate)
                     
                   
                     su=pd.merge(jo, dji_pd, on='time',how='inner')
-                    su['week_rs']=su['week_grow_tmp']-su['week_grow']
+                    su['month_rs']=su['month_grow_tmp']-su['month_grow']
                     
                     
                     zong=su.sort_values(by="time", ascending=False)
 
                     for i in range(days):
-                        if zong.iloc[i]['week_rs'] >= 0 and zong.iloc[i]['week_grow_tmp'] >= 0:
-                            if zong.iloc[i+1]['week_rs'] >= 0 and zong.iloc[i+1]['week_grow_tmp']  >= 0:
-                                if zong.iloc[i+2]['week_rs'] >= 0 and zong.iloc[i+2]['week_grow_tmp']  >= 0:
-                                    if zong.iloc[i+3]['week_rs'] >= 0 and zong.iloc[i+3]['week_grow_tmp']  >= 0:
-                                        if zong.iloc[i+4]['week_rs'] >= 0 and zong.iloc[i+4]['week_grow_tmp']  >= 0:
-                                            if zong.iloc[i+5]['week_rs'] >= 0 and zong.iloc[i+5]['week_grow_tmp'] >= 0:
+                        if zong.iloc[i]['month_rs'] >= 0 and zong.iloc[i]['month_grow_tmp'] >= 0:
+                            if zong.iloc[i+1]['month_rs'] >= 0 and zong.iloc[i+1]['month_grow_tmp']  >= 0:
+                                if zong.iloc[i+2]['month_rs'] >= 0 and zong.iloc[i+2]['month_grow_tmp']  >= 0:
+                                    if zong.iloc[i+3]['month_rs'] >= 0 and zong.iloc[i+3]['month_grow_tmp']  >= 0:
+                                        if zong.iloc[i+4]['month_rs'] >= 0 and zong.iloc[i+4]['month_grow_tmp']  >= 0:
+                                            if zong.iloc[i+5]['month_rs'] >= 0 and zong.iloc[i+5]['month_grow_tmp'] >= 0:
                                                             if str(code_nm) not in li_code_tmp:
-                                                           
+                                                                zong.to_csv(str(code_nm)+'.csv')
                                                                 li_days_tmp.append(i)
                                                                 li_code_tmp.append(str(code_nm))
                                                                 li_pe_tmp.append(pe[ii])
@@ -405,7 +405,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
 
 
     
-    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/month/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     con =pixo(useful_proxies,url_dji)
  
     li_data=con.get('items')    
@@ -414,9 +414,9 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
         dji_pd['time']=dji_pd['time'].apply(todate)
         dji_pd['close_pre'] = dji_pd["close"].shift(1)
         dji_pd['volume_pre'] = dji_pd["volume"].shift(1)
-        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd['month_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
         dji_pd['vol_grow']=(dji_pd["volume"]-dji_pd['volume_pre'])/dji_pd['volume_pre'] 
-        dji_pd=dji_pd[['time','week_grow','vol_grow']]
+        dji_pd=dji_pd[['time','month_grow','vol_grow']]
         
 
 
@@ -446,7 +446,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
             quotes=jo.copy()
             
             quotes['close_pre_tmp'] = quotes["close"].shift(1)
-            quotes['week_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
+            quotes['month_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
             quotes['volume_pre_tmp'] = quotes["volume"].shift(1)
             quotes['vol_grow_tmp']=(quotes["volume"]-quotes['volume_pre_tmp'])/quotes['volume_pre_tmp']
             
@@ -461,7 +461,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
             
           
             su=pd.merge(quotes, dji_pd, on='time',how='inner')
-            su['week_rs']=su['week_grow_tmp']-su['week_grow']
+            su['month_rs']=su['month_grow_tmp']-su['month_grow']
             su['vol_rs']=su['vol_grow_tmp']-su['vol_grow']
             quotes=su.copy()
             quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
@@ -556,7 +556,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
 
             # ax3 =fig.add_axes(axes[nu_nu//10, nu_nu%10])
             ax3 = ax.twinx()
-            ax3.plot(quotes.time.values,   quotes.week_rs.values, linewidth=1, marker='o')
+            ax3.plot(quotes.time.values,   quotes.month_rs.values, linewidth=1, marker='o')
             ax3.set_ylim(-0.1, 0.5)
             ax3.set_yticks([])
             ax3.set_xticks([])
@@ -566,7 +566,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
 
 
             ax5 = ax.twinx()
-            ax5.plot(quotes.time.values,   quotes.week_rs.values, color='goldenrod',linewidth=1, marker='o')
+            ax5.plot(quotes.time.values,   quotes.month_rs.values, color='goldenrod',linewidth=1, marker='o')
             ax5.set_ylim(-0.3, 0.8)
             ax5.set_yticks([])
             ax5.set_xticks([])
@@ -605,7 +605,7 @@ def get_laohu_analysis(n, url, li_code,days,earn,pee):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_month_up_"+str(n)+".png")
     # plt.show()
     
 
@@ -633,7 +633,7 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
 
 
 
-    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/month/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     con =pixo(useful_proxies,url_dji)
  
     li_data=con.get('items')    
@@ -641,8 +641,8 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
         dji_pd=pd.DataFrame(li_data)
         dji_pd['time']=dji_pd['time'].apply(todate)
         dji_pd['close_pre'] = dji_pd["close"].shift(1)
-        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
-        dji_pd=dji_pd[['time','week_grow']]
+        dji_pd['month_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd=dji_pd[['time','month_grow']]
         
     for nmm in range(len(li_code)):
         print('------------------------------------'+str(nu_nu+(n*100))+'------------------------------------------')
@@ -668,7 +668,7 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
             jo=pd.DataFrame(li_data)
             quotes=jo.copy()
             quotes['close_pre_tmp'] = quotes["close"].shift(1)
-            quotes['week_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
+            quotes['month_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
             
             quotes_part=quotes.sort_values(by="time", ascending=False)[:15]
             bio=round(((quotes_part.iloc[days[nmm]]['close'] - quotes_part.iloc[days[nmm]+5]['open'])/quotes_part.iloc[5]['open'])/5,2)
@@ -680,7 +680,7 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
             
           
             su=pd.merge(quotes, dji_pd, on='time',how='inner')
-            su['week_rs']=su['week_grow_tmp']-su['week_grow']
+            su['month_rs']=su['month_grow_tmp']-su['month_grow']
            
             quotes=su.copy()
             quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
@@ -767,7 +767,7 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
             # poly = ax2t.fill_between(quotes.time.values, volume, 0, label='Volume',
                          # facecolor=fillcolor, edgecolor=fillcolor)
             
-            ax2t.plot(quotes.time.values,   quotes.week_rs.values, linewidth=1, marker='o')
+            ax2t.plot(quotes.time.values,   quotes.month_rs.values, linewidth=1, marker='o')
             ax2t.set_ylim(-0.2, 0.8)
             ax2t.set_yticks([])
             ax2t.set_xticks([])
@@ -792,7 +792,7 @@ def get_laohu_analysis_rs(n, url, li_code,days,earn):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_rs_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_month_up_rs_"+str(n)+".png")
     # plt.show()
 
 
@@ -813,7 +813,7 @@ def get_laohu_analysis_all_rs(n, url, li_code,days,earn):
     except OSError:
         print ("获取代理ip时出错！") 
 
-    url_dji='https://hq.itiger.com/stock_info/candle_stick/week/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
+    url_dji='https://hq.itiger.com/stock_info/candle_stick/month/.DJI?beginTime=-1&endTime=-1&right=br&limit=251&deviceId=web20180727_722849&platform=desktop-web&env=Chrome&vendor=web&lang=&appVer=4.2.0'
     con =pixo(useful_proxies,url_dji)
  
     li_data=con.get('items')    
@@ -821,8 +821,8 @@ def get_laohu_analysis_all_rs(n, url, li_code,days,earn):
         dji_pd=pd.DataFrame(li_data)
         dji_pd['time']=dji_pd['time'].apply(todate)
         dji_pd['close_pre'] = dji_pd["close"].shift(1)
-        dji_pd['week_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
-        dji_pd=dji_pd[['time','week_grow']]
+        dji_pd['month_grow']=(dji_pd["close"]-dji_pd['close_pre'])/dji_pd['close_pre']
+        dji_pd=dji_pd[['time','month_grow']]
 
 
     for nmm in range(len(li_code)):
@@ -857,10 +857,10 @@ def get_laohu_analysis_all_rs(n, url, li_code,days,earn):
 
             quotes['time']=quotes['time'].apply(todate)
             quotes['close_pre_tmp'] = quotes["close"].shift(1)
-            quotes['week_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
+            quotes['month_grow_tmp']=(quotes["close"]-quotes['close_pre_tmp'])/quotes['close_pre_tmp']
             
             su=pd.merge(quotes, dji_pd, on='time',how='inner')
-            su['week_rs']=su['week_grow_tmp']-su['week_grow']
+            su['month_rs']=su['month_grow_tmp']-su['month_grow']
 
             quotes=su.copy()
             quotes['time']=pd.to_datetime(quotes['time'], format="%Y-%m-%d")
@@ -947,7 +947,7 @@ def get_laohu_analysis_all_rs(n, url, li_code,days,earn):
             # poly = ax2t.fill_between(quotes.time.values, volume, 0, label='Volume',
                          # facecolor=fillcolor, edgecolor=fillcolor)
             
-            ax2t.plot(quotes.time.values,   quotes.week_rs.values, linewidth=1, marker='o')
+            ax2t.plot(quotes.time.values,   quotes.month_rs.values, linewidth=1, marker='o')
             ax2t.set_ylim(-0.2, 0.8)
             ax2t.set_yticks([])
             ax2t.set_xticks([])
@@ -972,7 +972,7 @@ def get_laohu_analysis_all_rs(n, url, li_code,days,earn):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_all_rs_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_month_up_all_rs_"+str(n)+".png")
     # plt.show()
  
 
@@ -1129,7 +1129,7 @@ def get_laohu_analysis_all(n, url, li_code,days,earn):
         nu_nu=nu_nu+1    
     fig.tight_layout(rect=[0.02,0.02,0.98,0.98], pad=0.2, h_pad=0.2, w_pad=0.2)
     fig.subplots_adjust(wspace =0.2, hspace =0.2)
-    plt.savefig(path+'/up_data/'+date+"_week_up_all_"+str(n)+".png")
+    plt.savefig(path+'/up_data/'+date+"_month_up_all_"+str(n)+".png")
     # plt.show()
     
 
@@ -1156,7 +1156,7 @@ def write_csv(fileName,df):
         df.to_csv(fileName,index=False)
     return True
         
-days_df=get_grow_code(url_week, 5, li_code, pe)
+days_df=get_grow_code(url_month, 5, li_code, pe)
 days_sort_df=days_df.sort_values(by=['days','code'])
 codee=days_sort_df.code.tolist()
 days=days_sort_df.days.tolist()
@@ -1178,10 +1178,10 @@ for i in range((len(codee)//100)+1):
     days_tmp=days[start:end]
     earn_tmp=earn[start:end]
     pe_tmp=pes[start:end]
-    get_laohu_analysis(i, url_week, code_tmp, days_tmp,earn_tmp,pe_tmp)
-    # get_laohu_analysis_all_rs(i, url_week, code_tmp, days_tmp,earn_tmp)
+    get_laohu_analysis(i, url_month, code_tmp, days_tmp,earn_tmp,pe_tmp)
+    # get_laohu_analysis_all_rs(i, url_month, code_tmp, days_tmp,earn_tmp)
     time.sleep(1)
-    # get_laohu_analysis_all(i, url_week, code_tmp, days_tmp,earn_tmp)
+    # get_laohu_analysis_all(i, url_month, code_tmp, days_tmp,earn_tmp)
 
 
 

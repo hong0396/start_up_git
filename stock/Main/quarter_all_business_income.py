@@ -39,8 +39,8 @@ def df_join_nm(pd_li,col,rename):
 
 
 
-rename=['net_profits_2017_1','net_profits_2017_2','net_profits_2017_3','net_profits_2017_4','net_profits_2018_1','net_profits_2018_2','net_profits_2018_3','net_profits_2018_4']
-roe=df_join_nm(li, ['name', 'net_profits'], rename)
+rename=['business_income_2017_1','business_income_2017_2','business_income_2017_3','business_income_2017_4','business_income_2018_1','business_income_2018_2','business_income_2018_3','business_income_2018_4']
+roe=df_join_nm(li, ['name', 'business_income'], rename)
 
 
 basic = ts.get_stock_basics()
@@ -56,5 +56,5 @@ basic = basic[ ~ basic['name'].str.contains('退市')]
 re=pd.merge(roe,basic,how='outer',on='name')
 
 
-re.to_csv(date+'_quarter_all_net_profits.csv',  encoding = 'gbk', index=False)
+re.to_csv(date+'_quarter_all_business_income.csv',  encoding = 'gbk', index=False)
 

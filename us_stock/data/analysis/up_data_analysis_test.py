@@ -32,7 +32,7 @@ for code_nm in code:
     li=zong.columns.values.tolist()
     print('-------'+str(n)+'---------'+str(code_nm)+'------------------')
     n=n+1
-    if len(zong)/12 <= 5: # 1 上市小于5年
+    if len(zong)/12 <= 5 and len(zong)/12 >= 2: # 1 上市小于5年
         regr = linear_model.LinearRegression()
         rang=(zong.close-zong.close[0])/zong.close[0]
         regr.fit(zong.index.values.reshape(-1, 1), rang) # 注意此处.reshape(-1, 1)，因为X是一维的！

@@ -32,14 +32,14 @@ for code_nm in code:
     li=zong.columns.values.tolist()
     print('-------'+str(n)+'---------'+str(code_nm)+'------------------')
     n=n+1
-    if len(zong)/12 <= 5 : # 1 上市小于5年
+    if len(zong)/12 <= 5 : # and len(zong)/12 >= 21 上市小于5年
         regr = linear_model.LinearRegression()
         rang=(zong.close-zong.close[0])/zong.close[0]
         regr.fit(zong.index.values.reshape(-1, 1), rang) # 注意此处.reshape(-1, 1)，因为X是一维的！
         a, b = regr.coef_, regr.intercept_ 
         r2=r2_score(rang, regr.predict(zong.index.values.reshape(-1, 1)))
-        # if  r2 > 0.9 and a[0] > 0.1:
-        if a[0] > 0 and zong.close.values.tolist()[-1] >= zong.close.max()*0.9 and int(zong.close.max()) <= 25:
+        if  a[0] > 0.1:
+        # if a[0] > 0 and zong.close.values.tolist()[-1] >= zong.close.max()*0.9 and int(zong.close.max()) <= 25:
         # 2 价格大于最大值0.9
         # 3 价格小于20
             plt.scatter(zong.index.values.reshape(-1, 1), rang, color='blue')

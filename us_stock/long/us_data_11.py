@@ -51,7 +51,7 @@ header={'Accept': 'application/json, text/plain, */*',
 'Accept-Encoding': 'gzip, deflate, br',
 'Accept-Language': 'zh-CN,zh;q=0.9',
 'Connection': 'keep-alive',
-'Authorization': 'Bearer dD5B49CfmRbSjaglaBhU69wmdoUGWP',
+'Authorization': 'Bearer Vxe2C7g0gtyh2bLvjVTdkqIyuqhtLG',
 'Host': 'hq2.itiger.com',
 'Origin': 'https://web.itiger.com',
 'Referer': 'https://web.itiger.com/quotation',
@@ -102,6 +102,11 @@ for code_nm in li_code:
         con = requests.get(url_month.format(str(code_nm)),proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5).json()
         # print(con)
 
+
+
+
+
+
     # con = requests.get(url_day.format(str(code_nm)), headers=header, verify=False ).json()
     # time.sleep(0.1) 
     li_data=con.get('items')
@@ -109,7 +114,7 @@ for code_nm in li_code:
         jo=pd.DataFrame(li_data)
         dic.update({str(code_nm): jo })
     else:  
-        print('数据有误')  
+        print('数据有误')      
     nu_nu=nu_nu+1
 
 

@@ -71,13 +71,14 @@ header={'Accept': 'application/json, text/plain, */*',
 
 dic={}
 codd=[]
-profit201809 =[]
-profit201806 =[]
-profit201803 =[]
-profit201712 =[]
+profit2018 =[]
+profit2017 =[]
+profit2016 =[]
+profit2015 =[]
+profit2014 =[]
 
-li_sum=[profit201809,profit201806,profit201803,profit201712]
-li_time=['2018-09','2018-06','2018-03','2017-12']
+li_sum=[profit2018,profit2017,profit2016,profit2015,profit2014]
+li_time=['2018_profit','2017_profit','2016_profit','2015_profit','2014_profit']
 
 code=pd.read_csv('2019-02-24us_all_code.csv',encoding='gbk')
 # code=pd.read_csv('D:/Git/us_stock/ROE/2018-08-19_all_us_basic.csv',encoding='gbk')
@@ -126,7 +127,7 @@ for code_nm in li_code:
         # print('shengxia'+proxy)
         res=requests.get(url, proxies={"http": "http://" +proxy}, headers=header,verify=False,timeout=5)
             
-
+    print(res)
     if res.status_code == 200:
         a=res.json()
         li=a.get('data').get('page')
@@ -152,8 +153,8 @@ for code_nm in li_code:
             if not li is None:
                 # codd.append(code_nm)
                 for i in range(len(li)):
-                    if li[i].get('type') == '季报':
-                        year_date=li[i].get('date')[:7]
+                    if li[i].get('type') == '年报':
+                        year_date=li[i].get('date')[:4]
                         tmmp=li[i].get('cell')
                         if num+1 < len(tmmp):
                             valu=tmmp[num].get('value')
@@ -234,7 +235,7 @@ for i in li_time:
 pan['code'] = li_code
 re=pd.merge(code,pan,how='outer',on='code')
 re=re.drop_duplicates()
-re.to_csv(date+'_Laohu_us_profit_income_quarter.csv', encoding = 'gbk',index=False)
+re.to_csv(date+'_Laohu_us_profit_income_year.csv', encoding = 'gbk',index=False)
 
 
 

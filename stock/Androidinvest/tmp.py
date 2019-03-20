@@ -39,3 +39,4 @@ li.append(env)
 li.append(price)
 pd=pd.DataFrame(li)
 print(pd.T)
+

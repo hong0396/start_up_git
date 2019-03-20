@@ -31,6 +31,7 @@ def tu_code_fore():
 
 # stock_CodeUrl = 'http://quote.eastmoney.com/stocklist.html'
 current = time.strftime("%Y%m%d")
+
 # 获取股票代码列表（带前缀）
 def urlTolist_fore():
     CodeList=[]

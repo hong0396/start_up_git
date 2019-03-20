@@ -32,28 +32,19 @@ for code_nm in code:
     li=zong.columns.values.tolist()
     print('-------'+str(n)+'---------'+str(code_nm)+'------------------')
     n=n+1
-    if len(zong)/12 <= 5 : # 1 上市小于5年
+    if len(zong)/12 <= 10:
         regr = linear_model.LinearRegression()
         rang=(zong.close-zong.close[0])/zong.close[0]
         regr.fit(zong.index.values.reshape(-1, 1), rang) # 注意此处.reshape(-1, 1)，因为X是一维的！
         a, b = regr.coef_, regr.intercept_ 
         r2=r2_score(rang, regr.predict(zong.index.values.reshape(-1, 1)))
         # if  r2 > 0.9 and a[0] > 0.1:
-        if a[0] > 0 and zong.close.values.tolist()[-1] >= zong.close.max()*0.9 and int(zong.close.max()) <= 25:
-        # 2 价格大于最大值0.9
-        # 3 价格小于20
+        if   a[0] > 0.1:
             plt.scatter(zong.index.values.reshape(-1, 1), rang, color='blue')
             plt.plot(zong.index.values.reshape(-1, 1), regr.predict(zong.index.values.reshape(-1, 1)), color='red', linewidth=4)
             plt.title(str(code_nm)+' R2='+str(round(r2))+' a='+str(round(a[0],5)))
             plt.legend((str(zong.close.min()), str(zong.close.max())), loc='lower right')
             plt.show()
-
-
-
-
-
-
-            
     ###方法二####### 
     # n = len(zong)
     # x = zong.index.values

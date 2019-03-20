@@ -18,7 +18,7 @@ from sklearn.metrics import r2_score
 
 date=time.strftime('%Y-%m-%d',time.localtime(time.time()))
 sum_dic={}
-ds_disk =xr.open_dataset('E:/us_data/2019-03-03us_stock_month_saved.nc')
+ds_disk =xr.open_dataset('E:/us_data/2019-03-17us_stock_month_saved.nc')
 code=ds_disk.to_dataframe().columns.tolist()
 n=1
 for code_nm in code:
@@ -39,7 +39,7 @@ for code_nm in code:
         a, b = regr.coef_, regr.intercept_ 
         r2=r2_score(rang, regr.predict(zong.index.values.reshape(-1, 1)))
         # if  r2 > 0.9 and a[0] > 0.1:
-        if a[0] > 0 and zong.close.values.tolist()[-1] >= zong.close.max()*0.9 and int(zong.close.max()) <= 25:
+        if a[0] > 0 and zong.close.values.tolist()[-1] >= zong.close.max()*0.9 and int(zong.close.max()) <= 26:
         # 2 价格大于最大值0.9
         # 3 价格小于20
             plt.scatter(zong.index.values.reshape(-1, 1), rang, color='blue')

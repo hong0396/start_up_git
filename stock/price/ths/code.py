@@ -3,8 +3,7 @@
  
 import requests,time,os,xlwt,xlrd,random
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from sqlalchemy import create_engine
+ 
 class East(object):
     def __init__(self):
         self.Url = 'http://quote.eastmoney.com/stocklist.html'
@@ -16,31 +15,7 @@ class East(object):
             print ('Record exist...')
         else:
             print ('Get data ...')
-            cook=self.get_cookie()
-            self.header = {'Host': 'quote.eastmoney.com',
-                    'Upgrade-Insecure-Requests': '1',
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36',
-                    'Cookie': cook}
             self.get_data()
-
-
-    def get_cookie(self):
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        chromedriver = 'C:/Program Files (x86)/Google/Chrome/Application/chromedriver.exe'
-        os.environ["webdriver.chrome.driver"] = chromedriver
-        driver=webdriver.Chrome(executable_path=chromedriver,chrome_options=options)
-        # url="http://data.10jqka.com.cn/" #http://stock.10jqka.com.cn/
-        driver.get(self.Url)
-        # 获取cookie列表
-        cookie=driver.get_cookies()
-        print(cookie)
-        driver.close()
-        for i in cookie:
-            if i.get('name') == 'qgqp_b_id':
-                cookie_v = i.get('value') 
-        return cookie_v 
-
  
  
     def write_excel(self):
@@ -68,10 +43,9 @@ class East(object):
     def get_data(self):
         time.sleep(random.randint(1,5)+random.random()) #随机延时?.?s  以防封IP
         #请求数据
-        orihtml = requests.get(self.Url, headers = self.header ).text
+        orihtml = requests.get(self.Url).text
         #创建 beautifulsoup 对象
         soup = BeautifulSoup(orihtml,'lxml')
-        print(soup)
         #采集每一个股票的信息
         count = 0
         for a in soup.find('div',class_='quotebody').find_all('a',{'target':'_blank'}):

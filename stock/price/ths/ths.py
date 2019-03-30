@@ -60,15 +60,42 @@ def get_nn(li, i, n1):
 # code=pd.read_csv('last_us_all_code.csv',encoding='gbk')
 # li_code=code['code'].tolist()
 
-
-
-
-
 url='http://d.10jqka.com.cn/v6/line/hs_600196/11/all.js'
 con=requests.get(url,headers=header)  
+# soup = BeautifulSoup(con.content.decode('gbk'),'lxml')
+# print(soup)
 soup = BeautifulSoup(con.content.decode('gbk'),'lxml')
-print(soup)
-
+# print(soup.text)
+aa =re.findall(r'[^()]+', soup.text)[1]
+dictinfo = json.loads(aa) 
+date=[]
+for i in dictinfo.get('sortYear'):
+    li=[]
+    li.append(str(i[0]))
+    li_tmp=li*i[1]
+    # print(li_tmp)
+    date.extend(li_tmp)
+# print(date)    
+if len(date) == len(list(dictinfo.get('dates').split(','))):
+    date_new=map(lambda x, y: x + y, date, list(dictinfo.get('dates').split(',')))
+    date_new =list(date_new)
+else:
+    print('数据有误')
+a=list(dictinfo.get('price').split(','))
+b=[]
+for i in range(0, len(a), 4):
+    b.append(a[i:i+4])
+open=[]
+close=[]
+low=[]
+high=[]
+for i in b:
+    low.append(int(i[0])/100)
+    open.append((int(i[0])+int(i[1]))/100)
+    high.append((int(i[0])+int(i[2]))/100)
+    close.append((int(i[0])+int(i[3]))/100)     
+p=pd.DataFrame({'date':date_new, 'low':low,'close':close, 'high':high,'open':open, 'volumn': list(dictinfo.get('volumn').split(','))  })
+print(p)
 
 
 

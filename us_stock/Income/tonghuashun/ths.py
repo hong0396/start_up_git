@@ -116,7 +116,7 @@ def get_income(url ,li_code):
         net2016.append('0_0')
         net2017.append('0_0')
         net2018.append('0_0')
-
+        global header,cook 
         con=requests.get(url.format(str(li_code[code_nm])),headers=header)
         time.sleep(0.5)
         while (con.status_code != 200) or (not con.content ): 

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np 
 import pandas_datareader.data as web
 import datetime
-import time
+import time,datetime
 import fix_yahoo_finance as yf
 import xarray as xr
 import numpy as np
@@ -22,21 +22,50 @@ ds_disk =xr.open_dataset('E:/stock_data/2019-03-10stock_industry_month_saved.nc'
 code=ds_disk.to_dataframe().columns.tolist()
 n=1
 fig, ax = plt.subplots(nrows=3, ncols=1 )
-for code_nm in code[:2]:
+df=pd.DataFrame()
+for code_nm in code:
     zong = ds_disk.get(str(code_nm)).to_pandas().sort_index(ascending=False)
     zong = zong.dropna(axis = 0)  #删除行
     zong = zong.fillna(0)
     zong = zong.round(6)   
     # zong = zong.sort_values("time",ascending=False)
     # zong = zong.sort_index(ascending=False)
+    zong.date=pd.to_datetime(zong.date, format='%Y-%m-%d')
+    # zong.date=zong.date.apply(lambda x:datetime.strftime(x,'%Y-%m-%d'))
     zong = zong.sort_values("date",ascending=True)
+    # print(zong)
     li=zong.columns.values.tolist()
-    axes=ax[n]
-    axes.plot(zong.date.values, zong.close.values, color='red', linewidth=4)
-    # axes.title(code_nm)
-    n=n+1
+    name=zong.title.values.tolist()[0]
+    # print(zong.title.values.tolist()[0])
+    date_tmp   = zong.date.values.tolist()
+    close_tmp   = zong.close.values.tolist()
+    basic=zong.close.values.tolist()[0]
+    basic=float(basic)
+    # print(float(basic))
+#################################################
+    if close_tmp:
+        for i in range(len(close_tmp)):
+            if not close_tmp[i] == '':
+                close_tmp[i]=float(str(close_tmp[i]).replace(' ',''))
+                close_tmp[i]=(close_tmp[i]-basic)/basic
+        close_tmp[0]=0.0
+#################################################
+    # close_tmp  = rang.values.tolist()
+    tmp=pd.DataFrame({'date':date_tmp, str(name):close_tmp})
+    if len(df) ==0:
+        df=tmp.copy()
+    else:
+        df_tmp=pd.merge(df,tmp, how='outer',on='date')
+        df=df_tmp.copy()
+df.to_csv(date+'_industry_ro_price.csv',  encoding = 'gbk', index=False)
+     
 
-plt.show()
+    # axes=ax[n]
+    # axes.plot(zong.date.values, zong.close.values, color='red', linewidth=4)
+    # # axes.title(code_nm)
+    # n=n+1
+
+# plt.show()
 
 
 
